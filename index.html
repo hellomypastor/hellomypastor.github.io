@@ -211,7 +211,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>文章目录<br>access_token是公众号的全局唯一票据，公众号调用各接口时都需使用access_token。开发者需要进行妥善保存。access_token的存储至少要保留512个字符空间。access_token的有效期目前为2个小时，需定时刷新，重复获取将导致上次获取的access_token失效。<br>公众号调用接口并不是无限制的。为了防止公众号的程序错误而引发微信服务器负载异常，默认情况下，每个公众号调用接口都不能超过一定限制，当超过一定限制时，调用对应接口会收到如下错误返回码：<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;"<span class="attribute">errcode</span>":<span class="value"><span class="number">45009</span></span>,"<span class="attribute">errmsg</span>":<span class="value"><span class="string">"api freq out of limit"</span></span>&#125;</span><br></pre></td></tr></table></figure></p>
+        <p>文章目录<br><a href="#1.新建token线程，定时获取token">1.新建token线程，定时获取token</a><br><a href="#2.初始化servlet">2.初始化servlet</a><br><a href="#3.web.xml配置">3.web.xml配置</a><br><a href="#4.调用">4.调用</a><br>access_token是公众号的全局唯一票据，公众号调用各接口时都需使用access_token。开发者需要进行妥善保存。access_token的存储至少要保留512个字符空间。access_token的有效期目前为2个小时，需定时刷新，重复获取将导致上次获取的access_token失效。<br>公众号调用接口并不是无限制的。为了防止公众号的程序错误而引发微信服务器负载异常，默认情况下，每个公众号调用接口都不能超过一定限制，当超过一定限制时，调用对应接口会收到如下错误返回码：<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;"<span class="attribute">errcode</span>":<span class="value"><span class="number">45009</span></span>,"<span class="attribute">errmsg</span>":<span class="value"><span class="string">"api freq out of limit"</span></span>&#125;</span><br></pre></td></tr></table></figure></p>
 <p>那怎么才能在access_token失效前定时刷新呢？<br>
       
     </div>
