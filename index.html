@@ -113,7 +113,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/心路札记/" style="font-size: NaNpx;">心路札记</a>
+						<a href="/tags/Java/" style="font-size: 20px;">Java</a><a href="/tags/SpringMVC/" style="font-size: 10px;">SpringMVC</a><a href="/tags/微信公众平台开发/" style="font-size: 20px;">微信公众平台开发</a><a href="/tags/心路札记/" style="font-size: 10px;">心路札记</a>
 					</div>
 				</section>
 				
@@ -184,6 +184,119 @@
 	</div>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-微信公众号调用access-token接口频率限制解决-Java" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/05/09/微信公众号调用access-token接口频率限制解决-Java/" class="article-date">
+  	<time datetime="2015-05-09T07:02:44.000Z" itemprop="datePublished">2015-05-09</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/05/09/微信公众号调用access-token接口频率限制解决-Java/">微信公众号调用access_token接口频率限制解决(Java)</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>文章目录<br>access_token是公众号的全局唯一票据，公众号调用各接口时都需使用access_token。开发者需要进行妥善保存。access_token的存储至少要保留512个字符空间。access_token的有效期目前为2个小时，需定时刷新，重复获取将导致上次获取的access_token失效。<br>公众号调用接口并不是无限制的。为了防止公众号的程序错误而引发微信服务器负载异常，默认情况下，每个公众号调用接口都不能超过一定限制，当超过一定限制时，调用对应接口会收到如下错误返回码：<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;"<span class="attribute">errcode</span>":<span class="value"><span class="number">45009</span></span>,"<span class="attribute">errmsg</span>":<span class="value"><span class="string">"api freq out of limit"</span></span>&#125;</span><br></pre></td></tr></table></figure></p>
+<p>那怎么才能在access_token失效前定时刷新呢？<br>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/微信公众平台开发/">微信公众平台开发</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/05/09/微信公众号调用access-token接口频率限制解决-Java/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+  
+    <article id="post-微信支付V3-x实现-Java后台" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/05/09/微信支付V3-x实现-Java后台/" class="article-date">
+  	<time datetime="2015-05-09T05:25:50.000Z" itemprop="datePublished">2015-05-09</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/05/09/微信支付V3-x实现-Java后台/">微信支付V3.x后台实现(Java)</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>文章目录<br><a href="#1.获取签名证书，初始化JS-API">1.获取签名证书，初始化JS-API</a><br><a href="#2.获取微信支付配置参数">2.获取微信支付配置参数</a><br><a href="#3.调用统一下单接口，生成预支付订单号">3.调用统一下单接口，生成预支付订单号</a><br><a href="#4.生成带支付签名的订单凭据并返回">4.生成带支付签名的订单凭据并返回</a><br><a href="#5.调起微信支付（发起微信支付请求）">5.调起微信支付（发起微信支付请求）</a><br><a href="#6.用户确认金额并输入支付密码">6.用户确认金额并输入支付密码</a><br><a href="#7.向用户展示支付结果">7.向用户展示支付结果</a><br>最近做微信公众号开发，用到了<code>网页中调起微信支付</code>的功能，微信公众平台提供的DEMO是基于PHP的，没有Java的，到网上查阅资料也都是<code>V2.x</code>的，而现在微信支付已经更新到了<code>V3.x</code>版本，经过几天的探索，终于成功实现，将实现过程总结下。<br>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SpringMVC/">SpringMVC</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/微信公众平台开发/">微信公众平台开发</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/05/09/微信支付V3-x实现-Java后台/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
   
     <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
   
