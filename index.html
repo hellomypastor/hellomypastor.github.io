@@ -211,7 +211,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>文章目录<br><a href="#申请微信公众号">1.申请微信公众号</a><br><a href="#2.在SAE上新建Python项目">2.在SAE上新建Python项目</a><br><a href="#3.微信公众号与SAE应用的对接和验证">3.微信公众号与SAE应用的对接和验证</a><br><a href="#4.处理用户消息（以文本消息为例）">4.处理用户消息（以文本消息为例）</a><br>
+        <p>文章目录<br><a href="#申请微信公众号">1.申请微信公众号</a><br><a href="#在SAE上新建Python项目">2.在SAE上新建Python项目</a><br><a href="#微信公众号与SAE应用的对接和验证">3.微信公众号与SAE应用的对接和验证</a><br><a href="#处理用户消息（以文本消息为例）">4.处理用户消息（以文本消息为例）</a><br>
       
     </div>
     
@@ -267,7 +267,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>文章目录<br><a href="#1.新建token线程，定时获取token">1.新建token线程，定时获取token</a><br><a href="#2.初始化servlet">2.初始化servlet</a><br><a href="#3.web.xml配置">3.web.xml配置</a><br><a href="#4.调用">4.调用</a><br>access_token是公众号的全局唯一票据，公众号调用各接口时都需使用access_token。开发者需要进行妥善保存。access_token的存储至少要保留512个字符空间。access_token的有效期目前为2个小时，需定时刷新，重复获取将导致上次获取的access_token失效。<br>公众号调用接口并不是无限制的。为了防止公众号的程序错误而引发微信服务器负载异常，默认情况下，每个公众号调用接口都不能超过一定限制，当超过一定限制时，调用对应接口会收到如下错误返回码：<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;"<span class="attribute">errcode</span>":<span class="value"><span class="number">45009</span></span>,"<span class="attribute">errmsg</span>":<span class="value"><span class="string">"api freq out of limit"</span></span>&#125;</span><br></pre></td></tr></table></figure></p>
+        <p>文章目录<br><a href="#新建token线程，定时获取token">1.新建token线程，定时获取token</a><br><a href="#初始化servlet">2.初始化servlet</a><br><a href="#web.xml配置">3.web.xml配置</a><br><a href="#调用">4.调用</a><br>access_token是公众号的全局唯一票据，公众号调用各接口时都需使用access_token。开发者需要进行妥善保存。access_token的存储至少要保留512个字符空间。access_token的有效期目前为2个小时，需定时刷新，重复获取将导致上次获取的access_token失效。<br>公众号调用接口并不是无限制的。为了防止公众号的程序错误而引发微信服务器负载异常，默认情况下，每个公众号调用接口都不能超过一定限制，当超过一定限制时，调用对应接口会收到如下错误返回码：<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;"<span class="attribute">errcode</span>":<span class="value"><span class="number">45009</span></span>,"<span class="attribute">errmsg</span>":<span class="value"><span class="string">"api freq out of limit"</span></span>&#125;</span><br></pre></td></tr></table></figure></p>
 <p>那怎么才能在access_token失效前定时刷新呢？<br>
       
     </div>
@@ -324,7 +324,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>文章目录<br><a href="#1.获取签名证书，初始化JS-API">1.获取签名证书，初始化JS-API</a><br><a href="#2.获取微信支付配置参数">2.获取微信支付配置参数</a><br><a href="#3.调用统一下单接口，生成预支付订单号">3.调用统一下单接口，生成预支付订单号</a><br><a href="#4.生成带支付签名的订单凭据并返回">4.生成带支付签名的订单凭据并返回</a><br><a href="#5.调起微信支付（发起微信支付请求）">5.调起微信支付（发起微信支付请求）</a><br><a href="#6.用户确认金额并输入支付密码">6.用户确认金额并输入支付密码</a><br><a href="#7.向用户展示支付结果">7.向用户展示支付结果</a><br>最近做微信公众号开发，用到了<code>网页中调起微信支付</code>的功能，微信公众平台提供的DEMO是基于PHP的，没有Java的，到网上查阅资料也都是<code>V2.x</code>的，而现在微信支付已经更新到了<code>V3.x</code>版本，经过几天的探索，终于成功实现，将实现过程总结下。<br>
+        <p>文章目录<br><a href="#获取签名证书，初始化JS-API">1.获取签名证书，初始化JS-API</a><br><a href="#获取微信支付配置参数">2.获取微信支付配置参数</a><br><a href="#调用统一下单接口，生成预支付订单号">3.调用统一下单接口，生成预支付订单号</a><br><a href="#生成带支付签名的订单凭据并返回">4.生成带支付签名的订单凭据并返回</a><br><a href="#调起微信支付（发起微信支付请求）">5.调起微信支付（发起微信支付请求）</a><br><a href="#用户确认金额并输入支付密码">6.用户确认金额并输入支付密码</a><br><a href="#向用户展示支付结果">7.向用户展示支付结果</a><br>最近做微信公众号开发，用到了<code>网页中调起微信支付</code>的功能，微信公众平台提供的DEMO是基于PHP的，没有Java的，到网上查阅资料也都是<code>V2.x</code>的，而现在微信支付已经更新到了<code>V3.x</code>版本，经过几天的探索，终于成功实现，将实现过程总结下。<br>
       
     </div>
     
