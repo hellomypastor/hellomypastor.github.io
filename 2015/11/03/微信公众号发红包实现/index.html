@@ -5,15 +5,27 @@
   
   <title>微信公众号发红包实现 | hellomypastor</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description">
+  <meta name="description" content="近期做微信公众号开发，用到了企业向微信用户个人发现金红包的功能，相比之前微信支付功能的实现，多了证书的验证，实现过程总结如下。
+
+请求Url：https://api.mch.weixin.qq.com/mmpaymkttransfers/sendredpack
+是否需要证书：是
+请求方式：POST">
 <meta property="og:type" content="article">
 <meta property="og:title" content="微信公众号发红包实现">
 <meta property="og:url" content="http://hellomypastor.net/2015/11/03/微信公众号发红包实现/index.html">
 <meta property="og:site_name" content="hellomypastor">
-<meta property="og:description">
+<meta property="og:description" content="近期做微信公众号开发，用到了企业向微信用户个人发现金红包的功能，相比之前微信支付功能的实现，多了证书的验证，实现过程总结如下。
+
+请求Url：https://api.mch.weixin.qq.com/mmpaymkttransfers/sendredpack
+是否需要证书：是
+请求方式：POST">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="微信公众号发红包实现">
-<meta name="twitter:description">
+<meta name="twitter:description" content="近期做微信公众号开发，用到了企业向微信用户个人发现金红包的功能，相比之前微信支付功能的实现，多了证书的验证，实现过程总结如下。
+
+请求Url：https://api.mch.weixin.qq.com/mmpaymkttransfers/sendredpack
+是否需要证书：是
+请求方式：POST">
   
     <link rel="alternative" href="/atom.xml" title="hellomypastor" type="application/atom+xml">
   
@@ -220,7 +232,18 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        
+        <p>近期做微信公众号开发，用到了<code>企业向微信用户个人发现金红包</code>的功能，相比之前微信支付功能的实现，多了证书的验证，实现过程总结如下。</p>
+<ul>
+<li>请求Url：<a href="https://api.mch.weixin.qq.com/mmpaymkttransfers/sendredpack" target="_blank" rel="external">https://api.mch.weixin.qq.com/mmpaymkttransfers/sendredpack</a></li>
+<li>是否需要证书：是</li>
+<li>请求方式：POST<a id="more"></a></li>
+<li><p>数据示例</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">xml</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">sign</span>&gt;</span><span class="cdata">&lt;![CDATA[E1EE61A91C8E90F299DE6AE075D60A2D]]&gt;</span><span class="tag">&lt;/<span class="title">sign</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">mch_billno</span>&gt;</span><span class="cdata">&lt;![CDATA[0010010404201411170000046545]]&gt;</span><span class="tag">&lt;/<span class="title">mch_billno</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">mch_id</span>&gt;</span><span class="cdata">&lt;![CDATA[888]]&gt;</span><span class="tag">&lt;/<span class="title">mch_id</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">wxappid</span>&gt;</span><span class="cdata">&lt;![CDATA[wxcbda96de0b165486]]&gt;</span><span class="tag">&lt;/<span class="title">wxappid</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">send_name</span>&gt;</span><span class="cdata">&lt;![CDATA[send_name]]&gt;</span><span class="tag">&lt;/<span class="title">send_name</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">re_openid</span>&gt;</span><span class="cdata">&lt;![CDATA[onqOjjmM1tad-3ROpncN-yUfa6uI]]&gt;</span><span class="tag">&lt;/<span class="title">re_openid</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">total_amount</span>&gt;</span><span class="cdata">&lt;![CDATA[200]]&gt;</span><span class="tag">&lt;/<span class="title">total_amount</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">total_num</span>&gt;</span><span class="cdata">&lt;![CDATA[1]]&gt;</span><span class="tag">&lt;/<span class="title">total_num</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">wishing</span>&gt;</span><span class="cdata">&lt;![CDATA[恭喜发财]]&gt;</span><span class="tag">&lt;/<span class="title">wishing</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">client_ip</span>&gt;</span><span class="cdata">&lt;![CDATA[127.0.0.1]]&gt;</span><span class="tag">&lt;/<span class="title">client_ip</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">act_name</span>&gt;</span><span class="cdata">&lt;![CDATA[新年红包]]&gt;</span><span class="tag">&lt;/<span class="title">act_name</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">remark</span>&gt;</span><span class="cdata">&lt;![CDATA[新年红包]]&gt;</span><span class="tag">&lt;/<span class="title">remark</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">nonce_str</span>&gt;</span><span class="cdata">&lt;![CDATA[50780e0cca98c8c8e814883e5caa672e]]&gt;</span><span class="tag">&lt;/<span class="title">nonce_str</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">xml</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>带证书的请求java代码实现如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">KeyStore keyStore = KeyStore.getInstance(<span class="string">"PKCS12"</span>);</span><br><span class="line">FileInputStream instream = <span class="keyword">new</span> FileInputStream(<span class="keyword">new</span> File(<span class="string">"/../123XXXXXXXX.p12"</span>));</span><br><span class="line"><span class="keyword">try</span></span><br><span class="line">&#123;</span><br><span class="line">  keyStore.load(instream, <span class="string">"123XXXXXXXX"</span>.toCharArray());</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">finally</span></span><br><span class="line">&#123;</span><br><span class="line">  instream.close();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Trust own CA and all self-signed certs</span></span><br><span class="line">SSLContext sslcontext = SSLContexts.custom().loadKeyMaterial(keyStore, <span class="string">"1236829802"</span>.toCharArray()).build();</span><br><span class="line"><span class="comment">// Allow TLSv1 protocol only</span></span><br><span class="line">SSLConnectionSocketFactory sslsf = <span class="keyword">new</span> SSLConnectionSocketFactory(sslcontext, <span class="keyword">new</span> String[] &#123; <span class="string">"TLSv1"</span> &#125;, <span class="keyword">null</span>, SSLConnectionSocketFactory.BROWSER_COMPATIBLE_HOSTNAME_VERIFIER);</span><br><span class="line">CloseableHttpClient httpclient = HttpClients.custom().setSSLSocketFactory(sslsf).build();</span><br><span class="line">String xml = getPackage();</span><br><span class="line">StringEntity stringEntity;</span><br><span class="line"><span class="keyword">try</span></span><br><span class="line">&#123;</span><br><span class="line">  HttpPost httppost = <span class="keyword">new</span> HttpPost(<span class="string">"https://api.mch.weixin.qq.com/mmpaymkttransfers/sendredpack"</span>);</span><br><span class="line"></span><br><span class="line">  stringEntity = <span class="keyword">new</span> StringEntity(xml, <span class="string">"utf-8"</span>);</span><br><span class="line">  httppost.setEntity(stringEntity);</span><br><span class="line"></span><br><span class="line">  CloseableHttpResponse response = httpclient.execute(httppost);</span><br><span class="line">&#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure></li>
+</ul>
+
       
     </div>
     
