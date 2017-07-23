@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>微信公众号调用access_token接口频率限制解决(Java) | hellomypastor</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="文章目录1.新建token线程，定时获取token2.初始化servlet3.web.xml配置4.调用access_token是公众号的全局唯一票据，公众号调用各接口时都需使用access_token。开发者需要进行妥善保存。access_token的存储至少要保留512个字符空间。access_token的有效期目前为2个小时，需定时刷新，重复获取将导致上次获取的access_token失效。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="微信公众号调用access_token接口频率限制解决(Java)">
+<meta property="og:url" content="http://hellomypastor.net/2015/05/09/微信公众号调用access-token接口频率限制解决-Java/index.html">
+<meta property="og:site_name" content="hellomypastor">
+<meta property="og:description" content="文章目录1.新建token线程，定时获取token2.初始化servlet3.web.xml配置4.调用access_token是公众号的全局唯一票据，公众号调用各接口时都需使用access_token。开发者需要进行妥善保存。access_token的存储至少要保留512个字符空间。access_token的有效期目前为2个小时，需定时刷新，重复获取将导致上次获取的access_token失效。">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="微信公众号调用access_token接口频率限制解决(Java)">
+<meta name="twitter:description" content="文章目录1.新建token线程，定时获取token2.初始化servlet3.web.xml配置4.调用access_token是公众号的全局唯一票据，公众号调用各接口时都需使用access_token。开发者需要进行妥善保存。access_token的存储至少要保留512个字符空间。access_token的有效期目前为2个小时，需定时刷新，重复获取将导致上次获取的access_token失效。">
+  
+    <link rel="alternative" href="/atom.xml" title="hellomypastor" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			<img lazy-src="http://7xiz1d.com1.z0.glb.clouddn.com/mmexport1425877256784.jpg" class="js-avatar">
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">pastor</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">stay hungry stay foolish</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="https://github.com/hellomypastor" title="github">github</a>
+					        
+								<a class="weibo" target="_blank" href="http://weibo.com/2930353085/profile?topnav=1&wvr=6" title="weibo">weibo</a>
+					        
+								<a class="rss" target="_blank" href="/#" title="rss">rss</a>
+					        
+								<a class="mail" target="_blank" href="/18013963220@163.com" title="mail">mail</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Flask/" style="font-size: 10px;">Flask</a><a href="/tags/Java/" style="font-size: 20px;">Java</a><a href="/tags/Python/" style="font-size: 10px;">Python</a><a href="/tags/SpringMVC/" style="font-size: 10px;">SpringMVC</a><a href="/tags/微信公众平台开发/" style="font-size: 20px;">微信公众平台开发</a><a href="/tags/心路札记/" style="font-size: 10px;">心路札记</a>
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://oceanjack.net/">漂浮洋流的博客</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+				
+				<section class="switch-part switch-part4">
+				
+					<div id="js-aboutme">幸福就像你身后的影子，只要你勇敢的往前走，它就会一直跟随着你~</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">pastor</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="http://7xiz1d.com1.z0.glb.clouddn.com/mmexport1425877256784.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">pastor</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">stay hungry stay foolish</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/hellomypastor" title="github">github</a>
+			        
+						<a class="weibo" target="_blank" href="http://weibo.com/2930353085/profile?topnav=1&wvr=6" title="weibo">weibo</a>
+			        
+						<a class="rss" target="_blank" href="/#" title="rss">rss</a>
+			        
+						<a class="mail" target="_blank" href="/18013963220@163.com" title="mail">mail</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-微信公众号调用access-token接口频率限制解决-Java" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/05/09/微信公众号调用access-token接口频率限制解决-Java/" class="article-date">
+  	<time datetime="2015-05-09T07:02:44.000Z" itemprop="datePublished">2015-05-09</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      微信公众号调用access_token接口频率限制解决(Java)
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/微信公众平台开发/">微信公众平台开发</a></li></ul>
+	</div>
+
+        
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>文章目录<br><a href="#新建token线程，定时获取token">1.新建token线程，定时获取token</a><br><a href="#初始化servlet">2.初始化servlet</a><br><a href="#web.xml配置">3.web.xml配置</a><br><a href="#调用">4.调用</a><br>access_token是公众号的全局唯一票据，公众号调用各接口时都需使用access_token。开发者需要进行妥善保存。access_token的存储至少要保留512个字符空间。access_token的有效期目前为2个小时，需定时刷新，重复获取将导致上次获取的access_token失效。<br>公众号调用接口并不是无限制的。为了防止公众号的程序错误而引发微信服务器负载异常，默认情况下，每个公众号调用接口都不能超过一定限制，当超过一定限制时，调用对应接口会收到如下错误返回码：<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;"<span class="attribute">errcode</span>":<span class="value"><span class="number">45009</span></span>,"<span class="attribute">errmsg</span>":<span class="value"><span class="string">"api freq out of limit"</span></span>&#125;</span><br></pre></td></tr></table></figure></p>
+<p>那怎么才能在access_token失效前定时刷新呢？<br><a id="more"></a></p>
+<h3 id="新建token线程，定时获取token">新建token线程，定时获取token</h3><p>代码如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TokenThread</span> <span class="keyword">implements</span> <span class="title">Runnable</span> </span><br><span class="line"></span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">static</span> String appid = <span class="string">""</span>;</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">static</span> String appsecret = <span class="string">""</span>;</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">static</span> AccessToken accessToken = <span class="keyword">null</span>;</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">static</span> String jsapiTicket = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span></span><br><span class="line">  </span>&#123;</span><br><span class="line">    <span class="keyword">while</span> (<span class="keyword">true</span>)</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">try</span></span><br><span class="line">      &#123;</span><br><span class="line">      	accessToken = AdvancedUtil.getAccessToken(appid, appsecret);</span><br><span class="line">      	<span class="keyword">if</span> (<span class="keyword">null</span> != accessToken)</span><br><span class="line">      	&#123;</span><br><span class="line">      	  jsapiTicket = AdvancedUtil.getJsapiTicket(accessToken.getAccess_token());</span><br><span class="line">      	  <span class="keyword">if</span> (<span class="keyword">null</span> != jsapiTicket)</span><br><span class="line">      	  &#123;</span><br><span class="line">      	  	Thread.sleep((accessToken.getExpires_in() - <span class="number">200</span>) * <span class="number">1000</span>);</span><br><span class="line">      	  &#125;</span><br><span class="line">      	  <span class="keyword">else</span></span><br><span class="line">      	  &#123;</span><br><span class="line">      	  	Thread.sleep(<span class="number">60</span> * <span class="number">1000</span>);</span><br><span class="line">      	  &#125;</span><br><span class="line">      	&#125;</span><br><span class="line">      	<span class="keyword">else</span></span><br><span class="line">      	&#123;</span><br><span class="line">      	  Thread.sleep(<span class="number">60</span> * <span class="number">1000</span>);</span><br><span class="line">      	&#125;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">catch</span> (InterruptedException e)</span><br><span class="line">      &#123;</span><br><span class="line">      	<span class="keyword">try</span></span><br><span class="line">      	&#123;</span><br><span class="line">      	  Thread.sleep(<span class="number">60</span> * <span class="number">1000</span>);</span><br><span class="line">      	&#125;</span><br><span class="line">      	<span class="keyword">catch</span> (InterruptedException e1) </span><br><span class="line">      	&#123;</span><br><span class="line"></span><br><span class="line">      	&#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="初始化servlet">初始化servlet</h3><p>代码如下：<br><figure class="highlight scala"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">public <span class="class"><span class="keyword">class</span> <span class="title">InitServlet</span> <span class="keyword"><span class="keyword">extends</span></span> <span class="title">HttpServlet</span> </span><br><span class="line"></span>&#123;</span><br><span class="line">  <span class="keyword">private</span> static <span class="keyword">final</span> long serialVersionUID = <span class="number">1</span>L;</span><br><span class="line"></span><br><span class="line">  public void init() <span class="keyword">throws</span> <span class="type">ServletException</span></span><br><span class="line">  &#123;</span><br><span class="line">    <span class="type">TokenThread</span>.appid = <span class="type">Constants</span>.<span class="type">APPID</span>;</span><br><span class="line">    <span class="type">TokenThread</span>.appsecret = <span class="type">Constants</span>.<span class="type">APPSECRET</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//未配置APPID、APPSECRET时不启动线程</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="string">""</span>.equals(<span class="type">TokenThread</span>.appid) || <span class="string">""</span>.equals(<span class="type">TokenThread</span>.appsecret))</span><br><span class="line">    &#123;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">      <span class="comment">//启动定时获取access_token的线程</span></span><br><span class="line">      <span class="keyword">new</span> <span class="type">Thread</span>(<span class="keyword">new</span> <span class="type">TokenThread</span>()).start();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="web-xml配置">web.xml配置</h3><p>代码如下：<br><figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;servlet&gt;</span><br><span class="line">  &lt;servlet-<span class="property">name</span>&gt;initServlet&lt;/servlet-<span class="property">name</span>&gt;</span><br><span class="line">  &lt;servlet-<span class="type">class</span>&gt;</span><br><span class="line">    com.beibeibang.wechat.servlet.InitServlet</span><br><span class="line">  &lt;/servlet-<span class="type">class</span>&gt;</span><br><span class="line">  &lt;load-<span class="function_start"><span class="keyword">on</span></span>-startup&gt;<span class="number">0</span>&lt;/load-<span class="function_start"><span class="keyword">on</span></span>-startup&gt;</span><br><span class="line">&lt;/servlet&gt;</span><br></pre></td></tr></table></figure></p>
+<h3 id="调用">调用</h3><p>代码如下：<br><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">String</span> accessToken = TokenThread.accessToken;</span><br></pre></td></tr></table></figure></p>
+<p>参考<br><a href="http://mp.weixin.qq.com/wiki/11/0e4b294685f817b95cbed85ba5e82b8f.html" target="_blank" rel="external">获取access token</a><br><a href="http://mp.weixin.qq.com/wiki/0/2e2239fa5f49388d5b5136ecc8e0e440.html" target="_blank" rel="external">接口频率限制说明</a></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/05/11/Flask-SAE搭建微信后台初探/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          Flask+SAE搭建微信后台初探
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/05/09/微信支付V3-x实现-Java后台/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">微信支付V3.x后台实现(Java)</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到：</span>
+		<a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2017 pastor
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<script src="/js/mobile.js" type="text/javascript"></script>
+<script src="/js/main.js" type="text/javascript"></script>
+
+
+
+
+
+<! -- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+  </div>
+</body>
+</html>

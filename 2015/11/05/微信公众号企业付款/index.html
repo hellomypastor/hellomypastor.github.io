@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>微信公众号企业付款 | hellomypastor</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="近期做微信公众号开发，由于企业向微信用户个人发现金红包的功能有金额限制（1~200），而且有时间限制（0~8点间不能发红包），于是就改用企业向用户付款的功能，实现过程总结如下。
+
+请求Url：https://api.mch.weixin.qq.com/mmpaymkttransfers/promotion/transfers
+是否需要证书：是
+请求方式：POST">
+<meta property="og:type" content="article">
+<meta property="og:title" content="微信公众号企业付款">
+<meta property="og:url" content="http://hellomypastor.net/2015/11/05/微信公众号企业付款/index.html">
+<meta property="og:site_name" content="hellomypastor">
+<meta property="og:description" content="近期做微信公众号开发，由于企业向微信用户个人发现金红包的功能有金额限制（1~200），而且有时间限制（0~8点间不能发红包），于是就改用企业向用户付款的功能，实现过程总结如下。
+
+请求Url：https://api.mch.weixin.qq.com/mmpaymkttransfers/promotion/transfers
+是否需要证书：是
+请求方式：POST">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="微信公众号企业付款">
+<meta name="twitter:description" content="近期做微信公众号开发，由于企业向微信用户个人发现金红包的功能有金额限制（1~200），而且有时间限制（0~8点间不能发红包），于是就改用企业向用户付款的功能，实现过程总结如下。
+
+请求Url：https://api.mch.weixin.qq.com/mmpaymkttransfers/promotion/transfers
+是否需要证书：是
+请求方式：POST">
+  
+    <link rel="alternative" href="/atom.xml" title="hellomypastor" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css" type="text/css">
+  <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			<img lazy-src="http://7xiz1d.com1.z0.glb.clouddn.com/mmexport1425877256784.jpg" class="js-avatar">
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">pastor</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">stay hungry stay foolish</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						<div class="icon-wrap icon-link hide" data-idx="2">
+							<div class="loopback_l"></div>
+							<div class="loopback_r"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>菜单</li>
+						<li>标签</li>
+						
+						<li>友情链接</li>
+						
+						
+						<li>关于我</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">主页</a></li>
+				        
+							<li><a href="/archives">所有文章</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="https://github.com/hellomypastor" title="github">github</a>
+					        
+								<a class="weibo" target="_blank" href="http://weibo.com/2930353085/profile?topnav=1&wvr=6" title="weibo">weibo</a>
+					        
+								<a class="rss" target="_blank" href="/#" title="rss">rss</a>
+					        
+								<a class="mail" target="_blank" href="/18013963220@163.com" title="mail">mail</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Flask/" style="font-size: 10px;">Flask</a><a href="/tags/Java/" style="font-size: 20px;">Java</a><a href="/tags/Python/" style="font-size: 10px;">Python</a><a href="/tags/SpringMVC/" style="font-size: 10px;">SpringMVC</a><a href="/tags/微信公众平台开发/" style="font-size: 20px;">微信公众平台开发</a><a href="/tags/心路札记/" style="font-size: 10px;">心路札记</a>
+					</div>
+				</section>
+				
+				
+				
+				<section class="switch-part switch-part3">
+					<div id="js-friends">
+					
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://oceanjack.net/">漂浮洋流的博客</a>
+			        
+			        </div>
+				</section>
+				
+
+				
+				
+				<section class="switch-part switch-part4">
+				
+					<div id="js-aboutme">幸福就像你身后的影子，只要你勇敢的往前走，它就会一直跟随着你~</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">pastor</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				<img lazy-src="http://7xiz1d.com1.z0.glb.clouddn.com/mmexport1425877256784.jpg" class="js-avatar">
+			</div>
+			<hgroup>
+			  <h1 class="header-author">pastor</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">stay hungry stay foolish</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/archives">所有文章</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/hellomypastor" title="github">github</a>
+			        
+						<a class="weibo" target="_blank" href="http://weibo.com/2930353085/profile?topnav=1&wvr=6" title="weibo">weibo</a>
+			        
+						<a class="rss" target="_blank" href="/#" title="rss">rss</a>
+			        
+						<a class="mail" target="_blank" href="/18013963220@163.com" title="mail">mail</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+      <div class="body-wrap"><article id="post-微信公众号企业付款" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/11/05/微信公众号企业付款/" class="article-date">
+  	<time datetime="2015-11-05T15:47:16.000Z" itemprop="datePublished">2015-11-05</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      微信公众号企业付款
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Java/">Java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/微信公众平台开发/">微信公众平台开发</a></li></ul>
+	</div>
+
+        
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>近期做微信公众号开发，由于<code>企业向微信用户个人发现金红包</code>的功能有金额限制<code>（1~200）</code>，而且有时间限制<code>（0~8点间不能发红包）</code>，于是就改用<code>企业向用户付款</code>的功能，实现过程总结如下。</p>
+<ul>
+<li>请求Url：<a href="https://api.mch.weixin.qq.com/mmpaymkttransfers/promotion/transfers" target="_blank" rel="external">https://api.mch.weixin.qq.com/mmpaymkttransfers/promotion/transfers</a></li>
+<li>是否需要证书：是</li>
+<li>请求方式：POST<a id="more"></a></li>
+<li><p>数据示例</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">xml</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">mch_appid</span>&gt;</span>wxe062425f740c30d8<span class="tag">&lt;/<span class="title">mch_appid</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">mchid</span>&gt;</span>10000098<span class="tag">&lt;/<span class="title">mchid</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">nonce_str</span>&gt;</span>3PG2J4ILTKCH16CQ2502SI8ZNMTM67VS<span class="tag">&lt;/<span class="title">nonce_str</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">partner_trade_no</span>&gt;</span>100000982014120919616<span class="tag">&lt;/<span class="title">partner_trade_no</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">openid</span>&gt;</span>ohO4Gt7wVPxIT1A9GjFaMYMiZY1s<span class="tag">&lt;/<span class="title">openid</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">check_name</span>&gt;</span>OPTION_CHECK<span class="tag">&lt;/<span class="title">check_name</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">re_user_name</span>&gt;</span>张三<span class="tag">&lt;/<span class="title">re_user_name</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">amount</span>&gt;</span>100<span class="tag">&lt;/<span class="title">amount</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">desc</span>&gt;</span>节日快乐!<span class="tag">&lt;/<span class="title">desc</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">spbill_create_ip</span>&gt;</span>10.2.3.10<span class="tag">&lt;/<span class="title">spbill_create_ip</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="title">sign</span>&gt;</span>C97BDBACF37622775366F38B629F45E3<span class="tag">&lt;/<span class="title">sign</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">xml</span>&gt;</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>具体java代码实现和发现金红包类似<br>下面对比一下发现金红包与企业付款：</p>
+</li>
+<li>发送频率规则<br>现金红包：<code>每分钟</code>发送红包不超过<code>1800</code>个；北<code>京时间0：00-8：00</code>不触发红包赠送；<br>企业付款：无</li>
+<li>金额规则<br>现金红包：单个红包金额介于<code>[1.00元，200.00元]</code>之间；同一个红包只能发送给一个用户<br>企业付款：给同一个<code>非实名用户</code>付款，单笔单日限额<code>2000</code>；给同一个<code>实名用户</code>付款，单笔单日限额<code>2W</code>；</li>
+<li>到账规则<br>现金红包：以发红包的形式，用户需<code>打开红包</code>才能将钱存到个人钱包的零钱中<br>企业付款：<code>直接</code>到个人钱包的零钱中</li>
+</ul>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/08/29/docker命令学习（一）/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          docker命令学习（一）
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/11/03/微信公众号发红包实现/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">微信公众号发红包实现</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到：</span>
+		<a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2017 pastor
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
+
+
+<script src="/js/mobile.js" type="text/javascript"></script>
+<script src="/js/main.js" type="text/javascript"></script>
+
+
+
+
+
+<! -- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+  </div>
+</body>
+</html>
