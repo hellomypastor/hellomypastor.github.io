@@ -23,7 +23,7 @@
 <meta property="og:site_name" content="hellomypastor">
 <meta property="og:description" content="只要做过java web的人一定都接触过文件上传，但是中间或多或者肯定遇到过问题，那么下面就来分析下文件上传中遇到的各种坑～">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2017-08-07T14:59:14.000Z">
+<meta property="og:updated_time" content="2017-08-07T15:00:56.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java文件上传分析">
 <meta name="twitter:description" content="只要做过java web的人一定都接触过文件上传，但是中间或多或者肯定遇到过问题，那么下面就来分析下文件上传中遇到的各种坑～">
@@ -140,13 +140,13 @@
                 <div class="tips-box hide">
                     <div class="tips-arrow"></div>
                     <ul class="tips-inner">
-                        <li>菜单</li>
-                        <li>标签</li>
+                        <li>Menu</li>
+                        <li>Tags</li>
                         
-                        <li>友情链接</li>
+                        <li>Friends</li>
                         
                         
-                        <li>关于我</li>
+                        <li>About Me</li>
                         
                     </ul>
                 </div>
@@ -256,7 +256,7 @@
             </nav>
         </header>                
     </div>
-    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+    <link class="menu-list" tags="Tags" friends="Friends" about="About Me"/>
 </nav>
       <div class="body-wrap"><article id="post-Java文件上传分析" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -309,7 +309,7 @@
 <h2 id="spring_mvc表单上传文件">spring  mvc表单上传文件</h2><p>前端同上<br>后台实现：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">private</span> MultiFile file;</div></pre></td></tr></table></figure></p>
 <p>上述两种都是通过form表单提交的，那么如何通过ajax直接上传文件呢？</p>
 <h2 id="spring_mvc+ajax上传文件">spring mvc+ajax上传文件</h2><p>后台实现同上，但是如果不另加配置，则直接报415错误，需要加如下配置：<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">class</span>=<span class="string">"org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">"messageConverters"</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">list</span>&gt;</span></div><div class="line">            <span class="tag">&lt;<span class="name">ref</span> <span class="attr">bean</span>=<span class="string">"byteArrayConverter"</span> /&gt;</span></div><div class="line">        <span class="tag">&lt;/<span class="name">list</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">property</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">"byteArrayConverter"</span> <span class="attr">class</span>=<span class="string">"org.springframework.http.converter.ByteArrayHttpMessageConverter"</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></div></pre></td></tr></table></figure></p>
-<p>进一步联想，上传文件是不是只能是<code>post</code>方法呢？<br>我们知道，浏览器是不支持RESTful风格中put和delete的<br>通过测试，使用put提交，直接报415错误，通过源码（org.springframework.web.filter.HiddenHttpMethodFilter）可以看到：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doFilterInternal</span><span class="params">(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)</span></span></div><div class="line">			<span class="keyword">throws</span> ServletException, IOException &#123;</div><div class="line">	HttpServletRequest requestToUse = request;</div><div class="line">  <span class="keyword">if</span> (<span class="string">"POST"</span>.equals(request.getMethod()) &amp;&amp; request.getAttribute(WebUtils.ERROR_EXCEPTION_ATTRIBUTE) == <span class="keyword">null</span>) &#123;</div><div class="line">	String paramValue = request.getParameter(<span class="keyword">this</span>.methodParam);</div><div class="line">	<span class="keyword">if</span> (StringUtils.hasLength(paramValue)) &#123;</div><div class="line">	  requestToUse = <span class="keyword">new</span> HttpMethodRequestWrapper(request, paramValue);</div><div class="line">	&#125;</div><div class="line">  &#125;</div><div class="line">  filterChain.doFilter(requestToUse, response);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>进一步联想，上传文件是不是只能是<code>post</code>方法呢？<br>我们知道，浏览器是不支持RESTful风格中put和delete的<br>通过测试，使用put提交，直接报415错误，通过源码（org.springframework.web.filter.HiddenHttpMethodFilter）可以看到：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Override</span></div><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doFilterInternal</span><span class="params">(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)</span></span></div><div class="line">			<span class="keyword">throws</span> ServletException, IOException &#123;</div><div class="line">  HttpServletRequest requestToUse = request;</div><div class="line">  <span class="keyword">if</span> (<span class="string">"POST"</span>.equals(request.getMethod()) &amp;&amp; request.getAttribute(WebUtils.ERROR_EXCEPTION_ATTRIBUTE) == <span class="keyword">null</span>) &#123;</div><div class="line">	String paramValue = request.getParameter(<span class="keyword">this</span>.methodParam);</div><div class="line">	<span class="keyword">if</span> (StringUtils.hasLength(paramValue)) &#123;</div><div class="line">	  requestToUse = <span class="keyword">new</span> HttpMethodRequestWrapper(request, paramValue);</div><div class="line">	&#125;</div><div class="line">  &#125;</div><div class="line">  filterChain.doFilter(requestToUse, response);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p>从源码可以看出，filter中限制了只能用POST方法提交，那么如果一定要用PUT方法进行上传文件呢？<br>看了下HiddenHttpMethodFilter注释：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * &#123;<span class="doctag">@link</span> javax.servlet.Filter&#125; that converts posted method parameters into HTTP methods,</div><div class="line"> * retrievable via &#123;<span class="doctag">@link</span> HttpServletRequest#getMethod()&#125;. Since browsers currently only</div><div class="line"> * support GET and POST, a common technique - used by the Prototype library, for instance -</div><div class="line"> * is to use a normal POST with an additional hidden form field (&#123;<span class="doctag">@code</span> _method&#125;)</div><div class="line"> * to pass the "real" HTTP method along. This filter reads that parameter and changes</div><div class="line"> * the &#123;<span class="doctag">@link</span> HttpServletRequestWrapper#getMethod()&#125; return value accordingly.</div><div class="line"> *</div><div class="line"> * &lt;p&gt;The name of the request parameter defaults to &#123;<span class="doctag">@code</span> _method&#125;, but can be</div><div class="line"> * adapted via the &#123;<span class="doctag">@link</span> #setMethodParam(String) methodParam&#125; property.</div><div class="line"> *</div><div class="line"> * &lt;p&gt;&lt;b&gt;<span class="doctag">NOTE:</span> This filter needs to run after multipart processing in case of a multipart</div><div class="line"> * POST request, due to its inherent need for checking a POST body parameter.&lt;/b&gt;</div><div class="line"> * So typically, put a Spring &#123;<span class="doctag">@link</span> org.springframework.web.multipart.support.MultipartFilter&#125;</div><div class="line"> * &lt;i&gt;before&lt;/i&gt; this HiddenHttpMethodFilter in your &#123;<span class="doctag">@code</span> web.xml&#125; filter chain.</div><div class="line"> *</div><div class="line"> * <span class="doctag">@author</span> Arjen Poutsma</div><div class="line"> * <span class="doctag">@author</span> Juergen Hoeller</div><div class="line"> * <span class="doctag">@since</span> 3.0</div><div class="line"> */</div></pre></td></tr></table></figure></p>
 <p>MultipartFileter：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line">* Set the bean name of the MultipartResolver to fetch from Spring's</div><div class="line">* root application context. Default is "filterMultipartResolver".</div><div class="line">*/</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setMultipartResolverBeanName</span><span class="params">(String multipartResolverBeanName)</span> </span>&#123;</div><div class="line">  <span class="keyword">this</span>.multipartResolverBeanName = multipartResolverBeanName;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <p>也就是说，我们可以通过在web.xml中注册一个MultipartFilter，一定要在HiddenHttpMethodFilter之前启动，这样的话就能实现<br><figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">filter</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>MultipartFilter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">filter-class</span>&gt;</span>org.springframework.web.multipart.support.MultipartFilter<span class="tag">&lt;/<span class="name">filter-class</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">filter</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">filter-mapping</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>MultipartFilter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>dispatcher<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">filter-mapping</span>&gt;</span></div><div class="line"></div><div class="line"><span class="tag">&lt;<span class="name">filter</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">filter-name</span>&gt;</span>HiddenHttpMethodFilter<span class="tag">&lt;/<span class="name">filter-name</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">filter-class</span>&gt;</span>org.springframework.web.filter.HiddenHttpMethodFilter<span class="tag">&lt;/<span class="name">filter-class</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">filter</span>&gt;</span></div></pre></td></tr></table></figure></p>
@@ -325,17 +325,17 @@
   
     
     <div class="copyright">
-        <p><span>本文标题:</span><a href="/2017/08/03/Java文件上传分析/">Java文件上传分析</a></p>
-        <p><span>文章作者:</span><a href="/" title="回到主页">pastor</a></p>
-        <p><span>发布时间:</span>2017-08-03, 23:55:04</p>
-        <p><span>最后更新:</span>2017-08-07, 22:59:14</p>
+        <p><span>Title:</span><a href="/2017/08/03/Java文件上传分析/">Java文件上传分析</a></p>
+        <p><span>Author:</span><a href="/" title="Back to Homepage">pastor</a></p>
+        <p><span>Created:</span>2017-08-03, 23:55:04</p>
+        <p><span>Updated:</span>2017-08-07, 23:00:56</p>
         <p>
-            <span>原始链接:</span><a class="post-url" href="/2017/08/03/Java文件上传分析/" title="Java文件上传分析">http://hellomypastor.net/2017/08/03/Java文件上传分析/</a>
-            <span class="copy-path" data-clipboard-text="原文: http://hellomypastor.net/2017/08/03/Java文件上传分析/　　作者: pastor" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <span>Full URL:</span><a class="post-url" href="/2017/08/03/Java文件上传分析/" title="Java文件上传分析">http://hellomypastor.net/2017/08/03/Java文件上传分析/</a>
+            <span class="copy-path" data-clipboard-text="From http://hellomypastor.net/2017/08/03/Java文件上传分析/　　By pastor" title="Copy Article&#39;s Link &amp; Author"><i class="fa fa-clipboard"></i></span>
             <script> var clipboard = new Clipboard('.copy-path'); </script>
         </p>
         <p>
-            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+            <span>License:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"CC BY-NC-SA 4.0"</a> Keep Link &amp; Author if Distribute.
         </p>
     </div>
 
@@ -356,7 +356,7 @@
 </article>
 
     <div id="toc" class="toc-article">
-        <strong class="toc-title">文章目录</strong>
+        <strong class="toc-title">Contents</strong>
         
             <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#struts2表单上传文件"><span class="toc-number">1.</span> <span class="toc-text">struts2表单上传文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#spring_mvc表单上传文件"><span class="toc-number">2.</span> <span class="toc-text">spring  mvc表单上传文件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#spring_mvc+ajax上传文件"><span class="toc-number">3.</span> <span class="toc-text">spring mvc+ajax上传文件</span></a></li></ol>
         
@@ -372,10 +372,10 @@
         }
     </style>
 
-    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+    <input type="button" id="tocButton" value="Hide"  title="Show or Hide Table of Contents">
 
     <script>
-        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+        yiliaConfig.toc = ["Hide", "Show", !!"false"];
     </script>
 
 
@@ -414,13 +414,13 @@
 
     <div class="scroll" id="post-nav-button">
         
-            <a href="/" title="回到主页"><i class="fa fa-home"></i></a>
+            <a href="/" title="Back to Homepage"><i class="fa fa-home"></i></a>
         
 
-        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+        <a title="Mini Archives"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
 
         
-            <a href="/2017/08/03/Mac-OS安装软件时提示-“安装”已损坏，打不开-你应该推出磁盘映像的解决方法/" title="下一篇: Mac OS安装软件时提示 “安装”已损坏，打不开 你应该推出磁盘映像的解决方法">
+            <a href="/2017/08/03/Mac-OS安装软件时提示-“安装”已损坏，打不开-你应该推出磁盘映像的解决方法/" title="Next: Mac OS安装软件时提示 “安装”已损坏，打不开 你应该推出磁盘映像的解决方法">
                 <i class="fa fa-angle-right"></i>
             </a>
         
@@ -443,14 +443,14 @@
                 2015-2017 pastor
             </div>
             <div class="footer-right">
-                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+                <a href="http://hexo.io/" target="_blank" title="A fast, simple &amp; powerful blog framework">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="Another simple and elegant theme for Hexo  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
             </div>
         </div>
         
             <div class="visit">
                 
                     <span id="busuanzi_container_site_pv" style='display:none'>
-                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        <span id="site-visit" title="Site Visitors"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
                         </span>
                     </span>
                 
@@ -459,7 +459,7 @@
                 
                 
                     <span id="busuanzi_container_page_pv" style='display:none'>
-                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        <span id="page-visit"  title="Page Hits"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
                         </span>
                     </span>
                 
@@ -492,9 +492,9 @@
 
 
 <div class="scroll" id="scroll">
-    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
-    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
-    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+    <a href="#" title="Back to Top"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="Comments"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="Go to Bottom"><i class="fa fa-arrow-down"></i></a>
 </div>
 <script>
     // Open in New Window
