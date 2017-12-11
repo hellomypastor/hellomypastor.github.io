@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="微信公众平台开发,Java," />
+  <meta name="keywords" content="Java,微信公众平台开发," />
 
 
 
@@ -80,7 +80,7 @@
 
 
 <meta name="description" content="access_token是公众号的全局唯一票据，公众号调用各接口时都需使用access_token。开发者需要进行妥善保存。access_token的存储至少要保留512个字符空间。access_token的有效期目前为2个小时，需定时刷新，重复获取将导致上次获取的access_token失效。公众号调用接口并不是无限制的。为了防止公众号的程序错误而引发微信服务器负载异常，默认情况下，每个公众号调">
-<meta name="keywords" content="微信公众平台开发,Java">
+<meta name="keywords" content="Java,微信公众平台开发">
 <meta property="og:type" content="article">
 <meta property="og:title" content="微信公众号调用access_token接口频率限制解决(Java)">
 <meta property="og:url" content="http://hellomypastor.net/2015/05/09/微信公众号调用access-token接口频率限制解决-Java/index.html">
@@ -376,6 +376,35 @@
     
 
     
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpeg" alt="史培培 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpeg" alt="史培培 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
 
     
 
@@ -383,9 +412,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/微信公众平台开发/" rel="tag"># 微信公众平台开发</a>
-          
             <a href="/tags/Java/" rel="tag"># Java</a>
+          
+            <a href="/tags/微信公众平台开发/" rel="tag"># 微信公众平台开发</a>
           
         </div>
       
@@ -438,6 +467,11 @@
 
 
           
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zMjMxNS84ODc2"></div>
+    </div>
 
   
 
@@ -651,6 +685,8 @@
   
 
 
+  
+
 
 
 
@@ -689,6 +725,11 @@
   
   
     <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
   
 
 
@@ -744,6 +785,17 @@
 
 
 
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
   
 
 
@@ -885,5 +937,9 @@
 
   
 
+
+  
+    <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+  
 </body>
 </html>

@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="微信公众平台开发,Java," />
+  <meta name="keywords" content="Java,微信公众平台开发," />
 
 
 
@@ -80,7 +80,7 @@
 
 
 <meta name="description" content="近期做微信公众号开发，由于企业向微信用户个人发现金红包的功能有金额限制（1~200），而且有时间限制（0~8点间不能发红包），于是就改用企业向用户付款的功能，实现过程总结如下。  请求Url：https://api.mch.weixin.qq.com/mmpaymkttransfers/promotion/transfers 是否需要证书：是 请求方式：POST">
-<meta name="keywords" content="微信公众平台开发,Java">
+<meta name="keywords" content="Java,微信公众平台开发">
 <meta property="og:type" content="article">
 <meta property="og:title" content="微信公众号企业付款">
 <meta property="og:url" content="http://hellomypastor.net/2015/11/05/微信公众号企业付款/index.html">
@@ -383,6 +383,35 @@
     
 
     
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpeg" alt="史培培 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpeg" alt="史培培 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
 
     
 
@@ -390,9 +419,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/微信公众平台开发/" rel="tag"># 微信公众平台开发</a>
-          
             <a href="/tags/Java/" rel="tag"># Java</a>
+          
+            <a href="/tags/微信公众平台开发/" rel="tag"># 微信公众平台开发</a>
           
         </div>
       
@@ -445,6 +474,11 @@
 
 
           
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zMjMxNS84ODc2"></div>
+    </div>
 
   
 
@@ -633,6 +667,8 @@
   
 
 
+  
+
 
 
 
@@ -671,6 +707,11 @@
   
   
     <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
   
 
 
@@ -726,6 +767,17 @@
 
 
 
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
   
 
 
@@ -867,5 +919,9 @@
 
   
 
+
+  
+    <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+  
 </body>
 </html>
