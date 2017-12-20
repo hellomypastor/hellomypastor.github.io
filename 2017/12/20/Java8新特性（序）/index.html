@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="Java,Java8新特性," />
 
 
 
@@ -79,17 +79,18 @@
 
 
 
-<meta name="description" content="插科打诨于前端，后端，产品工程师之间。在现实中分层抽象，在Bug的坟头上蹦迪。常于Github海岸边拾捡贝壳，沾沾自喜。用Java可倚天屠龙，用Shell则庖丁解牛。常修程序员之道，常读Man文档。  简书：http://www.jianshu.com/u/f66899a37408邮箱：18013963220@163.com微信：spp696683微信公众号：码上论剑">
-<meta property="og:type" content="website">
-<meta property="og:title" content="关于">
-<meta property="og:url" content="http://hellomypastor.net/about/index.html">
+<meta name="description" content="Jdk目前已经发展到Java 9了，历史上有两个版本变化比较大，一个是Java 5，另一个就是Java 8。本Java8新特性系列将着重分析理解Java8的新特性，以及其是怎么为我们开发提升效率的。">
+<meta name="keywords" content="Java,Java8新特性">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java8新特性（序）">
+<meta property="og:url" content="http://hellomypastor.net/2017/12/20/Java8新特性（序）/index.html">
 <meta property="og:site_name" content="Alexac">
-<meta property="og:description" content="插科打诨于前端，后端，产品工程师之间。在现实中分层抽象，在Bug的坟头上蹦迪。常于Github海岸边拾捡贝壳，沾沾自喜。用Java可倚天屠龙，用Shell则庖丁解牛。常修程序员之道，常读Man文档。  简书：http://www.jianshu.com/u/f66899a37408邮箱：18013963220@163.com微信：spp696683微信公众号：码上论剑">
+<meta property="og:description" content="Jdk目前已经发展到Java 9了，历史上有两个版本变化比较大，一个是Java 5，另一个就是Java 8。本Java8新特性系列将着重分析理解Java8的新特性，以及其是怎么为我们开发提升效率的。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-12-10T12:07:26.000Z">
+<meta property="og:updated_time" content="2017-12-20T15:46:18.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="关于">
-<meta name="twitter:description" content="插科打诨于前端，后端，产品工程师之间。在现实中分层抽象，在Bug的坟头上蹦迪。常于Github海岸边拾捡贝壳，沾沾自喜。用Java可倚天屠龙，用Shell则庖丁解牛。常修程序员之道，常读Man文档。  简书：http://www.jianshu.com/u/f66899a37408邮箱：18013963220@163.com微信：spp696683微信公众号：码上论剑">
+<meta name="twitter:title" content="Java8新特性（序）">
+<meta name="twitter:description" content="Jdk目前已经发展到Java 9了，历史上有两个版本变化比较大，一个是Java 5，另一个就是Java 8。本Java8新特性系列将着重分析理解Java8的新特性，以及其是怎么为我们开发提升效率的。">
 
 
 
@@ -119,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://hellomypastor.net/about/"/>
+  <link rel="canonical" href="http://hellomypastor.net/2017/12/20/Java8新特性（序）/"/>
 
 
 
 
 
-  <title>关于 | Alexac</title>
+  <title>Java8新特性（序） | Alexac</title>
   
 
 
@@ -260,37 +261,376 @@
 
   <div id="posts" class="posts-expand">
     
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://hellomypastor.net/2017/12/20/Java8新特性（序）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="史培培">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Alexac">
+    </span>
+
     
-    
-    <div class="post-block page">
       <header class="post-header">
 
-	<h1 class="post-title" itemprop="name headline">关于</h1>
-
-
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
         
         
-          <blockquote>
-<p>插科打诨于前端，后端，产品工程师之间。<br>在现实中分层抽象，在Bug的坟头上蹦迪。<br>常于Github海岸边拾捡贝壳，沾沾自喜。<br>用Java可倚天屠龙，用Shell则庖丁解牛。<br>常修程序员之道，常读Man文档。</p>
+          <h1 class="post-title" itemprop="name headline">Java8新特性（序）</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-20T23:42:37+08:00">
+                2017-12-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/12/20/Java8新特性（序）/" class="leancloud_visitors" data-flag-title="Java8新特性（序）">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Jdk目前已经发展到<code>Java 9</code>了，历史上有两个版本变化比较大，一个是<code>Java 5</code>，另一个就是<code>Java 8</code>。<br>本Java8新特性系列将着重分析理解Java8的新特性，以及其是怎么为我们开发提升效率的。</p>
+<a id="more"></a>
+<h1 id="历史版本如下：">历史版本如下：</h1><table>
+<thead>
+<tr>
+<th>版本</th>
+<th style="text-align:center">名称</th>
+<th style="text-align:right">发行日期</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>JDK 1.1.4</td>
+<td style="text-align:center">Sparkler（宝石）</td>
+<td style="text-align:right">1997-09-12</td>
+</tr>
+<tr>
+<td>JDK 1.1.5</td>
+<td style="text-align:center">Pumpkin（南瓜）</td>
+<td style="text-align:right">1997-12-13</td>
+</tr>
+<tr>
+<td>JDK 1.1.6</td>
+<td style="text-align:center">Abigail（阿比盖尔–女子名）</td>
+<td style="text-align:right">1998-04-24</td>
+</tr>
+<tr>
+<td>JDK 1.1.7</td>
+<td style="text-align:center">Brutus（布鲁图–古罗马政治家和将军）</td>
+<td style="text-align:right">1998-09-28</td>
+</tr>
+<tr>
+<td>JDK 1.1.8</td>
+<td style="text-align:center">Chelsea（切尔西–城市名）</td>
+<td style="text-align:right">1998-04-24</td>
+</tr>
+<tr>
+<td>J2SE 1.2</td>
+<td style="text-align:center">Playground（运动场</td>
+<td style="text-align:right">1998-12-04</td>
+</tr>
+<tr>
+<td>J2SE 1.2.1</td>
+<td style="text-align:center">none（无）</td>
+<td style="text-align:right">1999-03-30</td>
+</tr>
+<tr>
+<td>J2SE 1.2.2</td>
+<td style="text-align:center">Cricket（蟋蟀）</td>
+<td style="text-align:right">1999-07-08</td>
+</tr>
+<tr>
+<td>J2SE 1.3</td>
+<td style="text-align:center">Kestrel（美洲红隼）</td>
+<td style="text-align:right">2000-05-08</td>
+</tr>
+<tr>
+<td>J2SE 1.3.1</td>
+<td style="text-align:center">Ladybird（瓢虫）</td>
+<td style="text-align:right">2001-05-17</td>
+</tr>
+<tr>
+<td>J2SE 1.4.0</td>
+<td style="text-align:center">Merlin（灰背隼）</td>
+<td style="text-align:right">2002-02-13</td>
+</tr>
+<tr>
+<td>J2SE 1.4.1</td>
+<td style="text-align:center">grasshopper（蚱蜢）</td>
+<td style="text-align:right">2002-09-16</td>
+</tr>
+<tr>
+<td>J2SE 1.4.2</td>
+<td style="text-align:center">Mantis（螳螂）</td>
+<td style="text-align:right">2003-06-26</td>
+</tr>
+<tr>
+<td>Java SE 5.0 (1.5.0)</td>
+<td style="text-align:center">Tiger（老虎）</td>
+<td style="text-align:right">2004-09-30</td>
+</tr>
+<tr>
+<td>Java SE 6.0 (1.6.0)</td>
+<td style="text-align:center">Mustang（野马）</td>
+<td style="text-align:right">2006-04-xx</td>
+</tr>
+<tr>
+<td>Java SE 7.0 (1.7.0)</td>
+<td style="text-align:center">Dolphin（海豚）</td>
+<td style="text-align:right">2011-07-28</td>
+</tr>
+<tr>
+<td>Java SE 8.0 (1.8.0)</td>
+<td style="text-align:center">Spider（蜘蛛）</td>
+<td style="text-align:right">2014-03-18</td>
+</tr>
+<tr>
+<td>Java SE 9</td>
+<td style="text-align:center"></td>
+<td style="text-align:right">2017-09-21</td>
+</tr>
+</tbody>
+</table>
+<h1 id="最近三个版本的新特性如下：">最近三个版本的新特性如下：</h1><h2 id="Java_7">Java 7</h2><blockquote>
+<p>开发代号是Dolphin（海豚），于2011-07-28发行</p>
 </blockquote>
-<p>简书：<a href="http://www.jianshu.com/u/f66899a37408" target="_blank" rel="external">http://www.jianshu.com/u/f66899a37408</a><br>邮箱：18013963220@163.com<br>微信：spp696683<br>微信公众号：码上论剑</p>
+<p>引入的新特性包括：</p>
+<ul>
+<li>switch语句块中允许以字符串作为分支条件；</li>
+<li>在创建泛型对象时应用类型推断；</li>
+<li>在一个语句块中捕获多种异常；</li>
+<li>支持动态语言；</li>
+<li>支持try-with-resources；</li>
+<li>引入Java NIO.2开发包；</li>
+<li>数值类型可以用2进制字符串表示，并且可以在字符串表示中添加下划线；</li>
+<li>钻石型语法；</li>
+<li>null值的自动处理。</li>
+</ul>
+<h2 id="Java_8">Java 8</h2><blockquote>
+<p>开发代号是Spider（蜘蛛），于2014年3月14号发布</p>
+</blockquote>
+<p>引入的新特性包括：</p>
+<ul>
+<li>Lambda表达式</li>
+<li>Pipelines和Streams</li>
+<li>Date和Time API</li>
+<li>Default方法</li>
+<li>Type注解</li>
+<li>Nashhorn JavaScript引擎</li>
+<li>并发计数器</li>
+<li>Parallel操作</li>
+<li>移除PermGen Error</li>
+<li>TLS SNI</li>
+</ul>
+<h2 id="Java_9">Java 9</h2><blockquote>
+<p>于2017年9月21日发布</p>
+</blockquote>
+<p>引入的新特性包括：</p>
+<ul>
+<li>模块化系统–Jigsaw 项目</li>
+<li>JShell–Java 9 REPL</li>
+<li>集合工厂方法</li>
+<li>接口中的私有方法</li>
+<li>响应式流</li>
+<li>多分辨率图像API–JEP 251</li>
+<li>进程API的改进</li>
+<li>Try-With-Resources</li>
+<li>钻石（diamond）操作符范围的延伸</li>
+<li>增强的注释Deprecate</li>
+<li>统一的JVM日志</li>
+<li>注释SafeVarargs范围的延伸</li>
+<li>HTTP 2 客户端</li>
+<li>HTML5风格的Java帮助文档</li>
+<li>保留下划线字符。变量不能被命名为_；</li>
+<li>废弃Applet API；</li>
+<li>javac不再支持Java1.4以及之前的版本；</li>
+<li>废弃Java浏览器插件；</li>
+<li>栈遍历API–栈遍历API能过滤和迟访问在堆栈跟踪中的信息</li>
+</ul>
+<blockquote>
+<h3 id="目前Java8在Java各版本使用率中已高达60%以上，未来还会继续上升，所以学会用Java8，用好Java8势在必行，本系列将着重分析理解Java8的新特性，以及其是怎么为我们开发提升效率的。">目前<code>Java8</code>在Java各版本使用率中已高达<code>60%</code>以上，未来还会继续上升，所以学会用Java8，用好Java8势在必行，本系列将着重分析理解Java8的新特性，以及其是怎么为我们开发提升效率的。</h3><h2 id="人生苦短，拥抱Java8。"><strong>人生苦短，拥抱Java8。</strong></h2></blockquote>
 
-        
-      </div>
-      
-      
       
     </div>
     
     
     
+
+    
+      <div>
+        <div id="wechat_subscriber" style="display: block; padding: 10px 0; margin: 20px auto; width: 100%; text-align: center">
+    <img id="wechat_subscriber_qcode" src="/images/wechat-qrcode.jpg" alt="史培培 wechat" style="width: 200px; max-width: 100%;"/>
+    <div>请关注我的个人技术微信公众号，订阅更多内容</div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpeg" alt="史培培 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpeg" alt="史培培 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+            <a href="/tags/Java8新特性/" rel="tag"># Java8新特性</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/17/阿里Java开发手册思考（五）/" rel="next" title="阿里Java开发手册思考（五）">
+                <i class="fa fa-chevron-left"></i> 阿里Java开发手册思考（五）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
   </div>
 
 
@@ -328,8 +668,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -413,6 +762,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#历史版本如下："><span class="nav-number">1.</span> <span class="nav-text">历史版本如下：</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#最近三个版本的新特性如下："><span class="nav-number">2.</span> <span class="nav-text">最近三个版本的新特性如下：</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Java_7"><span class="nav-number">2.1.</span> <span class="nav-text">Java 7</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java_8"><span class="nav-number">2.2.</span> <span class="nav-text">Java 8</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java_9"><span class="nav-number">2.3.</span> <span class="nav-text">Java 9</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#目前Java8在Java各版本使用率中已高达60%以上，未来还会继续上升，所以学会用Java8，用好Java8势在必行，本系列将着重分析理解Java8的新特性，以及其是怎么为我们开发提升效率的。"><span class="nav-number">2.3.1.</span> <span class="nav-text">目前Java8在Java各版本使用率中已高达60%以上，未来还会继续上升，所以学会用Java8，用好Java8势在必行，本系列将着重分析理解Java8的新特性，以及其是怎么为我们开发提升效率的。</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#人生苦短，拥抱Java8。"><span class="nav-number">2.4.</span> <span class="nav-text">人生苦短，拥抱Java8。</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
