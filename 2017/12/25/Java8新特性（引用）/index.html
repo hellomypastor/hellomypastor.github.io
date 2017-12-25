@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Java," />
+  <meta name="keywords" content="Java,Java8新特性," />
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="Java学习路线">
-<meta name="keywords" content="Java">
+<meta name="description" content="上期我们分析了Java8中的Lambda表达式，本期我们将分析Java8中的引用。">
+<meta name="keywords" content="Java,Java8新特性">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Java学习路线">
-<meta property="og:url" content="http://hellomypastor.net/2015/10/31/Java学习路线/index.html">
+<meta property="og:title" content="Java8新特性（引用）">
+<meta property="og:url" content="http://hellomypastor.net/2017/12/25/Java8新特性（引用）/index.html">
 <meta property="og:site_name" content="Alexac">
-<meta property="og:description" content="Java学习路线">
+<meta property="og:description" content="上期我们分析了Java8中的Lambda表达式，本期我们将分析Java8中的引用。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-12-10T07:10:45.000Z">
+<meta property="og:updated_time" content="2017-12-25T15:23:56.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Java学习路线">
-<meta name="twitter:description" content="Java学习路线">
+<meta name="twitter:title" content="Java8新特性（引用）">
+<meta name="twitter:description" content="上期我们分析了Java8中的Lambda表达式，本期我们将分析Java8中的引用。">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://hellomypastor.net/2015/10/31/Java学习路线/"/>
+  <link rel="canonical" href="http://hellomypastor.net/2017/12/25/Java8新特性（引用）/"/>
 
 
 
 
 
-  <title>Java学习路线 | Alexac</title>
+  <title>Java8新特性（引用） | Alexac</title>
   
 
 
@@ -268,12 +268,12 @@
   
   
 
-  <article class="post post-type-tags" itemscope itemtype="http://schema.org/Article">
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://hellomypastor.net/2015/10/31/Java学习路线/">
+    <link itemprop="mainEntityOfPage" href="http://hellomypastor.net/2017/12/25/Java8新特性（引用）/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="史培培">
@@ -290,7 +290,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Java学习路线</h1>
+          <h1 class="post-title" itemprop="name headline">Java8新特性（引用）</h1>
         
 
         <div class="post-meta">
@@ -302,8 +302,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-10-31T13:40:06+08:00">
-                2015-10-31
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-25T23:22:56+08:00">
+                2017-12-25
               </time>
             
 
@@ -313,6 +313,28 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -320,7 +342,7 @@
 
           
           
-             <span id="/2015/10/31/Java学习路线/" class="leancloud_visitors" data-flag-title="Java学习路线">
+             <span id="/2017/12/25/Java8新特性（引用）/" class="leancloud_visitors" data-flag-title="Java8新特性（引用）">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -351,34 +373,33 @@
       
 
       
-        <p>Java学习路线<br><a id="more"></a></p>
-<h2 id="背景">背景</h2><p>怎么学习Java，这是很多新手经常遇到的问题，现在我简单描述下一个Java初学者到就业要学到的一些东西：<br>首先要明白Java体系设计到得三个方面：<code>J2SE</code>,<code>J2EE</code>,<code>J2ME（KJAVA）</code>。<br>J2SE，Java 2 Platform Standard Edition，我们经常说到的JDK，就主要指的这个，它是三者的基础，属于桌面级应用开发，这部分如果学得好很容易拓展J2EE和J2ME。<br>J2EE，Java 2 Platform，Enterprise Edition，就是所谓的企业级Java，适合企业的大型应用开发。<br>J2ME，The Micro Edition of the Java 2 Platform。主要用于嵌入式Java，如手机，PDA等等。</p>
-<h2 id="J2SE">J2SE</h2><p>新手最初学习的时候先要从J2SE开始学起，所包含的内容主要分为：面向对象概念的理解、Java基本语法的学习，Java桌面图形界面应用程序的开发，掌握常用的Java API等（关键是要学会怎样查阅）。 </p>
-<ul>
-<li>重点：Java基本语法（循环结构，数据类型，数组，运算符等）、Swing，awt，事件机制、文件输入输出流处理等</li>
-<li>难点：面向对象思想的理解（接口、类等）、线程、socket网络编程等</li>
+        <blockquote>
+<p>上期我们分析了Java8中的Lambda表达式，本期我们将分析Java8中的引用。</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="一、方法引用">一、方法引用</h2><h3 id="定义">定义</h3><blockquote>
+<p>若Lambda体中的功能，已经有方法提供实现，可以使用方法引用，可以将方法引用理解为Lambda 表达式的另外一种表现形式。</p>
+</blockquote>
+<h3 id="格式">格式</h3><p>方法引用的具体形式为：</p>
+<h4 id="1-_对象的引用_::_实例方法名">1. 对象的引用 :: 实例方法名</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">People</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</div><div class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = -<span class="number">2052988928272007869L</span>;</div><div class="line">	<span class="keyword">private</span> String id;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">getId</span><span class="params">()</span> </span>&#123;</div><div class="line">		<span class="keyword">return</span> id;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setId</span><span class="params">(String id)</span> </span>&#123;</div><div class="line">		<span class="keyword">this</span>.id = id;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">		People p = <span class="keyword">new</span> People();</div><div class="line">		<span class="comment">// Supplier&lt;String&gt; supplier = () -&gt; p.getId();</span></div><div class="line">		Supplier&lt;String&gt; supplier = p::getId;</div><div class="line">		<span class="comment">// Consumer&lt;String&gt; consumer = id -&gt; p.setId(id);</span></div><div class="line">		Consumer&lt;String&gt; consumer = p::setId;</div><div class="line">		...</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="2-_类名_::_静态方法名">2. 类名 :: 静态方法名</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">	<span class="comment">// Comparator&lt;Integer&gt; comparator = (x, y) -&gt; Integer.compare(x, y);</span></div><div class="line">	Comparator&lt;Integer&gt; comparator = Integer::compare;</div><div class="line">	...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>当需要引用方法的第一个参数是调用对象，并且第二个参数是需要引用方法的第二个参数 (或无参数) 时：ClassName::methodName</p>
+</blockquote>
+<h4 id="3-_类名_::_实例方法名">3. 类名 :: 实例方法名</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">	<span class="comment">// Predicate&lt;String&gt; predicate = x -&gt; x.isEmpty();</span></div><div class="line">	Predicate&lt;String&gt; predicate = String::isEmpty;</div><div class="line">	...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="总结：">总结：</h3><ul>
+<li>方法引用所引用的方法的参数列表与返回值类型，需要与函数式接口中抽象方法的参数列表和返回值类型保持一致(就是函数签名和返回值一致)</li>
+<li>若Lambda的参数列表的第一个参数，是实例方法的调用者，第二个参数(或无参)是实例方法的参数时，格式：ClassName::MethodName</li>
 </ul>
-<h2 id="J2EE">J2EE</h2><p>在学习了J2SE之后，你可以尝试着慢慢过渡到J2EE，当然，学习J2EE海需要很多非JAVA技术的支撑，比如数据库技术，网页编程技术等等，待会我会详细介绍这两方面的内容。J2EE有三个必学的框架，如果你说你学了J2EE，但又不会这三个框架的话，那会让人笑掉大牙，这三个框架分别是Struts、Spring和Hibernate，虽然这三个框架应用很广，但不代表这三个框架就代表了J2EE，J2EE还有很多其他的东西，比如EJB，作为一款重量级（此重量级不是指重量级选手那个意思，此重量级非彼重量级）框架，虽然这个应用慢慢的再被其他框架所取代，但EJB3.0的出现也给它带回一些生机，作为一个分布式应用的框架，也是大家要去学习和了解的知识。<br>当然，刚才说到J2EE包含的范围很广，即使我把我所了解的所有技术说出来，也并不能代表J2EE，这是一个很深很广的学问，需要大家以后再工作的时候慢慢去发现了。我所了解的还包括： </p>
-<ul>
-<li>JDBC:Java数据库连接对象，基础中的基础，Hibernate也只是对它的封装而已 </li>
-<li>JNDI: Java 命名与目录接口，J2EE重要规范之一 </li>
-<li>EJBS: 上面已经提到过了 </li>
-<li>RMI: 提供远程调用方法的支持，主要用于程序分布式开发 </li>
-<li>JMS: Java消息服务，中间件技术 </li>
-<li>JAVA IDL: 提供J2EE平台与CORBA交互能力和互联能力的技术 </li>
-<li>JTS: 组件事务监视器 </li>
-<li>JTA: 事务划分的一个技术 </li>
-<li>JAVAMAIL: Java中的邮件技术 </li>
-<li>JAF: Java启动框架,没研究过 </li>
-<li>Log4j，一款日志处理的框架应用 </li>
-<li>Junit：单元测试的好帮手 </li>
-<li>freemarker、velocity：两款不错的模板引擎 </li>
-<li>与Flash的交互Flex：目前很多的SNS应用就是使用到了这个技术 </li>
-<li>Web services:想知道我们论坛天气预报的效果是怎么做的吗？请关注这个技术 </li>
-<li>SOA:面向服务架构，未来技术发展的趋势之一<br>……<br>不过前面介绍到得这些都不是J2EE的基础,是属于框架应用级别的.要真正把上面说到的知识掌握好,还是的学习J2EE最核心的东西:JDBC、JSP、servlet和JavaBean,后面三个也是学习SSH的基础(Struts/Spring/Hibernate的简称).鉴于J2EE的内容太过复杂,建议大家最初只学习: JSP, servlet和JavaBean，等这个基础掌握好再把SSH学习了，再对其他J2EE技术有个大致的了解就可以出去找工作了。当然，找工作的前提除了把Java学习好，还会有一些其他的技术也是必须要掌握的。</li>
-</ul>
-<p>-_- 我很简单,Java却要求我学这么多复杂的东西。除了这些技术的东西，在这阶段，大家更多的是会接触到比如设计模式的东西，比如工厂模式、桥梁模式、单例模式等等，还要学习建模思想（比如UML建模等等）和软件生命周期等等。这些是升华大家编程思想的手段和途径。</p>
-<h2 id="J2ME">J2ME</h2><p>如果你在学习了以上技术还不过瘾，可以再学习手机程序的开发，就我个人看来，开发手机程序技术其实蛮简单的，难点在于优化，比如怎么让你写的程序尽量的节约手机资源，“代码诚可贵，手机价更高“，所以不得不比PC机多考虑很多成本和实用性问题。J2ME的学习的话，切忌不要单纯的再模拟器上测试，一定要找真机测试，真机和模拟器的效果之间差别是很大的。</p>
+<h2 id="二、构造器引用">二、构造器引用</h2><h3 id="定义-1">定义</h3><blockquote>
+<p>构造器的参数列表，需要与函数式接口中参数列表保持一致 (就是函数签名一致)</p>
+</blockquote>
+<h3 id="格式-1">格式</h3><p>类名 :: new</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">People</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</div><div class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = -<span class="number">2052988928272007869L</span>;</div><div class="line">	<span class="keyword">private</span> String id;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> String <span class="title">getId</span><span class="params">()</span> </span>&#123;</div><div class="line">		<span class="keyword">return</span> id;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setId</span><span class="params">(String id)</span> </span>&#123;</div><div class="line">		<span class="keyword">this</span>.id = id;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">		<span class="comment">// Supplier&lt;People&gt; supplier = () -&gt; new People();</span></div><div class="line">		Supplier&lt;People&gt; supplier = People::<span class="keyword">new</span>;</div><div class="line">		...</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="三、数组引用">三、数组引用</h2><h3 id="格式-2">格式</h3><p>类型[] :: new</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">	Function&lt;Integer, People[]&gt; function = People[]::<span class="keyword">new</span>;</div><div class="line">	People[] peoples = function.apply(<span class="number">10</span>);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<h4 id="下期我们将分析Java8中的流：Stream，敬请期待。"><strong>下期我们将分析Java8中的流：Stream，敬请期待。</strong></h4></blockquote>
 
       
     </div>
@@ -435,6 +456,8 @@
           
             <a href="/tags/Java/" rel="tag"># Java</a>
           
+            <a href="/tags/Java8新特性/" rel="tag"># Java8新特性</a>
+          
         </div>
       
 
@@ -446,8 +469,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/05/11/Flask-SAE搭建微信后台初探/" rel="next" title="Flask+SAE搭建微信后台初探">
-                <i class="fa fa-chevron-left"></i> Flask+SAE搭建微信后台初探
+              <a href="/2017/12/24/Java8新特性（Lambda）/" rel="next" title="Java8新特性（Lambda）">
+                <i class="fa fa-chevron-left"></i> Java8新特性（Lambda）
               </a>
             
           </div>
@@ -455,10 +478,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2015/11/03/微信公众号发红包实现/" rel="prev" title="微信公众号发红包实现">
-                微信公众号发红包实现 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -619,7 +638,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#J2SE"><span class="nav-number">2.</span> <span class="nav-text">J2SE</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#J2EE"><span class="nav-number">3.</span> <span class="nav-text">J2EE</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#J2ME"><span class="nav-number">4.</span> <span class="nav-text">J2ME</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、方法引用"><span class="nav-number">1.</span> <span class="nav-text">一、方法引用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#定义"><span class="nav-number">1.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#格式"><span class="nav-number">1.2.</span> <span class="nav-text">格式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-_对象的引用_::_实例方法名"><span class="nav-number">1.2.1.</span> <span class="nav-text">1. 对象的引用 :: 实例方法名</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-_类名_::_静态方法名"><span class="nav-number">1.2.2.</span> <span class="nav-text">2. 类名 :: 静态方法名</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-_类名_::_实例方法名"><span class="nav-number">1.2.3.</span> <span class="nav-text">3. 类名 :: 实例方法名</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结："><span class="nav-number">1.3.</span> <span class="nav-text">总结：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、构造器引用"><span class="nav-number">2.</span> <span class="nav-text">二、构造器引用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#定义-1"><span class="nav-number">2.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#格式-1"><span class="nav-number">2.2.</span> <span class="nav-text">格式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、数组引用"><span class="nav-number">3.</span> <span class="nav-text">三、数组引用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#格式-2"><span class="nav-number">3.1.</span> <span class="nav-text">格式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#下期我们将分析Java8中的流：Stream，敬请期待。"><span class="nav-number">3.1.1.</span> <span class="nav-text">下期我们将分析Java8中的流：Stream，敬请期待。</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>

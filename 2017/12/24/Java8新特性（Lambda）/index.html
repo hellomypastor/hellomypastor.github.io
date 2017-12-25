@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Alexac">
 <meta property="og:description" content="上期我们分析了Java8中Interface的相关新特性，其中包括函数式接口，可以在调用时，使用一个Lambda表达式作为参数，那么我们就来谈谈Java8中的Lambda表达式吧。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-12-24T14:26:52.000Z">
+<meta property="og:updated_time" content="2017-12-25T15:38:52.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java8新特性（Lambda）">
 <meta name="twitter:description" content="上期我们分析了Java8中Interface的相关新特性，其中包括函数式接口，可以在调用时，使用一个Lambda表达式作为参数，那么我们就来谈谈Java8中的Lambda表达式吧。">
@@ -394,7 +394,7 @@
 <li>参数有且仅有一个时，<code>()</code>可以省略</li>
 <li>Lambda体只有一条语句，<code>return</code>和<code>{}</code>都可忽略</li>
 </ul>
-<h2 id="Java8内置四大核心函数式接口(java-util-*包)">Java8内置四大核心函数式接口(java.util.*包)</h2><ul>
+<h2 id="Java8内置四大核心函数式接口(java-util-function-*包)">Java8内置四大核心函数式接口(java.util.function.*包)</h2><ul>
 <li>Consumer<t> 消费型接口</t></li>
 </ul>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">	String str = <span class="string">"str"</span>;</div><div class="line">	consumer(str, s -&gt; System.out.println(s));</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">consumer</span><span class="params">(String str, Consumer&lt;String&gt; function)</span> </span>&#123;</div><div class="line">	function.accept(str);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
@@ -492,6 +492,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/2017/12/25/Java8新特性（引用）/" rel="prev" title="Java8新特性（引用）">
+                Java8新特性（引用） <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -576,7 +580,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-count">22</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -651,7 +655,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义"><span class="nav-number">1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#格式"><span class="nav-number">2.</span> <span class="nav-text">格式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-_无参数无返回值"><span class="nav-number">2.0.1.</span> <span class="nav-text">1. 无参数无返回值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-_有一个参数无返回值"><span class="nav-number">2.0.2.</span> <span class="nav-text">2. 有一个参数无返回值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-_只要一个参数，小括号可以不写"><span class="nav-number">2.0.3.</span> <span class="nav-text">3. 只要一个参数，小括号可以不写</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-_有多个参数有返回值，并且Lambda体有多条语句"><span class="nav-number">2.0.4.</span> <span class="nav-text">4. 有多个参数有返回值，并且Lambda体有多条语句</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-_Lambda体中只有一条语句，return和{}可以省略"><span class="nav-number">2.0.5.</span> <span class="nav-text">5. Lambda体中只有一条语句，return和{}可以省略</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-_Lambda_表达式的参数列表的数据类型可以省略不写，因为JVM编译器通过上下文推断出，数据类型，即“类型推断”"><span class="nav-number">2.0.6.</span> <span class="nav-text">6. Lambda 表达式的参数列表的数据类型可以省略不写，因为JVM编译器通过上下文推断出，数据类型，即“类型推断”</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结："><span class="nav-number">2.1.</span> <span class="nav-text">总结：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java8内置四大核心函数式接口(java-util-*包)"><span class="nav-number">3.</span> <span class="nav-text">Java8内置四大核心函数式接口(java.util.*包)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#下期我们将分析用引用方式简写Lambda表达式，敬请期待。"><span class="nav-number">3.0.1.</span> <span class="nav-text">下期我们将分析用引用方式简写Lambda表达式，敬请期待。</span></a></li></ol></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义"><span class="nav-number">1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#格式"><span class="nav-number">2.</span> <span class="nav-text">格式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-_无参数无返回值"><span class="nav-number">2.0.1.</span> <span class="nav-text">1. 无参数无返回值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-_有一个参数无返回值"><span class="nav-number">2.0.2.</span> <span class="nav-text">2. 有一个参数无返回值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-_只要一个参数，小括号可以不写"><span class="nav-number">2.0.3.</span> <span class="nav-text">3. 只要一个参数，小括号可以不写</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-_有多个参数有返回值，并且Lambda体有多条语句"><span class="nav-number">2.0.4.</span> <span class="nav-text">4. 有多个参数有返回值，并且Lambda体有多条语句</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-_Lambda体中只有一条语句，return和{}可以省略"><span class="nav-number">2.0.5.</span> <span class="nav-text">5. Lambda体中只有一条语句，return和{}可以省略</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-_Lambda_表达式的参数列表的数据类型可以省略不写，因为JVM编译器通过上下文推断出，数据类型，即“类型推断”"><span class="nav-number">2.0.6.</span> <span class="nav-text">6. Lambda 表达式的参数列表的数据类型可以省略不写，因为JVM编译器通过上下文推断出，数据类型，即“类型推断”</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结："><span class="nav-number">2.1.</span> <span class="nav-text">总结：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Java8内置四大核心函数式接口(java-util-function-*包)"><span class="nav-number">3.</span> <span class="nav-text">Java8内置四大核心函数式接口(java.util.function.*包)</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#下期我们将分析用引用方式简写Lambda表达式，敬请期待。"><span class="nav-number">3.0.1.</span> <span class="nav-text">下期我们将分析用引用方式简写Lambda表达式，敬请期待。</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
