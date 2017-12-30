@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Alexac">
 <meta property="og:description" content="上期我们介绍了Java8中的Optional，本期我们介绍Java8中新的时间日期API。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-12-30T14:12:18.000Z">
+<meta property="og:updated_time" content="2017-12-30T14:16:03.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java8新特性（时间&#x2F;日期）">
 <meta name="twitter:description" content="上期我们介绍了Java8中的Optional，本期我们介绍Java8中新的时间日期API。">
@@ -422,6 +422,7 @@
 <li>Period：用于计算两个“日期”间隔，Period.between…</li>
 </ul>
 <h4 id="Clock_时钟">Clock 时钟</h4><p>Clock类提供了访问当前日期和时间的方法，Clock是时区敏感的，可以用来取代System.currentTimeMillis() 来获取当前的微秒数。某一个特定的时间点也可以使用Instant类来表示，Instant类也可以用来创建老的java.util.Date对象。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">Clock clock = Clock.systemDefaultZone();  </div><div class="line"><span class="keyword">long</span> millis = clock.millis();  </div><div class="line">Instant instant = clock.instant();  </div><div class="line">Date date = Date.from(instant);</div></pre></td></tr></table></figure>
 <h4 id="日期的操作">日期的操作</h4><ul>
 <li>TemporalAdjuster：时间校正器。有时我们可能需要获取例如：将日期调整到“下个周日”等操作。</li>
 <li>TemporalAdjusters：该类通过静态方法提供了大量的常用TemporalAdjuster的实现。</li>
