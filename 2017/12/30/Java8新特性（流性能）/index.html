@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="docker," />
+  <meta name="keywords" content="Java,Java8新特性," />
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="最近项目中涉及到了Docker，Docker作为一种新兴的虚拟化方式，有着众多的优势，如更快的交付和部署，更高效的虚拟化，更轻松的迁移和扩展，更简单的管理登，现将Docker命令学习记录下来。">
-<meta name="keywords" content="docker">
+<meta name="description" content="上期介绍了Java8中Stream的新特性，本期我们将测试下stream与parallelStream的性能以及应用的场景。">
+<meta name="keywords" content="Java,Java8新特性">
 <meta property="og:type" content="article">
-<meta property="og:title" content="docker命令学习（一）">
-<meta property="og:url" content="http://hellomypastor.net/2016/08/29/docker命令学习（一）/index.html">
+<meta property="og:title" content="Java8新特性（流性能）">
+<meta property="og:url" content="http://hellomypastor.net/2017/12/30/Java8新特性（流性能）/index.html">
 <meta property="og:site_name" content="Alexac">
-<meta property="og:description" content="最近项目中涉及到了Docker，Docker作为一种新兴的虚拟化方式，有着众多的优势，如更快的交付和部署，更高效的虚拟化，更轻松的迁移和扩展，更简单的管理登，现将Docker命令学习记录下来。">
+<meta property="og:description" content="上期介绍了Java8中Stream的新特性，本期我们将测试下stream与parallelStream的性能以及应用的场景。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-12-10T07:10:30.000Z">
+<meta property="og:updated_time" content="2017-12-30T05:17:20.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="docker命令学习（一）">
-<meta name="twitter:description" content="最近项目中涉及到了Docker，Docker作为一种新兴的虚拟化方式，有着众多的优势，如更快的交付和部署，更高效的虚拟化，更轻松的迁移和扩展，更简单的管理登，现将Docker命令学习记录下来。">
+<meta name="twitter:title" content="Java8新特性（流性能）">
+<meta name="twitter:description" content="上期介绍了Java8中Stream的新特性，本期我们将测试下stream与parallelStream的性能以及应用的场景。">
 
 
 
@@ -120,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://hellomypastor.net/2016/08/29/docker命令学习（一）/"/>
+  <link rel="canonical" href="http://hellomypastor.net/2017/12/30/Java8新特性（流性能）/"/>
 
 
 
 
 
-  <title>docker命令学习（一） | Alexac</title>
+  <title>Java8新特性（流性能） | Alexac</title>
   
 
 
@@ -268,12 +268,12 @@
   
   
 
-  <article class="post post-type-tags" itemscope itemtype="http://schema.org/Article">
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://hellomypastor.net/2016/08/29/docker命令学习（一）/">
+    <link itemprop="mainEntityOfPage" href="http://hellomypastor.net/2017/12/30/Java8新特性（流性能）/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="史培培">
@@ -290,7 +290,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">docker命令学习（一）</h1>
+          <h1 class="post-title" itemprop="name headline">Java8新特性（流性能）</h1>
         
 
         <div class="post-meta">
@@ -302,8 +302,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-08-29T21:34:35+08:00">
-                2016-08-29
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-30T13:15:49+08:00">
+                2017-12-30
               </time>
             
 
@@ -313,6 +313,28 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -320,7 +342,7 @@
 
           
           
-             <span id="/2016/08/29/docker命令学习（一）/" class="leancloud_visitors" data-flag-title="docker命令学习（一）">
+             <span id="/2017/12/30/Java8新特性（流性能）/" class="leancloud_visitors" data-flag-title="Java8新特性（流性能）">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -351,14 +373,53 @@
       
 
       
-        <p>最近项目中涉及到了<code>Docker</code>，Docker作为一种新兴的虚拟化方式，有着众多的优势，如更快的交付和部署，更高效的虚拟化，更轻松的迁移和扩展，更简单的管理登，现将Docker命令学习记录下来。<br><a id="more"></a></p>
-<h2 id="镜像方面">镜像方面</h2><p><code>获取镜像</code></p>
+        <blockquote>
+<p>上期介绍了Java8中<code>Stream</code>的新特性，本期我们将测试下<code>stream</code>与<code>parallelStream</code>的性能以及应用的场景。</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="先上代码">先上代码</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StreamTest</span> </span>&#123;</div><div class="line"></div><div class="line">	<span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MAX_INT = <span class="number">1_000_000</span>;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">stream</span><span class="params">()</span> </span>&#123;</div><div class="line">		List&lt;String&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</div><div class="line">		IntStream.range(<span class="number">0</span>, MAX_INT).forEach(value -&gt; &#123;</div><div class="line">			UUID uuid = UUID.randomUUID();</div><div class="line">			list.add(uuid.toString());</div><div class="line">		&#125;);</div><div class="line"></div><div class="line">		<span class="keyword">long</span> startTime = System.nanoTime();</div><div class="line"></div><div class="line">		list.stream().sorted().collect(Collectors.toList());</div><div class="line"></div><div class="line">		<span class="keyword">long</span> endTime = System.nanoTime();</div><div class="line">		<span class="keyword">long</span> durationTime = TimeUnit.NANOSECONDS.toMillis(endTime - startTime);</div><div class="line">		System.out.println(<span class="string">"stream execute time : "</span> + durationTime);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">parallelStream</span><span class="params">()</span> </span>&#123;</div><div class="line">		List&lt;String&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;();</div><div class="line">		IntStream.range(<span class="number">0</span>, MAX_INT).forEach(value -&gt; &#123;</div><div class="line">			UUID uuid = UUID.randomUUID();</div><div class="line">			list.add(uuid.toString());</div><div class="line">		&#125;);</div><div class="line"></div><div class="line">		<span class="keyword">long</span> startTime = System.nanoTime();</div><div class="line"></div><div class="line">		list.parallelStream().sorted().collect(Collectors.toList());</div><div class="line"></div><div class="line">		<span class="keyword">long</span> endTime = System.nanoTime();</div><div class="line">		<span class="keyword">long</span> durationTime = TimeUnit.NANOSECONDS.toMillis(endTime - startTime);</div><div class="line">		System.out.println(<span class="string">"parallelStream execute time : "</span> + durationTime);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">		stream();</div><div class="line">		parallelStream();</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>MAX<em>INT = 1_000_000; //Jav8中数字可以用</em>间隔，类似1,000,000</p>
+</blockquote>
+<p>Max_INT为<strong>1</strong>时，结果为：<br>stream execute time : <strong>6</strong><br>parallelStream execute time : <strong>8</strong></p>
+<p>Max_INT为<strong>100</strong>时，结果为：<br>stream execute time : <strong>7</strong><br>parallelStream execute time : <strong>7</strong></p>
+<p>Max_INT为<strong>1_000</strong>时，结果为：<br>stream execute time : <strong>15</strong><br>parallelStream execute time : <strong>22</strong></p>
+<p>Max_INT为<strong>10_000</strong>时，结果为：<br>stream execute time : <strong>28</strong><br>parallelStream execute time : <strong>21</strong></p>
+<p>Max_INT为<strong>100_000</strong>时，结果为：<br>stream execute time : <strong>98</strong><br>parallelStream execute time : <strong>62</strong></p>
+<p>Max_INT为<strong>1_000_000</strong>时，结果为：<br>stream execute time : <strong>742</strong><br>parallelStream execute time : <strong>429</strong></p>
+<p>Max_INT为<strong>5_000_000</strong>时，结果为：<br>stream execute time : <strong>4299</strong><br>parallelStream execute time : <strong>2191</strong></p>
+<p>Max_INT为<strong>10_000_000</strong>时，结果为：<br>stream execute time : <strong>9849</strong><br>parallelStream execute time : <strong>6923</strong></p>
+<h2 id="分析">分析</h2><blockquote>
+<p>并行适用的场景？</p>
+</blockquote>
 <ul>
-<li><p>获取镜像</p>
-<figure class="highlight docker"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker pull</div></pre></td></tr></table></figure>
-</li>
-<li><p>提交镜像</p>
-</li>
+<li>有大量的元素要处理</li>
+<li>性能问题是首要考虑的</li>
+<li>没有在一个多线程的环境中</li>
+</ul>
+<blockquote>
+<p>所以如Java Web应用，底层都是Servlet，我们知道，Servlet是多线程的，所以在web应用中并行流并不适用，而对于数据的处理、算法的验证等单线程环境是适用的。</p>
+</blockquote>
+<h2 id="原理">原理</h2><p>并行流底层其实是<code>ForkJoinPool</code> ，用的是<code>分治法</code>，即<code>Fork/Join</code>方法</p>
+<p>当执行新的任务时它可以将其拆分分成更小的任务执行，并将小任务加到线 程队列中，然后再从一个随机线程的队列中偷一个并把它放在自己的队列中。</p>
+<p>相对于一般的线程池实现，fork/join框架的优势体现在对其中包含的任务的处理方式上，在一般的线程池中，如果一个线程正在执行的任务由于某些原因无法继续运行,那么该线程会处于等待状态。而在fork/join框架实现中，如果某个子问题由于等待另外一个子问题的完成而无法继续运行.那么处理该子问题的线程会主动寻找其他尚未运行的子问题来执行。这种方式减少了线程的等待时间，提高了性能。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">	ForkJoinPool pool = ForkJoinPool.commonPool();</div><div class="line">	System.out.println(pool.getParallelism());</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>结果：<br>3</p>
+<p>我们可以通过参数来修改：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">-Djava.util.concurrent.ForkJoinPool.common.parallelism=<span class="number">10</span></div></pre></td></tr></table></figure>
+<p>结果：<br>10</p>
+<h2 id="总结">总结</h2><blockquote>
+<p>如何高效使用并行流？</p>
+</blockquote>
+<ul>
+<li>如果用循环还是顺序流或者是并行流，像我们上面那样测试一下；</li>
+<li>注意装箱，尽量使用<code>IntStream</code>, <code>LongStream</code>，和<code>DoubleStream</code>来避免装箱拆箱;</li>
+<li>有些操作在并行流上性能很差，比如<code>limit</code>，<code>findFirst</code>等依赖顺序的操作。<code>unordered</code>方法可以把有序流转为无序流，使用<code>findAny</code>等好很多，在无序流上用<code>limit</code>也好很多;</li>
+<li>计算流水线操作总成本，处理单个元素用时越多，并行就越划算；</li>
+<li>对于较小的数据量，用并行不一定是好事儿；</li>
+<li>区分单线程和多线程，多线程下并行不一定是好事儿；</li>
+<li>数据结果是否易于分解，比如<code>ArrayList</code>比<code>LinkedList</code>易于分解，<code>range</code>创建的原始流也易于分解；</li>
+<li>终端操作中的合并大家是否很大，大了也不划算。</li>
 </ul>
 
       
@@ -414,7 +475,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/docker/" rel="tag"># docker</a>
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+            <a href="/tags/Java8新特性/" rel="tag"># Java8新特性</a>
           
         </div>
       
@@ -427,8 +490,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/11/05/微信公众号企业付款/" rel="next" title="微信公众号企业付款">
-                <i class="fa fa-chevron-left"></i> 微信公众号企业付款
+              <a href="/2017/12/28/Java8新特性（Stream）/" rel="next" title="Java8新特性（Stream）">
+                <i class="fa fa-chevron-left"></i> Java8新特性（Stream）
               </a>
             
           </div>
@@ -436,10 +499,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/07/31/BUG：无法确定T的类型参数/" rel="prev" title="BUG：无法确定T的类型参数">
-                BUG：无法确定T的类型参数 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -600,7 +659,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#镜像方面"><span class="nav-number">1.</span> <span class="nav-text">镜像方面</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#先上代码"><span class="nav-number">1.</span> <span class="nav-text">先上代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#分析"><span class="nav-number">2.</span> <span class="nav-text">分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#原理"><span class="nav-number">3.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
             
 
           </div>
