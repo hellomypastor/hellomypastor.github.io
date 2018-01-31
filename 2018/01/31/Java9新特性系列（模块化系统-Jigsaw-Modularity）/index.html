@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Java,微信公众平台开发," />
+  <meta name="keywords" content="Java,Java9新特性," />
 
 
 
@@ -79,18 +79,20 @@
 
 
 
-<meta name="description" content="近期做微信公众号开发，由于企业向微信用户个人发现金红包的功能有金额限制（1~200），而且有时间限制（0~8点间不能发红包），于是就改用企业向用户付款的功能，实现过程总结如下。  请求Url：https://api.mch.weixin.qq.com/mmpaymkttransfers/promotion/transfers 是否需要证书：是 请求方式：POST">
-<meta name="keywords" content="Java,微信公众平台开发">
+<meta name="description" content="模块化的前时代Ant时代相信大家对Ant都不陌生，Ant是任务型的，定义了一系列的任务dir／compile／jar等等，缺点是操作文件Maven时代Maven／Gradle相对于Ant，增加了groupId／artifactId，版本管理，依赖管理OSGI时代OSGI用的比较少，估计大家比较陌生，其实我们用的Eclipse及插件都是OSGI编译的  那么问题来了：当代码库越来越大，怎么管理类库">
+<meta name="keywords" content="Java,Java9新特性">
 <meta property="og:type" content="article">
-<meta property="og:title" content="微信公众号企业付款">
-<meta property="og:url" content="http://hellomypastor.net/2015/11/05/微信公众号企业付款/index.html">
+<meta property="og:title" content="Java9新特性系列（模块化系统: Jigsaw-&gt;Modularity）">
+<meta property="og:url" content="http://hellomypastor.net/2018/01/31/Java9新特性系列（模块化系统-Jigsaw-Modularity）/index.html">
 <meta property="og:site_name" content="Alexac">
-<meta property="og:description" content="近期做微信公众号开发，由于企业向微信用户个人发现金红包的功能有金额限制（1~200），而且有时间限制（0~8点间不能发红包），于是就改用企业向用户付款的功能，实现过程总结如下。  请求Url：https://api.mch.weixin.qq.com/mmpaymkttransfers/promotion/transfers 是否需要证书：是 请求方式：POST">
+<meta property="og:description" content="模块化的前时代Ant时代相信大家对Ant都不陌生，Ant是任务型的，定义了一系列的任务dir／compile／jar等等，缺点是操作文件Maven时代Maven／Gradle相对于Ant，增加了groupId／artifactId，版本管理，依赖管理OSGI时代OSGI用的比较少，估计大家比较陌生，其实我们用的Eclipse及插件都是OSGI编译的  那么问题来了：当代码库越来越大，怎么管理类库">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-12-10T08:10:43.000Z">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2855474-b5ca849e64fd235f.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2018-01-31T15:10:07.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="微信公众号企业付款">
-<meta name="twitter:description" content="近期做微信公众号开发，由于企业向微信用户个人发现金红包的功能有金额限制（1~200），而且有时间限制（0~8点间不能发红包），于是就改用企业向用户付款的功能，实现过程总结如下。  请求Url：https://api.mch.weixin.qq.com/mmpaymkttransfers/promotion/transfers 是否需要证书：是 请求方式：POST">
+<meta name="twitter:title" content="Java9新特性系列（模块化系统: Jigsaw-&gt;Modularity）">
+<meta name="twitter:description" content="模块化的前时代Ant时代相信大家对Ant都不陌生，Ant是任务型的，定义了一系列的任务dir／compile／jar等等，缺点是操作文件Maven时代Maven／Gradle相对于Ant，增加了groupId／artifactId，版本管理，依赖管理OSGI时代OSGI用的比较少，估计大家比较陌生，其实我们用的Eclipse及插件都是OSGI编译的  那么问题来了：当代码库越来越大，怎么管理类库">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/2855474-b5ca849e64fd235f.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 
 
 
@@ -120,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://hellomypastor.net/2015/11/05/微信公众号企业付款/"/>
+  <link rel="canonical" href="http://hellomypastor.net/2018/01/31/Java9新特性系列（模块化系统-Jigsaw-Modularity）/"/>
 
 
 
 
 
-  <title>微信公众号企业付款 | Alexac</title>
+  <title>Java9新特性系列（模块化系统: Jigsaw->Modularity） | Alexac</title>
   
 
 
@@ -268,12 +270,12 @@
   
   
 
-  <article class="post post-type-tags" itemscope itemtype="http://schema.org/Article">
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
   
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://hellomypastor.net/2015/11/05/微信公众号企业付款/">
+    <link itemprop="mainEntityOfPage" href="http://hellomypastor.net/2018/01/31/Java9新特性系列（模块化系统-Jigsaw-Modularity）/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="史培培">
@@ -290,7 +292,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">微信公众号企业付款</h1>
+          <h1 class="post-title" itemprop="name headline">Java9新特性系列（模块化系统: Jigsaw->Modularity）</h1>
         
 
         <div class="post-meta">
@@ -302,8 +304,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2015-11-05T23:47:16+08:00">
-                2015-11-05
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-31T23:08:33+08:00">
+                2018-01-31
               </time>
             
 
@@ -313,6 +315,28 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -320,7 +344,7 @@
 
           
           
-             <span id="/2015/11/05/微信公众号企业付款/" class="leancloud_visitors" data-flag-title="微信公众号企业付款">
+             <span id="/2018/01/31/Java9新特性系列（模块化系统-Jigsaw-Modularity）/" class="leancloud_visitors" data-flag-title="Java9新特性系列（模块化系统: Jigsaw->Modularity）">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -351,19 +375,36 @@
       
 
       
-        <p>近期做微信公众号开发，由于<code>企业向微信用户个人发现金红包</code>的功能有金额限制<code>（1~200）</code>，而且有时间限制<code>（0~8点间不能发红包）</code>，于是就改用<code>企业向用户付款</code>的功能，实现过程总结如下。</p>
+        <p><img src="http://upload-images.jianshu.io/upload_images/2855474-b5ca849e64fd235f.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="题图：by pixel2013 From pixabay"></p>
+<h1 id="模块化的前时代">模块化的前时代</h1><p><code>Ant时代</code><br>相信大家对Ant都不陌生，Ant是任务型的，定义了一系列的任务dir／compile／jar等等，缺点是操作文件<br><code>Maven时代</code><br>Maven／Gradle相对于Ant，增加了groupId／artifactId，版本管理，依赖管理<br><code>OSGI时代</code><br>OSGI用的比较少，估计大家比较陌生，其实我们用的Eclipse及插件都是OSGI编译的</p>
+<blockquote>
+<p>那么问题来了：当代码库越来越大，怎么管理类库交叉依赖，以及类重复的问题呢？</p>
+</blockquote>
+<a id="more"></a>
+<h1 id="产生背景及意义">产生背景及意义</h1><ul>
+<li><p>谈到Java9大家往往第一个想到的就是Jigsaw项目。众所周知，Java已经发展超过20年(95年最初发布)，Java和相关生态在不断丰富的同时也越来越暴露出一些问题:</p>
 <ul>
-<li>请求Url：<a href="https://api.mch.weixin.qq.com/mmpaymkttransfers/promotion/transfers" target="_blank" rel="external">https://api.mch.weixin.qq.com/mmpaymkttransfers/promotion/transfers</a></li>
-<li>是否需要证书：是</li>
-<li>请求方式：POST<a id="more"></a></li>
-<li><p>数据示例</p>
-<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">xml</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">mch_appid</span>&gt;</span>wxe062425f740c30d8<span class="tag">&lt;/<span class="name">mch_appid</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">mchid</span>&gt;</span>10000098<span class="tag">&lt;/<span class="name">mchid</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">nonce_str</span>&gt;</span>3PG2J4ILTKCH16CQ2502SI8ZNMTM67VS<span class="tag">&lt;/<span class="name">nonce_str</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">partner_trade_no</span>&gt;</span>100000982014120919616<span class="tag">&lt;/<span class="name">partner_trade_no</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">openid</span>&gt;</span>ohO4Gt7wVPxIT1A9GjFaMYMiZY1s<span class="tag">&lt;/<span class="name">openid</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">check_name</span>&gt;</span>OPTION_CHECK<span class="tag">&lt;/<span class="name">check_name</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">re_user_name</span>&gt;</span>张三<span class="tag">&lt;/<span class="name">re_user_name</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">amount</span>&gt;</span>100<span class="tag">&lt;/<span class="name">amount</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">desc</span>&gt;</span>节日快乐!<span class="tag">&lt;/<span class="name">desc</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">spbill_create_ip</span>&gt;</span>10.2.3.10<span class="tag">&lt;/<span class="name">spbill_create_ip</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">sign</span>&gt;</span>C97BDBACF37622775366F38B629F45E3<span class="tag">&lt;/<span class="name">sign</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">xml</span>&gt;</span></div></pre></td></tr></table></figure>
+<li><code>Java运行环境的膨胀和臃肿</code>。每次JVM启动的时候，至少会有30~60MB的内存加载，主要原因是JVM需要加载rt.jar，不管其中的类是否被classloader加载，第一步整个jar都会被JVM加载到内存当中去(而模块化可以根据模块的需要加载程序运行需要的class)</li>
+<li><code>当代码库越来越大，创建复杂，盘根错节的“意大利面条式代码”的几率呈指数级的增长</code>。不同版本的类库交叉依赖导致让人头疼的问题，这些都阻碍了Java开发和运行效率的提升</li>
+<li><code>很难真正地对代码进行封装, 而系统并没有对不同部分(也就是JAR文件)之间的依赖关系有个明确的概念</code>。每一个公共类都可以被类路径之下任何其它的公共类所访问到，这样就会导致无意中使用了并不想被公开访问的API。</li>
+<li><code>类路径本身也存在问题</code>: 你怎么知晓所有需要的JAR都已经有了, 或者是不是会有重复的项呢?</li>
+</ul>
 </li>
-<li><p>具体java代码实现和发现金红包类似<br>下面对比一下发现金红包与企业付款：</p>
+<li><p>同时，由于兼容性等各方面的掣肘，对Java进行大刀阔斧的革新越来越困难，Jigsaw从Java7阶段就开始筹备，Java8阶段进行了大量工作，<code>终于在Java9里落地，一种千呼万唤始出来的意味</code>。</p>
 </li>
-<li>发送频率规则<br>现金红包：<code>每分钟</code>发送红包不超过<code>1800</code>个；北<code>京时间0：00-8：00</code>不触发红包赠送；<br>企业付款：无</li>
-<li>金额规则<br>现金红包：单个红包金额介于<code>[1.00元，200.00元]</code>之间；同一个红包只能发送给一个用户<br>企业付款：给同一个<code>非实名用户</code>付款，单笔单日限额<code>2000</code>；给同一个<code>实名用户</code>付款，单笔单日限额<code>2W</code>；</li>
-<li>到账规则<br>现金红包：以发红包的形式，用户需<code>打开红包</code>才能将钱存到个人钱包的零钱中<br>企业付款：<code>直接</code>到个人钱包的零钱中</li>
+<li><p>Jigsaw项目(后期更名为Modularity)的工作量和难度大大超出了初始规划。JSR376 Java平台模块化系统(JPMS,Java Platform Module System)作为Jigsaw项目的核心, 其主体部分被分解成6个JEP(JDK Enhancement Proposals)。</p>
+</li>
+<li><p>作为Java9平台最大的一个特性，随着Java平台模块化系统的落地，开发人员无需再为不断膨胀的 Java平台苦恼，例如，您可以使用<strong><code>jlink</code>工具，根据需要定制运行时环境</strong>。这对于拥有大量镜像的容器应用场景或复杂依赖关系的大型应用等，都具有非常重要的意义。</p>
+</li>
+<li><p>本质上讲，模块(module)的概念，其实就是package外再裹一层，也就是说，用模块来管理各个package，通过声明某个package暴露，不声明默认就是隐藏。因此，<strong><code>模块化使得代码组织上更安全，因为它可以指定哪些部分可以暴露，哪些部分隐藏</code></strong>。</p>
+</li>
+</ul>
+<h1 id="设计理念">设计理念</h1><p><code>模块独立，化繁为简</code><br>模块化(以 Java 平台模块系统的形式)将JDK分成一组模块，可以在编译时，运行时或者构建时进行组合。</p>
+<h1 id="实现目标">实现目标</h1><ul>
+<li>主要目的在于减少内存的开销</li>
+<li>只须必要模块，而非全部jdk模块，可简化各种类库和大型应用的<br>开发和维护</li>
+<li>改进Java SE平台，使其可以适应不同大小的计算设备</li>
+<li>改进其安全性，可维护性，提高性能</li>
 </ul>
 
       
@@ -421,7 +462,7 @@
           
             <a href="/tags/Java/" rel="tag"># Java</a>
           
-            <a href="/tags/微信公众平台开发/" rel="tag"># 微信公众平台开发</a>
+            <a href="/tags/Java9新特性/" rel="tag"># Java9新特性</a>
           
         </div>
       
@@ -434,8 +475,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/11/03/微信公众号发红包实现/" rel="next" title="微信公众号发红包实现">
-                <i class="fa fa-chevron-left"></i> 微信公众号发红包实现
+              <a href="/2018/01/30/Java9新特性系列（JDK与JRE）/" rel="next" title="Java9新特性系列（JDK与JRE）">
+                <i class="fa fa-chevron-left"></i> Java9新特性系列（JDK与JRE）
               </a>
             
           </div>
@@ -443,10 +484,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/08/29/docker命令学习（一）/" rel="prev" title="docker命令学习（一）">
-                docker命令学习（一） <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -503,8 +540,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -588,6 +634,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#模块化的前时代"><span class="nav-number">1.</span> <span class="nav-text">模块化的前时代</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#产生背景及意义"><span class="nav-number">2.</span> <span class="nav-text">产生背景及意义</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#设计理念"><span class="nav-number">3.</span> <span class="nav-text">设计理念</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实现目标"><span class="nav-number">4.</span> <span class="nav-text">实现目标</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
