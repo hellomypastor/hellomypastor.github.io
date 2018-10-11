@@ -893,7 +893,7 @@
 
       
         
-          <p>上两篇已经深入分析了<a href="https://juejin.im/post/5a7ecfef5188257a76632220" target="_blank" rel="external">Java9新特性系列（深入理解模块化）</a>，以及<a href="https://juejin.im/post/5a7ecfef5188257a76632220" target="_blank" rel="external">Java9新特性系列（module&amp;maven&amp;starter）</a>，有读者又提到了与模块化相关的<code>spi</code>，本篇将进行分析。</p>
+          <p>上两篇已经深入分析了<a href="http://hellomypastor.net/2018/02/10/Java9%E6%96%B0%E7%89%B9%E6%80%A7%E7%B3%BB%E5%88%97%EF%BC%88%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%A8%A1%E5%9D%97%E5%8C%96%EF%BC%89/">Java9新特性系列（深入理解模块化）</a>，以及<a href="http://hellomypastor.net/2018/02/11/Java9%E6%96%B0%E7%89%B9%E6%80%A7%E7%B3%BB%E5%88%97%EF%BC%88module-maven-starter%EF%BC%89/">Java9新特性系列（module&amp;maven&amp;starter）</a>，有读者又提到了与模块化相关的<code>spi</code>，本篇将进行分析。</p>
 <h1 id="SPI是什么？">SPI是什么？</h1><p>提到SPI呢，就不得不提一下API：</p>
 <p>API：Application Programming Interface，即应用程序编程接口，在程序外部进行调用</p>
 <p>SPI：Service Provider Interface，服务提供商接口</p>
@@ -1066,11 +1066,11 @@
 
       
         
-          <p>上篇已经深入分析了<a href="https://juejin.im/post/5a7ecfef5188257a76632220" target="_blank" rel="external">Java9中的模块化</a>，有读者又提到了module与starter是什么关系？本篇将进行分析。</p>
+          <p>上篇已经深入分析了<a href="http://hellomypastor.net/2018/02/10/Java9%E6%96%B0%E7%89%B9%E6%80%A7%E7%B3%BB%E5%88%97%EF%BC%88%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%A8%A1%E5%9D%97%E5%8C%96%EF%BC%89/">Java9中的模块化</a>，有读者又提到了module与starter是什么关系？本篇将进行分析。</p>
 <blockquote>
 <p>首先先回顾下module与maven/gradle的关系：</p>
-<h1 id="module与maven/gradle是什么关系？">module与maven/gradle是什么关系？</h1></blockquote>
-<p>模块化的依赖关系，很容易让人联想到mven和gradle，这个在上篇中也提及，后来有读者也提出module和maven是什么关系？解答如下：</p>
+</blockquote>
+<h1 id="module与maven/gradle是什么关系？">module与maven/gradle是什么关系？</h1><p>模块化的依赖关系，很容易让人联想到mven和gradle，这个在上篇中也提及，后来有读者也提出module和maven是什么关系？解答如下：</p>
 <p>Maven 有两个主要的特征：依赖管理和构建管理。<br>依赖管理即可以决定库中的版本并从仓库中下载下来。<br>构建管理即管理开发过程中的任务，包括初始化、编译、测试、打包等。</p>
 <p>Module是系统内置用于表述组件之间的关系，对于版本的管理还是处于最原始的状体，管理一种强制的依赖关系。</p>
 <p>总结一下：Maven还是主要负责构建管理，Modules 对于像Maven这样的构建工具（build tools）来说扮演的是辅助补充的角色。因为这些构建工具在构建时建立的依赖关系图谱和他们版本可以根据Module来创建，Module强制确定了module和artifacts之间的依赖关系，而Maven对于依赖并非是强制的。<br>具体可参考StackOverflow上的一篇问答：<a href="https://stackoverflow.com/questions/39844602/project-jigsaw-vs-maven" target="_blank" rel="external">Project Jigsaw vs Maven on StackOverflow</a></p>
