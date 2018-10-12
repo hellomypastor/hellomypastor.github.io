@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/avatar.jpg?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/avatar.jpg?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/avatar.jpg?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/avatar.jpg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Git," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="到现在我们已经学习了Git的基础知识，包括：  如何克服解决Git冲突的恐惧症？（序） 如何克服解决Git冲突的恐惧症？（Git入门介绍） 如何克服解决Git冲突的恐惧症？（Git基础篇—上） 如何克服解决Git冲突的恐惧症？（Git基础篇—下） 如何克服解决Git冲突的恐惧症？（Git分支策略） 如何克服解决Git冲突的恐惧症？（Git四大组件） 如何克服解决Git冲突的恐惧症？（Git高级篇）">
+<meta name="keywords" content="Git">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何克服解决Git冲突的恐惧症？（Git移交提交记录）">
+<meta property="og:url" content="http://hellomypastor.net/2018/03/18/如何克服解决Git冲突的恐惧症？（Git移交提交记录）/index.html">
+<meta property="og:site_name" content="Alexac">
+<meta property="og:description" content="到现在我们已经学习了Git的基础知识，包括：  如何克服解决Git冲突的恐惧症？（序） 如何克服解决Git冲突的恐惧症？（Git入门介绍） 如何克服解决Git冲突的恐惧症？（Git基础篇—上） 如何克服解决Git冲突的恐惧症？（Git基础篇—下） 如何克服解决Git冲突的恐惧症？（Git分支策略） 如何克服解决Git冲突的恐惧症？（Git四大组件） 如何克服解决Git冲突的恐惧症？（Git高级篇）">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/3/18/1623974a20860eef?w=1024&h=768&f=gif&s=1838351">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/3/18/1623948b8b1e9de5?w=1490&h=874&f=png&s=345569">
+<meta property="og:updated_time" content="2018-10-11T23:55:17.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="如何克服解决Git冲突的恐惧症？（Git移交提交记录）">
+<meta name="twitter:description" content="到现在我们已经学习了Git的基础知识，包括：  如何克服解决Git冲突的恐惧症？（序） 如何克服解决Git冲突的恐惧症？（Git入门介绍） 如何克服解决Git冲突的恐惧症？（Git基础篇—上） 如何克服解决Git冲突的恐惧症？（Git基础篇—下） 如何克服解决Git冲突的恐惧症？（Git分支策略） 如何克服解决Git冲突的恐惧症？（Git四大组件） 如何克服解决Git冲突的恐惧症？（Git高级篇）">
+<meta name="twitter:image" content="https://user-gold-cdn.xitu.io/2018/3/18/1623974a20860eef?w=1024&h=768&f=gif&s=1838351">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://hellomypastor.net/2018/03/18/如何克服解决Git冲突的恐惧症？（Git移交提交记录）/"/>
+
+
+
+
+
+  <title>如何克服解决Git冲突的恐惧症？（Git移交提交记录） | Alexac</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Alexac</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">stay hungry stay foolish</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://hellomypastor.net/2018/03/18/如何克服解决Git冲突的恐惧症？（Git移交提交记录）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="史培培">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Alexac">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">如何克服解决Git冲突的恐惧症？（Git移交提交记录）</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-18T07:54:17+08:00">
+                2018-03-18
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Git/" itemprop="url" rel="index">
+                    <span itemprop="name">Git</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/03/18/如何克服解决Git冲突的恐惧症？（Git移交提交记录）/" class="leancloud_visitors" data-flag-title="如何克服解决Git冲突的恐惧症？（Git移交提交记录）">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>到现在我们已经学习了Git的基础知识，包括：</p>
+<ul>
+<li><a href="https://juejin.im/post/5a9d49cb6fb9a028c3684b5e" target="_blank" rel="external">如何克服解决Git冲突的恐惧症？（序）</a></li>
+<li><a href="https://juejin.im/post/5a9be0b6f265da239235cf68" target="_blank" rel="external">如何克服解决Git冲突的恐惧症？（Git入门介绍）</a></li>
+<li><a href="https://juejin.im/post/5a9fdd4a6fb9a028ca5286b6" target="_blank" rel="external">如何克服解决Git冲突的恐惧症？（Git基础篇—上）</a></li>
+<li><a href="https://juejin.im/post/5aa1534cf265da239530922a" target="_blank" rel="external">如何克服解决Git冲突的恐惧症？（Git基础篇—下）</a></li>
+<li><a href="https://juejin.im/post/5aa28b9af265da2381553a1f" target="_blank" rel="external">如何克服解决Git冲突的恐惧症？（Git分支策略）</a></li>
+<li><a href="https://juejin.im/post/5a9ea3fa5188255569187de4" target="_blank" rel="external">如何克服解决Git冲突的恐惧症？（Git四大组件）</a></li>
+<li><a href="https://juejin.im/post/5aa28c186fb9a028d2078a92" target="_blank" rel="external">如何克服解决Git冲突的恐惧症？（Git高级篇）</a></li>
+</ul>
+<p>概念涵盖了Git 90%的功能，同样也足够满足开发者的日常需求。</p>
+<blockquote>
+<p>然而, 剩余的10%在处理复杂的工作流时（或者当你陷入困惑时）可能就显示尤为重要了。</p>
+</blockquote>
+<p>接下来要讨论的这个话题是“整理提交记录” ：开发人员有时会说“<code>我想要把这个提交放到这里,那个提交放到刚才那个提交的后面</code>”, 而接下来就讲的就是它的实现方式，看起来挺复杂, 其实是个很简单的概念。</p>
+<a id="more"></a>
+<h1 id="git_cherry-pick">git cherry-pick</h1><p>第一个命令是<code>git cherry-pick</code>, 命令形式为:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git cherry-pick &lt;提交号&gt;...</div></pre></td></tr></table></figure>
+<p>如果你想将一些提交复制到当前所在的位置（HEAD）下面的话，cherry-pick是最直接的方式了。我个人非常喜欢cherry-pick，因为它特别简单。</p>
+<p>咱们还是通过例子来看一下！</p>
+<p>这里有一个仓库, 我们想将 side 分支上的工作复制到 master 分支，你立刻想到了之前学过的<code>rebase</code>了吧？但是咱们还是看看 cherry-pick有什么本领吧。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git cherry-pick C2 C4</div></pre></td></tr></table></figure>
+<p><img src="https://user-gold-cdn.xitu.io/2018/3/18/1623974a20860eef?w=1024&amp;h=768&amp;f=gif&amp;s=1838351" alt=""></p>
+<p>这就是了！我们只需要提交记录C2和C4，所以Git就将被它们抓过来放到当前分支下了，就是这么简单!</p>
+<h1 id="交互式rebase">交互式rebase</h1><p>当你你知道你所需要的提交记录（并且还知道这些提交记录的哈希值）时, 用cherry-pick再好不过了，没有比这更简单的方式了。</p>
+<p>但是如果你不清楚你想要的提交记录的哈希值呢?</p>
+<p>幸好Git帮你想到了这一点, 我们可以利用交互式的rebase，如果你想从一系列的提交记录中找到想要的记录, 这就是最好的方法了</p>
+<p>咱们具体来看一下：</p>
+<p>交互式rebase指的是使用带参数<code>--interactive</code>的rebase命令, 简写为<code>-i</code></p>
+<p>如果你在命令后增加了这个选项, Git会打开一个UI界面并列出将要被复制到目标分支的备选提交记录，它还会显示每个提交记录的哈希值和提交说明，提交说明有助于你理解这个提交进行了哪些更改。</p>
+<p>在实际使用时，所谓的UI窗口一般会在文本编辑器：如Vim中打开一个文件。</p>
+<p>当rebase UI界面打开时, 你能做3件事:</p>
+<ul>
+<li>调整提交记录的顺序</li>
+<li>删除你不想要的提交</li>
+<li>合并提交</li>
+</ul>
+<p>接下来看下具体命令：</p>
+<p><img src="https://user-gold-cdn.xitu.io/2018/3/18/1623948b8b1e9de5?w=1490&amp;h=874&amp;f=png&amp;s=345569" alt=""></p>
+<p>可以看到：</p>
+<ul>
+<li>p, pick = use commit</li>
+<li>r, reword = use commit, but edit the commit message</li>
+<li>e, edit = use commit, but stop for amending</li>
+<li>s, squash = use commit, but meld into previous commit</li>
+<li>f, fixup = like “squash”, but discard this commit’s log message</li>
+<li>x, exec = run command (the rest of the line) using shell</li>
+<li>d, drop = remove commit</li>
+</ul>
+<h4 id="拆分提交记录_edit">拆分提交记录 edit</h4><p>更改子提交pick为edit，表示需要修改此次提交；然后reset到需要拆分的上次提交，但是保留工区的内容，再依次commit工作区中的内容。</p>
+<h4 id="合并提交记录_squash">合并提交记录 squash</h4><p>更改子提交 pick 为squash，表示与当前提交的父提交合并。</p>
+<h4 id="批量修改历史提交信息_reword">批量修改历史提交信息 reword</h4><p>更改子提交 pick 为reword，表示修改历史提交信息。</p>
+<h4 id="删除历史纪录">删除历史纪录</h4><p>修改pick为drop, 或者直接删除所在的行。</p>
+<blockquote>
+<p>相信大家对Git移交提交记录已经基本掌握，不妨在自己的git环境中动手试一试吧～</p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechatpay.jpeg" alt="史培培 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpeg" alt="史培培 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    史培培
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://hellomypastor.net/2018/03/18/如何克服解决Git冲突的恐惧症？（Git移交提交记录）/" title="如何克服解决Git冲突的恐惧症？（Git移交提交记录）">http://hellomypastor.net/2018/03/18/如何克服解决Git冲突的恐惧症？（Git移交提交记录）/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Git/" rel="tag"># Git</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/15/如何克服解决Git冲突的恐惧症？（Git高级篇）/" rel="next" title="如何克服解决Git冲突的恐惧症？（Git高级篇）">
+                <i class="fa fa-chevron-left"></i> 如何克服解决Git冲突的恐惧症？（Git高级篇）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/19/如何克服解决Git冲突的恐惧症？（Git杂项）/" rel="prev" title="如何克服解决Git冲突的恐惧症？（Git杂项）">
+                如何克服解决Git冲突的恐惧症？（Git杂项） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8zMjMxNS84ODc2"></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpg"
+                alt="史培培" />
+            
+              <p class="site-author-name" itemprop="name">史培培</p>
+              <p class="site-description motion-element" itemprop="description">stay hungry stay foolish</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">51</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.jianshu.com/u/f66899a37408" title="我的简书" target="_blank">我的简书</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://juejin.im/user/587467c2128fe100583131af/posts" title="我的掘金" target="_blank">我的掘金</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://oceanjack.github.io/" title="OceanJack" target="_blank">OceanJack</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#git_cherry-pick"><span class="nav-number">1.</span> <span class="nav-text">git cherry-pick</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#交互式rebase"><span class="nav-number">2.</span> <span class="nav-text">交互式rebase</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#拆分提交记录_edit"><span class="nav-number">2.0.0.1.</span> <span class="nav-text">拆分提交记录 edit</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#合并提交记录_squash"><span class="nav-number">2.0.0.2.</span> <span class="nav-text">合并提交记录 squash</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#批量修改历史提交信息_reword"><span class="nav-number">2.0.0.3.</span> <span class="nav-text">批量修改历史提交信息 reword</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#删除历史纪录"><span class="nav-number">2.0.0.4.</span> <span class="nav-text">删除历史纪录</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+<div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">史培培</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.3</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.3"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("7vnqelnmehb5id738td3d541e3ap3wq9q29n9t6khpw10r03", "6hbvt6y29jytyow09w1y1gbl3725wlpedl5o565wuglteym7");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+
+  
+    <script type="text/javascript" src="//cdn.bootcss.com/canvas-nest.js/1.0.0/canvas-nest.min.js"></script>
+  
+</body>
+</html>
