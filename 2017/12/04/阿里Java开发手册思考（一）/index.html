@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Alexac">
 <meta property="og:description" content="旧时王谢堂前燕，飞入寻常百姓家。小编将带你们一起分析阿里巴巴Java开发手册！">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-12-10T11:41:43.000Z">
+<meta property="og:updated_time" content="2018-10-15T23:05:18.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="阿里Java开发手册思考（一）">
 <meta name="twitter:description" content="旧时王谢堂前燕，飞入寻常百姓家。小编将带你们一起分析阿里巴巴Java开发手册！">
@@ -398,7 +398,7 @@
 </ul>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">today</span><span class="params">()</span> </span>&#123; </div><div class="line">    <span class="keyword">if</span> (isBusy()) &#123;</div><div class="line">        System.out.println(“change time.”); <span class="keyword">return</span>;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> (isFree()) &#123;</div><div class="line">        System.out.println(“go to travel.”);</div><div class="line">        <span class="keyword">return</span>; </div><div class="line">    &#125;</div><div class="line">    System.out.println(“stay at home to learn Alibaba Java Coding Guidelines.”);</div><div class="line">    <span class="keyword">return</span>; </div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <blockquote>
-<p>我们试图通过例子来分析下上面的规则，在分析之前，我们先明确在Java里，默认的equals和hashCode方法的实现，以及把一个元素放入散列集合（HashSet、HashMap等）时，散列集合对equals和hashCode方法的判定规则。<br>Java对象中默认的equals(Object obj)方法用来判断两个对象是否“相同”，如果“相同”则返回true，否则返回false。hashCode()方法返回一个int数，这个整数值是将该对象的内部地址转换成一个整数返回的 。<br>在散列集合中存储一个对象时，先进行hashCode的比较，如果hashCode不想等，则直接放入，否则继续进行equals的比较，equals不相等才放入，equals不相等就直接丢弃了。</p>
+<p>我们试图通过例子来分析下上面的规则，在分析之前，我们先明确在Java里，默认的equals和hashCode方法的实现，以及把一个元素放入散列集合（HashSet、HashMap等）时，散列集合对equals和hashCode方法的判定规则。<br>Java对象中默认的equals(Object obj)方法用来判断两个对象是否“相同”，如果“相同”则返回true，否则返回false。hashCode()方法返回一个int数，这个整数值是将该对象的内部地址转换成一个整数返回的 。<br>在散列集合中存储一个对象时，先进行hashCode的比较，如果hashCode不想等，则直接放入，否则继续进行equals的比较，equals不相等才放入，equals相等就直接丢弃了。</p>
 </blockquote>
 <h2 id="理解">理解</h2><ul>
 <li>如果只重写equals而不重写hashCode会导致什么问题？</li>
