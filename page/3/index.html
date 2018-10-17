@@ -272,6 +272,179 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://hellomypastor.net/2018/02/13/Java9新特性系列（module-spi）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="史培培">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Alexac">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/02/13/Java9新特性系列（module-spi）/" itemprop="url">Java9新特性系列（module&spi）</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-13T22:32:30+08:00">
+                2018-02-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/02/13/Java9新特性系列（module-spi）/" class="leancloud_visitors" data-flag-title="Java9新特性系列（module&spi）">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>上两篇已经深入分析了<a href="http://hellomypastor.net/2018/02/10/Java9%E6%96%B0%E7%89%B9%E6%80%A7%E7%B3%BB%E5%88%97%EF%BC%88%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%E6%A8%A1%E5%9D%97%E5%8C%96%EF%BC%89/">Java9新特性系列（深入理解模块化）</a>，以及<a href="http://hellomypastor.net/2018/02/11/Java9%E6%96%B0%E7%89%B9%E6%80%A7%E7%B3%BB%E5%88%97%EF%BC%88module-maven-starter%EF%BC%89/">Java9新特性系列（module&amp;maven&amp;starter）</a>，有读者又提到了与模块化相关的<code>spi</code>，本篇将进行分析。</p>
+<h1 id="SPI是什么？">SPI是什么？</h1><p>提到SPI呢，就不得不提一下API：</p>
+<p>API：Application Programming Interface，即应用程序编程接口，在程序外部进行调用</p>
+<p>SPI：Service Provider Interface，服务提供商接口</p>
+<h1 id="SPI核心思想是什么？">SPI核心思想是什么？</h1><p>我们知道，一个系统中会有很多模块，比如数据库模块、日志模块、调度模块、各种业务模块等等，每一类的模块都有很多种实现，<br>数据库可以用mysql、oracle等，日志可以用log4j、logback等，那么对于不同的场景有不同的选型，如何能做到可插拔呢，那就是SPI了。</p>
+<blockquote>
+<p>可插拔原则可以理解为系统与插件的关系，系统提供了一些接口，第三方插件进行实现。</p>
+</blockquote>
+<p>面向接口编程，不绑定实现，为了在模块装配的时候不在代码中动态去指定具体的实现，就需要去发现具体的实现，即服务发现，其实就类似于回调，只不过回调的时候需要找到具体的实现，spi就帮我们做了去寻找实现的工作。</p>
+<blockquote>
+<p>这一思想在模块化设计中尤为重要。</p>
+</blockquote>
+<h1 id="SPI实现方式？">SPI实现方式？</h1><p>SPI具体的实现方式分两种：</p>
+<ul>
+<li>应用系统自身提供默认实现</li>
+<li>第三方提供实现</li>
+</ul>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/02/13/Java9新特性系列（module-spi）/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://hellomypastor.net/2018/02/11/Java9新特性系列（module-maven-starter）/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1699,165 +1872,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://hellomypastor.net/2017/12/28/Java8新特性（Stream）/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="史培培">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Alexac">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/28/Java8新特性（Stream）/" itemprop="url">Java8新特性（Stream）</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-28T22:38:44+08:00">
-                2017-12-28
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java/" itemprop="url" rel="index">
-                    <span itemprop="name">Java</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2017/12/28/Java8新特性（Stream）/" class="leancloud_visitors" data-flag-title="Java8新特性（Stream）">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <blockquote>
-<p>上期我们分析了Java8中的引用，本期我们将分析Java8中的另一个重要的新特性：流Stream。<br>本文<strong><code>图片</code></strong>转载自<a href="http://ifeve.com/stream/" target="_blank" rel="external">并发编程网</a></p>
-</blockquote>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/12/28/Java8新特性（Stream）/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1912,7 +1926,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">52</span>
+                  <span class="site-state-item-count">53</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

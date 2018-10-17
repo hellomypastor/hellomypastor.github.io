@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="JDK集合," />
+  <meta name="keywords" content="Java,Java9新特性," />
 
 
 
@@ -79,20 +79,20 @@
 
 
 
-<meta name="description" content="集合对于使用Java的人来说就好像是日常三餐一样，熟悉且必不可少。集合是Java中重要的知识点，虽然我们平时都用到它，但是我们真的了解什么场景下用什么集合类吗？哪些是有序的？哪些是无序的？哪些是线程安全的？哪些是线程不安全的？…本系列将从源码的角度来分析集合框架，知其然，同时知其所以然，下面开始我们的探索之旅～ Java集合工具包位于Java.util包下，包含了很多常用的数据结构，如数组">
-<meta name="keywords" content="JDK集合">
+<meta name="description" content="最近从 Oracle Jdk8 切换到 OpenJdk 10 后，遇到了一个诡异的问题，通过 Debug 排查后发现原来是 Stream.peek() 方法在搞鬼，特此记录下，以防后续使用 Java 9及以上 版本时再次犯同样的错误。 示例代码如下： 123456789public static void main(String[] args) &amp;#123;    List&amp;lt;String&amp;g">
+<meta name="keywords" content="Java,Java9新特性">
 <meta property="og:type" content="article">
-<meta property="og:title" content="JDK集合源码剖析（集合框架）">
-<meta property="og:url" content="http://hellomypastor.net/2018/10/16/JDK集合源码剖析（集合框架）/index.html">
+<meta property="og:title" content="Stream.peek() method in Java 8 vs Java 9">
+<meta property="og:url" content="http://hellomypastor.net/2018/10/17/Stream-peek-method-in-Java-8-vs-Java-9/index.html">
 <meta property="og:site_name" content="Alexac">
-<meta property="og:description" content="集合对于使用Java的人来说就好像是日常三餐一样，熟悉且必不可少。集合是Java中重要的知识点，虽然我们平时都用到它，但是我们真的了解什么场景下用什么集合类吗？哪些是有序的？哪些是无序的？哪些是线程安全的？哪些是线程不安全的？…本系列将从源码的角度来分析集合框架，知其然，同时知其所以然，下面开始我们的探索之旅～ Java集合工具包位于Java.util包下，包含了很多常用的数据结构，如数组">
+<meta property="og:description" content="最近从 Oracle Jdk8 切换到 OpenJdk 10 后，遇到了一个诡异的问题，通过 Debug 排查后发现原来是 Stream.peek() 方法在搞鬼，特此记录下，以防后续使用 Java 9及以上 版本时再次犯同样的错误。 示例代码如下： 123456789public static void main(String[] args) &amp;#123;    List&amp;lt;String&amp;g">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/10/16/1667d3a6453f7c07?w=1416&h=544&f=png&s=56185">
-<meta property="og:updated_time" content="2018-10-16T14:30:06.000Z">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/10/17/166821db0803fcbd?w=403&h=212&f=jpeg&s=33878">
+<meta property="og:updated_time" content="2018-10-17T13:29:51.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="JDK集合源码剖析（集合框架）">
-<meta name="twitter:description" content="集合对于使用Java的人来说就好像是日常三餐一样，熟悉且必不可少。集合是Java中重要的知识点，虽然我们平时都用到它，但是我们真的了解什么场景下用什么集合类吗？哪些是有序的？哪些是无序的？哪些是线程安全的？哪些是线程不安全的？…本系列将从源码的角度来分析集合框架，知其然，同时知其所以然，下面开始我们的探索之旅～ Java集合工具包位于Java.util包下，包含了很多常用的数据结构，如数组">
-<meta name="twitter:image" content="https://user-gold-cdn.xitu.io/2018/10/16/1667d3a6453f7c07?w=1416&h=544&f=png&s=56185">
+<meta name="twitter:title" content="Stream.peek() method in Java 8 vs Java 9">
+<meta name="twitter:description" content="最近从 Oracle Jdk8 切换到 OpenJdk 10 后，遇到了一个诡异的问题，通过 Debug 排查后发现原来是 Stream.peek() 方法在搞鬼，特此记录下，以防后续使用 Java 9及以上 版本时再次犯同样的错误。 示例代码如下： 123456789public static void main(String[] args) &amp;#123;    List&amp;lt;String&amp;g">
+<meta name="twitter:image" content="https://user-gold-cdn.xitu.io/2018/10/17/166821db0803fcbd?w=403&h=212&f=jpeg&s=33878">
 
 
 
@@ -122,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://hellomypastor.net/2018/10/16/JDK集合源码剖析（集合框架）/"/>
+  <link rel="canonical" href="http://hellomypastor.net/2018/10/17/Stream-peek-method-in-Java-8-vs-Java-9/"/>
 
 
 
 
 
-  <title>JDK集合源码剖析（集合框架） | Alexac</title>
+  <title>Stream.peek() method in Java 8 vs Java 9 | Alexac</title>
   
 
 
@@ -275,7 +275,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://hellomypastor.net/2018/10/16/JDK集合源码剖析（集合框架）/">
+    <link itemprop="mainEntityOfPage" href="http://hellomypastor.net/2018/10/17/Stream-peek-method-in-Java-8-vs-Java-9/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="史培培">
@@ -292,7 +292,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">JDK集合源码剖析（集合框架）</h1>
+          <h1 class="post-title" itemprop="name headline">Stream.peek() method in Java 8 vs Java 9</h1>
         
 
         <div class="post-meta">
@@ -304,8 +304,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-16T21:04:32+08:00">
-                2018-10-16
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-17T20:42:16+08:00">
+                2018-10-17
               </time>
             
 
@@ -327,8 +327,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/JDK集合/" itemprop="url" rel="index">
-                    <span itemprop="name">JDK集合</span>
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
                   </a>
                 </span>
 
@@ -344,7 +344,7 @@
 
           
           
-             <span id="/2018/10/16/JDK集合源码剖析（集合框架）/" class="leancloud_visitors" data-flag-title="JDK集合源码剖析（集合框架）">
+             <span id="/2018/10/17/Stream-peek-method-in-Java-8-vs-Java-9/" class="leancloud_visitors" data-flag-title="Stream.peek() method in Java 8 vs Java 9">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -380,20 +380,30 @@
       
 
       
-        <p>集合对于使用Java的人来说就好像是日常三餐一样，熟悉且必不可少。集合是Java中重要的知识点，虽然我们平时都用到它，但是我们真的了解什么场景下用什么集合类吗？哪些是有序的？哪些是无序的？哪些是线程安全的？哪些是线程不安全的？…本系列将从源码的角度来分析集合框架，知其然，同时知其所以然，下面开始我们的探索之旅～</p>
-<p>Java集合工具包位于Java.util包下，包含了很多常用的数据结构，如数组、链表、栈、队列、集合、哈希表等。学习Java集合框架下大致可以分为如下五个部分：List列表、Set集合、Map映射、迭代器（Iterator、Enumeration）、工具类（Arrays、Collections）。</p>
-<p>Java集合类的整体框架如下：</p>
-<p><img src="https://user-gold-cdn.xitu.io/2018/10/16/1667d3a6453f7c07?w=1416&amp;h=544&amp;f=png&amp;s=56185" alt=""></p>
+        <p>最近从 <code>Oracle Jdk8</code> 切换到 <code>OpenJdk 10</code> 后，遇到了一个诡异的问题，通过 Debug 排查后发现原来是 <code>Stream.peek()</code> 方法在搞鬼，特此记录下，以防后续使用 <code>Java 9及以上</code> 版本时再次犯同样的错误。</p>
+<p>示例代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">    List&lt;String&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;() &#123;&#123;</div><div class="line">        add(<span class="string">"a"</span>);</div><div class="line">        add(<span class="string">"b"</span>);</div><div class="line">        add(<span class="string">"c"</span>);</div><div class="line">    &#125;&#125;;</div><div class="line"></div><div class="line">    list.stream().peek(System.out::println).count();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在 <code>Java 8</code> 中，输出应如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">a</div><div class="line">b</div><div class="line">c</div></pre></td></tr></table></figure>
+<p>切换到 <code>Java 9</code> 后，没有任何输出!!!</p>
+<p>突然有点怀疑人生的感觉-_-#</p>
 <a id="more"></a>
-<p>从上图中可以看出，集合类主要分为两大类：<code>Collection</code>和<code>Map</code>。</p>
-<p>Collection是List、Set等集合高度抽象出来的接口，它包含了这些集合的基本操作，它主要又分为两大部分：List和Set。</p>
-<p><code>List</code>接口通常表示一个列表（数组、队列、链表、栈等），其中的元素可以重复，常用实现类为<code>ArrayList</code>和<code>LinkedList</code>，另外还有不常用的<code>Vector</code>。另外，LinkedList还是实现了Queue接口，因此也可以作为队列使用。</p>
-<p><code>Set</code>接口通常表示一个集合，其中的元素不允许重复（通过<code>hashcode</code>和<code>equals</code>函数保证），常用实现类有<code>HashSet</code>和<code>TreeSet</code>，HashSet是通过Map中的HashMap实现的，而TreeSet是通过Map中的TreeMap实现的。另外，TreeSet还实现了<code>SortedSet</code>接口，因此是有序的集合（集合中的元素要实现<code>Comparable</code>接口，并覆写<code>Compartor</code>函数才行）。</p>
-<p>我们看到，抽象类<code>AbstractCollection</code>、<code>AbstractList</code>和<code>AbstractSet</code>分别实现了<code>Collection</code>、<code>List</code>和<code>Set</code>接口，这就是在Java集合框架中用的很多的<code>适配器设计模式</code>，用这些抽象类去实现接口，在抽象类中实现接口中的若干或全部方法，这样下面的一些类只需直接继承该抽象类，并实现自己需要的方法即可，而不用实现接口中的全部抽象方法。</p>
-<p><code>Map</code>是一个映射接口，其中的每个元素都是一个<code>key-value键值对</code>，同样抽象类<code>AbstractMap</code>通过适配器模式实现了Map接口中的大部分函数，<code>TreeMap</code>、<code>HashMap</code>、<code>WeakHashMap</code>等实现类都通过继承<code>AbstractMap</code>来实现，另外，不常用的<code>HashTable</code>直接实现了Map接口，它和Vector都是JDK1.0就引入的集合类。</p>
-<p><code>Iterator</code>是遍历集合的迭代器（不能遍历Map，只用来遍历Collection），Collection的实现类都实现了<code>iterator()</code>函数，它返回一个Iterator对象，用来遍历集合，<code>ListIterator</code>则专门用来遍历List。而<code>Enumeration</code>则是JDK1.0时引入的，作用与Iterator相同，但它的功能比Iterator要少，它只能再Hashtable、Vector和Stack中使用。</p>
-<p><code>Arrays</code>和<code>Collections</code>是用来操作数组、集合的两个工具类，例如在ArrayList和Vector中大量调用了<code>Arrays.Copyof()</code>方法，而Collections中有很多静态方法可以返回各集合类的synchronized版本，即线程安全的版本，当然了，如果要用线程安全的结合类，首选<code>Concurrent</code>并发包下的对应的集合类。</p>
-<p>说明：本文图片为作者自己重新画的，便于自己理解，其余转载自：<a href="http://blog.csdn.net/ns_code/article/details/35564663" target="_blank" rel="external">兰亭风雨</a></p>
+<p>于是就去 <code>StackOverFlow</code> （如果你不知道的话，赶紧去访问看看～）问答网站上搜索，发现也有人出现一样的问题：<a href="https://stackoverflow.com/questions/48221783/stream-peek-method-in-java-8-vs-java-9" target="_blank" rel="external">Stream.peek() method in Java 8 vs Java 9</a></p>
+<p>针对以上问题，分析如下：</p>
+<h4 id="Stream-peek()_方法介绍">Stream.peek() 方法介绍</h4><p>生成一个包含原 <code>Stream</code> 的所有元素的新 Stream，同时会提供一个消费函数（ <code>Consumer</code> 实例），新 Stream 每个元素被消费的时候都会执行给定的消费函数；</p>
+<p>代码定义如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="function">Stream&lt;T&gt; <span class="title">peek</span><span class="params">(Consumer&lt;? <span class="keyword">super</span> T&gt; action)</span></span>;</div></pre></td></tr></table></figure>
+<p>示意图如下：</p>
+<p><img src="https://user-gold-cdn.xitu.io/2018/10/17/166821db0803fcbd?w=403&amp;h=212&amp;f=jpeg&amp;s=33878" alt=""></p>
+<h4 id="Java_9_中_Stream-peek()_不执行的原因">Java 9 中 Stream.peek() 不执行的原因</h4><p><code>Javadoc</code> 关于 <code>Stream</code> 说明如下：</p>
+<blockquote>
+<p>A stream implementation is permitted significant latitude in optimizing the computation of the result. For example, <code>a stream implementation is free to elide operations (or entire stages) from a stream pipeline -- and therefore elide invocation of behavioral parameters -- if it can prove that it would not affect the result of the computation</code>. This means that <code>side-effects of behavioral parameters may not always be executed</code> and should not be relied upon, unless otherwise specified (such as by the terminal operations forEach and forEachOrdered). (For a specific example of such an optimization, see the API note documented on the count() operation. For more detail, see the side-effects section of the stream package documentation.)</p>
+</blockquote>
+<p><code>Javadoc</code> 关于 <code>count()</code> 说明如下：</p>
+<blockquote>
+<p>API Note:<br><br><code>An implementation may choose to not execute the stream pipeline (either sequentially or in parallel) if it is capable of computing the count directly from the stream source</code>. In such cases no source elements will be traversed and <code>no intermediate operations will be evaluated</code>. Behavioral parameters with side-effects, which are strongly discouraged except for harmless cases such as debugging, may be affected. </p>
+</blockquote>
+<p>从 <code>Javadoc</code> 中可以知道，当 <code>List</code> 的元素个数没有变化时，没必要执行 <code>map</code> 和 <code>peek</code> 方法，而且<code>终止操作</code>为 <code>count()</code>，元素个数没有变化时，也没必要执行 <code>map</code> 和 <code>peek</code> 方法，除非使用能影响元素个数的一些方法，如 <code>filter</code> 和 <code>distinct</code>，所以在 <code>Java 9</code> 中使用 <code>Stream.peek()</code> 与 <code>Stream.map()</code> 方法要注意使用场景，否则方法时不会执行的。</p>
 
       
     </div>
@@ -440,7 +450,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/JDK集合/" rel="tag"># JDK集合</a>
+            <a href="/tags/Java/" rel="tag"># Java</a>
+          
+            <a href="/tags/Java9新特性/" rel="tag"># Java9新特性</a>
           
         </div>
       
@@ -453,8 +465,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/03/20/如何克服解决Git冲突的恐惧症？（Git高级话题）/" rel="next" title="如何克服解决Git冲突的恐惧症？（Git高级话题）">
-                <i class="fa fa-chevron-left"></i> 如何克服解决Git冲突的恐惧症？（Git高级话题）
+              <a href="/2018/10/16/jdk-collection/" rel="next" title="JDK集合源码剖析（集合框架）">
+                <i class="fa fa-chevron-left"></i> JDK集合源码剖析（集合框架）
               </a>
             
           </div>
@@ -518,8 +530,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -538,7 +559,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">52</span>
+                  <span class="site-state-item-count">53</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -607,6 +628,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Stream-peek()_方法介绍"><span class="nav-number">1.</span> <span class="nav-text">Stream.peek() 方法介绍</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Java_9_中_Stream-peek()_不执行的原因"><span class="nav-number">2.</span> <span class="nav-text">Java 9 中 Stream.peek() 不执行的原因</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

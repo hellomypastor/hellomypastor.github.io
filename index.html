@@ -272,7 +272,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://hellomypastor.net/2018/10/16/JDK集合源码剖析（集合框架）/">
+    <link itemprop="mainEntityOfPage" href="http://hellomypastor.net/2018/10/17/Stream-peek-method-in-Java-8-vs-Java-9/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="史培培">
@@ -291,7 +291,170 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/10/16/JDK集合源码剖析（集合框架）/" itemprop="url">JDK集合源码剖析（集合框架）</a></h1>
+                <a class="post-title-link" href="/2018/10/17/Stream-peek-method-in-Java-8-vs-Java-9/" itemprop="url">Stream.peek() method in Java 8 vs Java 9</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-17T20:42:16+08:00">
+                2018-10-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index">
+                    <span itemprop="name">Java</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/10/17/Stream-peek-method-in-Java-8-vs-Java-9/" class="leancloud_visitors" data-flag-title="Stream.peek() method in Java 8 vs Java 9">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>最近从 <code>Oracle Jdk8</code> 切换到 <code>OpenJdk 10</code> 后，遇到了一个诡异的问题，通过 Debug 排查后发现原来是 <code>Stream.peek()</code> 方法在搞鬼，特此记录下，以防后续使用 <code>Java 9及以上</code> 版本时再次犯同样的错误。</p>
+<p>示例代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">    List&lt;String&gt; list = <span class="keyword">new</span> ArrayList&lt;&gt;() &#123;&#123;</div><div class="line">        add(<span class="string">"a"</span>);</div><div class="line">        add(<span class="string">"b"</span>);</div><div class="line">        add(<span class="string">"c"</span>);</div><div class="line">    &#125;&#125;;</div><div class="line"></div><div class="line">    list.stream().peek(System.out::println).count();</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在 <code>Java 8</code> 中，输出应如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">a</div><div class="line">b</div><div class="line">c</div></pre></td></tr></table></figure>
+<p>切换到 <code>Java 9</code> 后，没有任何输出!!!</p>
+<p>突然有点怀疑人生的感觉-_-#</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/10/17/Stream-peek-method-in-Java-8-vs-Java-9/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://hellomypastor.net/2018/10/16/jdk-collection/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="史培培">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Alexac">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/10/16/jdk-collection/" itemprop="url">JDK集合源码剖析（集合框架）</a></h1>
         
 
         <div class="post-meta">
@@ -343,7 +506,7 @@
 
           
           
-             <span id="/2018/10/16/JDK集合源码剖析（集合框架）/" class="leancloud_visitors" data-flag-title="JDK集合源码剖析（集合框架）">
+             <span id="/2018/10/16/jdk-collection/" class="leancloud_visitors" data-flag-title="JDK集合源码剖析（集合框架）">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -381,7 +544,7 @@
 <p><img src="https://user-gold-cdn.xitu.io/2018/10/16/1667d3a6453f7c07?w=1416&amp;h=544&amp;f=png&amp;s=56185" alt=""></p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/10/16/JDK集合源码剖析（集合框架）/#more" rel="contents">
+            <a class="btn" href="/2018/10/16/jdk-collection/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1758,169 +1921,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://hellomypastor.net/2018/03/06/如何克服解决Git冲突的恐惧症？（Git入门介绍）/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="史培培">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Alexac">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/03/06/如何克服解决Git冲突的恐惧症？（Git入门介绍）/" itemprop="url">如何克服解决Git冲突的恐惧症？（Git入门介绍）</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-06T07:45:21+08:00">
-                2018-03-06
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Git/" itemprop="url" rel="index">
-                    <span itemprop="name">Git</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2018/03/06/如何克服解决Git冲突的恐惧症？（Git入门介绍）/" class="leancloud_visitors" data-flag-title="如何克服解决Git冲突的恐惧症？（Git入门介绍）">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="VCS">VCS</h1><p>版本控制系统（version control system）,是一种记录一个或若干文件内容变化，以便将来查阅特定版本修订情况的系统。版本控制系统不仅可以应用于软件源代码的文本文件，而且可以对任何类型的文件进行版本控制。用的比较多的如svn，git等。</p>
-<h1 id="DVCS">DVCS</h1><p>分布式版本控制系统（Distributed Version Control System），软件开发过程中，要解决多人协作的问题，需要有一个版本控制系统，用来合并和管理多人对同一个项目的开发和修改。版本控制有两种方式，一种是集中式版本控制系统，顾名思义，是把代码的管理和同步放在同一个服务器端来进行，如CVS，SVN，由于有完善的权限系统，以及统一的服务端，适合商业软件的开发；而分布式版本控制系统，则相当于把集中式版本控制系统的服务端和客户端都交给参与开发的客户端来保管，只有需要不同开发者合并代码时，才需要一个中转站来完成。</p>
-<h1 id="Git">Git</h1><p>Git是一款免费的、开源的分布式版本控制系统，旨在快速高效地处理无论规模大小的任何软件工程。Git很容易学习，且小步快走，有着闪电般的性能。它超越了SCM工具，比如SVN、CVS、Perforce、ClearCase等，具体体现在方便的本地分支管理、方便的暂存区、并行工作流等。</p>
-<p>每一个 Git克隆 都是一个完整的文件库，含有全部历史记录和修订追踪能力，不依赖于网络连接或中心服务器。其最大特色就是“分支”及“合并”操作非常快速、简便。</p>
-<blockquote>
-<p>Git 是由“Linux之父” Linus Torvalds 创建的。因为他发现找不到满意的方案来管理 Linux Kernel 联合开发的版本控制，就自己写了Git。</p>
-</blockquote>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/03/06/如何克服解决Git冲突的恐惧症？（Git入门介绍）/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1975,7 +1975,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">52</span>
+                  <span class="site-state-item-count">53</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
