@@ -83,12 +83,12 @@
 <meta name="keywords" content="Java,Java9新特性">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Stream.peek() method in Java 8 vs Java 9">
-<meta property="og:url" content="http://hellomypastor.net/2018/10/17/Stream-peek-method-in-Java-8-vs-Java-9/index.html">
+<meta property="og:url" content="http://hellomypastor.net/2018/10/17/stream-peek-method-in-java-8-vs-java-9/index.html">
 <meta property="og:site_name" content="Alexac">
 <meta property="og:description" content="最近从 Oracle Jdk8 切换到 OpenJdk 10 后，遇到了一个诡异的问题，通过 Debug 排查后发现原来是 Stream.peek() 方法在搞鬼，特此记录下，以防后续使用 Java 9及以上 版本时再次犯同样的错误。 示例代码如下： 123456789public static void main(String[] args) &amp;#123;    List&amp;lt;String&amp;g">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/10/17/166821db0803fcbd?w=403&h=212&f=jpeg&s=33878">
-<meta property="og:updated_time" content="2018-10-17T13:31:58.000Z">
+<meta property="og:updated_time" content="2018-10-17T23:50:12.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Stream.peek() method in Java 8 vs Java 9">
 <meta name="twitter:description" content="最近从 Oracle Jdk8 切换到 OpenJdk 10 后，遇到了一个诡异的问题，通过 Debug 排查后发现原来是 Stream.peek() 方法在搞鬼，特此记录下，以防后续使用 Java 9及以上 版本时再次犯同样的错误。 示例代码如下： 123456789public static void main(String[] args) &amp;#123;    List&amp;lt;String&amp;g">
@@ -122,7 +122,7 @@
 
 
 
-  <link rel="canonical" href="http://hellomypastor.net/2018/10/17/Stream-peek-method-in-Java-8-vs-Java-9/"/>
+  <link rel="canonical" href="http://hellomypastor.net/2018/10/17/stream-peek-method-in-java-8-vs-java-9/"/>
 
 
 
@@ -275,7 +275,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://hellomypastor.net/2018/10/17/Stream-peek-method-in-Java-8-vs-Java-9/">
+    <link itemprop="mainEntityOfPage" href="http://hellomypastor.net/2018/10/17/stream-peek-method-in-java-8-vs-java-9/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="史培培">
@@ -344,7 +344,7 @@
 
           
           
-             <span id="/2018/10/17/Stream-peek-method-in-Java-8-vs-Java-9/" class="leancloud_visitors" data-flag-title="Stream.peek() method in Java 8 vs Java 9">
+             <span id="/2018/10/17/stream-peek-method-in-java-8-vs-java-9/" class="leancloud_visitors" data-flag-title="Stream.peek() method in Java 8 vs Java 9">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -404,6 +404,10 @@
 <p>API Note:<br><br><code>An implementation may choose to not execute the stream pipeline (either sequentially or in parallel) if it is capable of computing the count directly from the stream source</code>. In such cases no source elements will be traversed and <code>no intermediate operations will be evaluated</code>. Behavioral parameters with side-effects, which are strongly discouraged except for harmless cases such as debugging, may be affected. </p>
 </blockquote>
 <p>从 <code>Javadoc</code> 中可以知道，当 <code>List</code> 的元素个数没有变化时，没必要执行 <code>map</code> 和 <code>peek</code> 方法，而且<code>终止操作</code>为 <code>count()</code>，元素个数没有变化时，也没必要执行 <code>map</code> 和 <code>peek</code> 方法，除非使用能影响元素个数的一些方法，如 <code>filter</code> 和 <code>distinct</code>，所以在 <code>Java 9</code> 中使用 <code>Stream.peek()</code> 与 <code>Stream.map()</code> 方法要注意使用场景，否则方法是不会执行的。</p>
+<p><code>Javadoc</code> 中还有一段说明，<code>peek()</code> 方法主要用于 <code>debug</code>：</p>
+<blockquote>
+<p>API Note <br>This method exists mainly to <code>support debugging</code>, where you want to see the elements as they flow past a certain point in a pipeline.</p>
+</blockquote>
 
       
     </div>
