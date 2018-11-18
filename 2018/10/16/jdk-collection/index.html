@@ -6,10 +6,10 @@
 
 
 <html class="theme-next pisces use-motion" lang="zh-Hans">
-<head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta name="theme-color" content="#222">
 
 
@@ -20,8 +20,8 @@
 
 
 
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
 
 
 
@@ -40,7 +40,7 @@
 
   
   
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
 
 
 
@@ -48,9 +48,9 @@
 
 
 
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
 
-<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css">
 
 
   <link rel="apple-touch-icon" sizes="180x180" href="/images/avatar.jpg?v=5.1.3">
@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="JDK集合," />
+  <meta name="keywords" content="JDK集合,">
 
 
 
@@ -87,12 +87,12 @@
 <meta property="og:site_name" content="Alexac">
 <meta property="og:description" content="集合对于使用Java的人来说就好像是日常三餐一样，熟悉且必不可少。集合是Java中重要的知识点，虽然我们平时都用到它，但是我们真的了解什么场景下用什么集合类吗？哪些是有序的？哪些是无序的？哪些是线程安全的？哪些是线程不安全的？…本系列将从源码的角度来分析集合框架，知其然，同时知其所以然，下面开始我们的探索之旅～ Java集合工具包位于Java.util包下，包含了很多常用的数据结构，如数组">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/10/16/1667d3a6453f7c07?w=1416&h=544&f=png&s=56185">
-<meta property="og:updated_time" content="2018-10-17T13:28:27.000Z">
+<meta property="og:image" content="http://hellomypastor.net/2018/10/16/jdk-collection/jdk-collection.png">
+<meta property="og:updated_time" content="2018-11-18T04:32:12.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JDK集合源码剖析（集合框架）">
 <meta name="twitter:description" content="集合对于使用Java的人来说就好像是日常三餐一样，熟悉且必不可少。集合是Java中重要的知识点，虽然我们平时都用到它，但是我们真的了解什么场景下用什么集合类吗？哪些是有序的？哪些是无序的？哪些是线程安全的？哪些是线程不安全的？…本系列将从源码的角度来分析集合框架，知其然，同时知其所以然，下面开始我们的探索之旅～ Java集合工具包位于Java.util包下，包含了很多常用的数据结构，如数组">
-<meta name="twitter:image" content="https://user-gold-cdn.xitu.io/2018/10/16/1667d3a6453f7c07?w=1416&h=544&f=png&s=56185">
+<meta name="twitter:image" content="http://hellomypastor.net/2018/10/16/jdk-collection/jdk-collection.png">
 
 
 
@@ -122,7 +122,7 @@
 
 
 
-  <link rel="canonical" href="http://hellomypastor.net/2018/10/16/jdk-collection/"/>
+  <link rel="canonical" href="http://hellomypastor.net/2018/10/16/jdk-collection/">
 
 
 
@@ -140,7 +140,7 @@
 
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
   
   
@@ -150,13 +150,13 @@
   <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-wrapper">
   <div class="site-meta ">
     
 
     <div class="custom-logo-site-title">
-      <a href="/"  class="brand" rel="start">
+      <a href="/" class="brand" rel="start">
         <span class="logo-line-before"><i></i></span>
         <span class="site-title">Alexac</span>
         <span class="logo-line-after"><i></i></span>
@@ -186,7 +186,7 @@
         <li class="menu-item menu-item-home">
           <a href="/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
             
             首页
           </a>
@@ -196,7 +196,7 @@
         <li class="menu-item menu-item-about">
           <a href="/about/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
             
             关于
           </a>
@@ -206,7 +206,7 @@
         <li class="menu-item menu-item-tags">
           <a href="/tags/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
             
             标签
           </a>
@@ -216,7 +216,7 @@
         <li class="menu-item menu-item-categories">
           <a href="/categories/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
             
             分类
           </a>
@@ -226,7 +226,7 @@
         <li class="menu-item menu-item-archives">
           <a href="/archives/" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
             
             归档
           </a>
@@ -236,7 +236,7 @@
         <li class="menu-item menu-item-commonweal">
           <a href="/404.html" rel="section">
             
-              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br>
             
             公益404
           </a>
@@ -270,20 +270,20 @@
   
   
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
   
   
   
   <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://hellomypastor.net/2018/10/16/jdk-collection/">
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="史培培">
       <meta itemprop="description" content="">
       <meta itemprop="image" content="/images/avatar.jpg">
     </span>
 
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Alexac">
     </span>
 
@@ -315,7 +315,7 @@
           </span>
 
           
-            <span class="post-category" >
+            <span class="post-category">
             
               <span class="post-meta-divider">|</span>
             
@@ -326,7 +326,7 @@
                 <span class="post-meta-item-text">分类于</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
                   <a href="/categories/JDK集合/" itemprop="url" rel="index">
                     <span itemprop="name">JDK集合</span>
                   </a>
@@ -359,7 +359,7 @@
           
             <span class="post-meta-divider">|</span>
             <span class="page-pv"><i class="fa fa-file-o"></i>
-            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
             </span>
           
 
@@ -383,7 +383,7 @@
         <p>集合对于使用Java的人来说就好像是日常三餐一样，熟悉且必不可少。集合是Java中重要的知识点，虽然我们平时都用到它，但是我们真的了解什么场景下用什么集合类吗？哪些是有序的？哪些是无序的？哪些是线程安全的？哪些是线程不安全的？…本系列将从源码的角度来分析集合框架，知其然，同时知其所以然，下面开始我们的探索之旅～</p>
 <p>Java集合工具包位于Java.util包下，包含了很多常用的数据结构，如数组、链表、栈、队列、集合、哈希表等。学习Java集合框架下大致可以分为如下五个部分：List列表、Set集合、Map映射、迭代器（Iterator、Enumeration）、工具类（Arrays、Collections）。</p>
 <p>Java集合类的整体框架如下：</p>
-<p><img src="https://user-gold-cdn.xitu.io/2018/10/16/1667d3a6453f7c07?w=1416&amp;h=544&amp;f=png&amp;s=56185" alt=""></p>
+<p><img src="/2018/10/16/jdk-collection/jdk-collection.png" alt=""></p>
 <a id="more"></a>
 <p>从上图中可以看出，集合类主要分为两大类：<code>Collection</code>和<code>Map</code>。</p>
 <p>Collection是List、Set等集合高度抽象出来的接口，它包含了这些集合的基本操作，它主要又分为两大部分：List和Set。</p>
@@ -393,7 +393,7 @@
 <p><code>Map</code>是一个映射接口，其中的每个元素都是一个<code>key-value键值对</code>，同样抽象类<code>AbstractMap</code>通过适配器模式实现了Map接口中的大部分函数，<code>TreeMap</code>、<code>HashMap</code>、<code>WeakHashMap</code>等实现类都通过继承<code>AbstractMap</code>来实现，另外，不常用的<code>HashTable</code>直接实现了Map接口，它和Vector都是JDK1.0就引入的集合类。</p>
 <p><code>Iterator</code>是遍历集合的迭代器（不能遍历Map，只用来遍历Collection），Collection的实现类都实现了<code>iterator()</code>函数，它返回一个Iterator对象，用来遍历集合，<code>ListIterator</code>则专门用来遍历List。而<code>Enumeration</code>则是JDK1.0时引入的，作用与Iterator相同，但它的功能比Iterator要少，它只能再Hashtable、Vector和Stack中使用。</p>
 <p><code>Arrays</code>和<code>Collections</code>是用来操作数组、集合的两个工具类，例如在ArrayList和Vector中大量调用了<code>Arrays.Copyof()</code>方法，而Collections中有很多静态方法可以返回各集合类的synchronized版本，即线程安全的版本，当然了，如果要用线程安全的结合类，首选<code>Concurrent</code>并发包下的对应的集合类。</p>
-<p>说明：本文图片为作者自己重新画的，便于自己理解，其余转载自：<a href="http://blog.csdn.net/ns_code/article/details/35564663" target="_blank" rel="external">兰亭风雨</a></p>
+<p>说明：本文图片为作者自己重新画的，便于自己理解，其余转载自：<a href="http://blog.csdn.net/ns_code/article/details/35564663" target="_blank" rel="noopener">兰亭风雨</a></p>
 
       
     </div>
@@ -414,14 +414,14 @@
 
     
       <div id="wechat" style="display: inline-block">
-        <img id="wechat_qr" src="/images/wechatpay.jpeg" alt="史培培 微信支付"/>
+        <img id="wechat_qr" src="/images/wechatpay.jpeg" alt="史培培 微信支付">
         <p>微信支付</p>
       </div>
     
 
     
       <div id="alipay" style="display: inline-block">
-        <img id="alipay_qr" src="/images/alipay.jpeg" alt="史培培 支付宝"/>
+        <img id="alipay_qr" src="/images/alipay.jpeg" alt="史培培 支付宝">
         <p>支付宝</p>
       </div>
     
@@ -525,11 +525,9 @@
 
       <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
-              <img class="site-author-image" itemprop="image"
-                src="/images/avatar.jpg"
-                alt="史培培" />
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="史培培">
             
               <p class="site-author-name" itemprop="name">史培培</p>
               <p class="site-description motion-element" itemprop="description">stay hungry stay foolish</p>
