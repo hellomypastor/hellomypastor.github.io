@@ -83,7 +83,7 @@
 <meta name="keywords" content="Java,Java9新特性">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java9新特性系列（便利的集合工厂方法）">
-<meta property="og:url" content="http://hellomypastor.net/2018/02/25/java9-collection-factory/index.html">
+<meta property="og:url" content="http://anchen.me/2018/02/25/java9-collection-factory/index.html">
 <meta property="og:site_name" content="Alexac">
 <meta property="og:description" content="Java8前时代 在Java8版本以前，创建一个只读不可变的集合，先要初始化，然后塞数据，然后置为只读：  12345Set&amp;lt;String&amp;gt; set = new HashSet&amp;lt;&amp;gt;();set.add(&quot;a&quot;);set.add(&quot;b&quot;);set.add(&quot;c&quot;);set = Collections.unmodifiableSet(set); 上面的方式占用太多行，能不能用单">
 <meta property="og:locale" content="zh-Hans">
@@ -120,7 +120,7 @@
 
 
 
-  <link rel="canonical" href="http://hellomypastor.net/2018/02/25/java9-collection-factory/">
+  <link rel="canonical" href="http://anchen.me/2018/02/25/java9-collection-factory/">
 
 
 
@@ -273,7 +273,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://hellomypastor.net/2018/02/25/java9-collection-factory/">
+    <link itemprop="mainEntityOfPage" href="http://anchen.me/2018/02/25/java9-collection-factory/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="史培培">
@@ -384,7 +384,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Set&lt;String&gt; set = <span class="keyword">new</span> HashSet&lt;&gt;();</span><br><span class="line">set.add(<span class="string">"a"</span>);</span><br><span class="line">set.add(<span class="string">"b"</span>);</span><br><span class="line">set.add(<span class="string">"c"</span>);</span><br><span class="line">set = Collections.unmodifiableSet(set);</span><br></pre></td></tr></table></figure>
 <p>上面的方式占用太多行，能不能用单行表达式呢？用如下方式：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Set&lt;String&gt; set = Collections.unmodifiableSet(<span class="keyword">new</span> HashSet&lt;&gt;(Arrays.asList(<span class="string">"a"</span>, <span class="string">"b"</span>, <span class="string">"c"</span>)));</span><br><span class="line">Set&lt;String&gt; set = Collections.unmodifiableSet(<span class="keyword">new</span> HashSet&lt;String&gt;() &#123;&#123;</span><br><span class="line">    add(<span class="string">"a"</span>); add(<span class="string">"b"</span>); add(<span class="string">"c"</span>);</span><br><span class="line">&#125;&#125;);</span><br></pre></td></tr></table></figure>
-<h1 id="Java8">Java8</h1><p>在Java8中可以用流的方法创建，具体可以看之前的一篇文章<a href="http://hellomypastor.net/2017/12/28/Java8%E6%96%B0%E7%89%B9%E6%80%A7%EF%BC%88Stream%EF%BC%89/">Java8新特性系列（Stream）</a>，实现方法如下：</p>
+<h1 id="Java8">Java8</h1><p>在Java8中可以用流的方法创建，具体可以看之前的一篇文章<a href="http://hellomypastor.net/2017/12/28/Java8%E6%96%B0%E7%89%B9%E6%80%A7%EF%BC%88Stream%EF%BC%89/" target="_blank" rel="noopener">Java8新特性系列（Stream）</a>，实现方法如下：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Set&lt;String&gt; set = Collections.unmodifiableSet(Stream.of(<span class="string">"a"</span>, <span class="string">"b"</span>, <span class="string">"c"</span>).collect(toSet()));</span><br></pre></td></tr></table></figure>
 <a id="more"></a>
 <h1 id="Java9">Java9</h1><p>Java9中引入了很多方便的API，Convenience Factory Methods for Collections，即集合工厂方法，<a href="http://openjdk.java.net/jeps/269" target="_blank" rel="noopener">官方Feature</a>，上述的实现中Java9中有如下实现方式：</p>
@@ -652,7 +652,7 @@
       <div class="footer-inner">
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
 </script>
-<div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2018</span>
+<div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2025</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

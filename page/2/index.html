@@ -82,7 +82,7 @@
 <meta name="description" content="stay hungry stay foolish">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Alexac">
-<meta property="og:url" content="http://hellomypastor.net/page/2/index.html">
+<meta property="og:url" content="http://anchen.me/page/2/index.html">
 <meta property="og:site_name" content="Alexac">
 <meta property="og:description" content="stay hungry stay foolish">
 <meta property="og:locale" content="zh-Hans">
@@ -118,7 +118,7 @@
 
 
 
-  <link rel="canonical" href="http://hellomypastor.net/page/2/">
+  <link rel="canonical" href="http://anchen.me/page/2/">
 
 
 
@@ -272,7 +272,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://hellomypastor.net/2018/03/06/如何克服解决Git冲突的恐惧症？（Git入门介绍）/">
+    <link itemprop="mainEntityOfPage" href="http://anchen.me/2018/03/06/如何克服解决Git冲突的恐惧症？（Git入门介绍）/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="史培培">
@@ -435,7 +435,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://hellomypastor.net/2018/03/05/如何克服解决Git冲突的恐惧症？（序）/">
+    <link itemprop="mainEntityOfPage" href="http://anchen.me/2018/03/05/如何克服解决Git冲突的恐惧症？（序）/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="史培培">
@@ -605,7 +605,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://hellomypastor.net/2018/02/28/java9-http-2-client/">
+    <link itemprop="mainEntityOfPage" href="http://anchen.me/2018/02/28/java9-http-2-client/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="史培培">
@@ -768,7 +768,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://hellomypastor.net/2018/02/27/java9-stream/">
+    <link itemprop="mainEntityOfPage" href="http://anchen.me/2018/02/27/java9-stream/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="史培培">
@@ -871,7 +871,7 @@
 
       
         
-          <h1 id="Java8的Stream">Java8的Stream</h1><p>在Java8中，一个比较大的变化就是流（Stream），具体可以看之前的一篇文章：<a href="http://hellomypastor.net/2017/12/28/Java8%E6%96%B0%E7%89%B9%E6%80%A7%EF%BC%88Stream%EF%BC%89/">Java8新特性系列（Stream）</a></p>
+          <h1 id="Java8的Stream">Java8的Stream</h1><p>在Java8中，一个比较大的变化就是流（Stream），具体可以看之前的一篇文章：<a href="http://hellomypastor.net/2017/12/28/Java8%E6%96%B0%E7%89%B9%E6%80%A7%EF%BC%88Stream%EF%BC%89/" target="_blank" rel="noopener">Java8新特性系列（Stream）</a></p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2018/02/27/java9-stream/#more" rel="contents">
@@ -925,7 +925,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://hellomypastor.net/2018/02/25/java9-collection-factory/">
+    <link itemprop="mainEntityOfPage" href="http://anchen.me/2018/02/25/java9-collection-factory/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="史培培">
@@ -1034,7 +1034,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Set&lt;String&gt; set = <span class="keyword">new</span> HashSet&lt;&gt;();</span><br><span class="line">set.add(<span class="string">"a"</span>);</span><br><span class="line">set.add(<span class="string">"b"</span>);</span><br><span class="line">set.add(<span class="string">"c"</span>);</span><br><span class="line">set = Collections.unmodifiableSet(set);</span><br></pre></td></tr></table></figure>
 <p>上面的方式占用太多行，能不能用单行表达式呢？用如下方式：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Set&lt;String&gt; set = Collections.unmodifiableSet(<span class="keyword">new</span> HashSet&lt;&gt;(Arrays.asList(<span class="string">"a"</span>, <span class="string">"b"</span>, <span class="string">"c"</span>)));</span><br><span class="line">Set&lt;String&gt; set = Collections.unmodifiableSet(<span class="keyword">new</span> HashSet&lt;String&gt;() &#123;&#123;</span><br><span class="line">    add(<span class="string">"a"</span>); add(<span class="string">"b"</span>); add(<span class="string">"c"</span>);</span><br><span class="line">&#125;&#125;);</span><br></pre></td></tr></table></figure>
-<h1 id="Java8">Java8</h1><p>在Java8中可以用流的方法创建，具体可以看之前的一篇文章<a href="http://hellomypastor.net/2017/12/28/Java8%E6%96%B0%E7%89%B9%E6%80%A7%EF%BC%88Stream%EF%BC%89/">Java8新特性系列（Stream）</a>，实现方法如下：</p>
+<h1 id="Java8">Java8</h1><p>在Java8中可以用流的方法创建，具体可以看之前的一篇文章<a href="http://hellomypastor.net/2017/12/28/Java8%E6%96%B0%E7%89%B9%E6%80%A7%EF%BC%88Stream%EF%BC%89/" target="_blank" rel="noopener">Java8新特性系列（Stream）</a>，实现方法如下：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Set&lt;String&gt; set = Collections.unmodifiableSet(Stream.of(<span class="string">"a"</span>, <span class="string">"b"</span>, <span class="string">"c"</span>).collect(toSet()));</span><br></pre></td></tr></table></figure>
           <!--noindex-->
           <div class="post-button text-center">
@@ -1089,7 +1089,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://hellomypastor.net/2018/02/24/java9-string/">
+    <link itemprop="mainEntityOfPage" href="http://anchen.me/2018/02/24/java9-string/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="史培培">
@@ -1248,7 +1248,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://hellomypastor.net/2018/02/23/java9-diamond-operator/">
+    <link itemprop="mainEntityOfPage" href="http://anchen.me/2018/02/23/java9-diamond-operator/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="史培培">
@@ -1419,7 +1419,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://hellomypastor.net/2018/02/22/java9-try-with-resources/">
+    <link itemprop="mainEntityOfPage" href="http://anchen.me/2018/02/22/java9-try-with-resources/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="史培培">
@@ -1593,7 +1593,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://hellomypastor.net/2018/02/21/java9-interface/">
+    <link itemprop="mainEntityOfPage" href="http://anchen.me/2018/02/21/java9-interface/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="史培培">
@@ -1699,7 +1699,7 @@
           <h1 id="Java8前时代的Interface">Java8前时代的Interface</h1><blockquote>
 <p>在Java8版本以前，Interface接口中所有的方法都是<code>抽象方法</code>和<code>常量</code></p>
 </blockquote>
-<h1 id="Java8">Java8</h1><p>Java8接口相关的可以看之前的一篇文章<a href="http://hellomypastor.net/2017/12/21/Java8%E6%96%B0%E7%89%B9%E6%80%A7%EF%BC%88Interface%EF%BC%89/">Java8新特性系列（Interface）</a></p>
+<h1 id="Java8">Java8</h1><p>Java8接口相关的可以看之前的一篇文章<a href="http://hellomypastor.net/2017/12/21/Java8%E6%96%B0%E7%89%B9%E6%80%A7%EF%BC%88Interface%EF%BC%89/" target="_blank" rel="noopener">Java8新特性系列（Interface）</a></p>
 <h2 id="静态成员">静态成员</h2><blockquote>
 <p>在Java8中Interface支持<code>静态成员</code>，成员默认是<code>public final static</code>的，可以在类外直接调用。</p>
 </blockquote>
@@ -1775,7 +1775,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://hellomypastor.net/2018/02/20/java9-jshell/">
+    <link itemprop="mainEntityOfPage" href="http://anchen.me/2018/02/20/java9-jshell/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="史培培">
@@ -2059,7 +2059,7 @@
       <div class="footer-inner">
         <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
 </script>
-<div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2018</span>
+<div class="copyright">&copy; 2015 &mdash; <span itemprop="copyrightYear">2025</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
