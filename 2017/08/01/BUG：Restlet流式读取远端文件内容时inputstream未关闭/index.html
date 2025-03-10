@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+    <title>
+        Alexac
+    </title>
+    
+<link rel="stylesheet" href="/libs/highlight/styles/monokai-sublime.css">
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body id="bodyx">
+    <div class="hd posts">
+    <a href="/index.html"><i class="fa fa-reply replay-btn" aria-hidden="true"></i></a>
+    <div class="post-title">
+        <p>
+            BUG：Restlet流式读取远端文件内容时inputstream未关闭
+        </p>
+        <hr>
+    </div>
+    <div class="post-content">
+        <p>利用Restlet流式读取远端文件时，如果没有手动将inputstream关闭，那么InputRepresentation会自动将inputstream关闭吗？</p>
+<span id="more"></span>
+<p>Restlet 服务端接收rest请求后，读取文件，将文件转为流，代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">XXResource</span> <span class="keyword">extends</span> <span class="title class_">ServerResource</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="meta">@Get</span></span><br><span class="line">    <span class="keyword">public</span> InputRepresentation <span class="title function_">readFile</span><span class="params">()</span> <span class="keyword">throws</span> FileNotFoundException</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">File</span> <span class="variable">file</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">File</span>(<span class="string">&quot;/root/test.txt&quot;</span> );</span><br><span class="line">        <span class="type">InputStream</span> <span class="variable">inputStream</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">FileInputStream</span>(file);</span><br><span class="line">        <span class="type">InputRepresentation</span> <span class="variable">inputRepresentation</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">InputRepresentation</span>(</span><br><span class="line">                inputStream);</span><br><span class="line">        <span class="keyword">return</span> inputRepresentation;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们都知道，将文件转为流，在使用结束后需要将流关闭，否则IO资源就会被一直占着，其他方法没法使用，造成资源浪费<br>进一步考虑，如果此处不需要关闭流，那么在InputRePresentation中应该会把流释放，那么有没有释放呢，我们看InputRepresentation源码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">release</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span>(<span class="built_in">this</span>.stream != <span class="literal">null</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">try</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">this</span>.stream.close();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException var2) </span><br><span class="line">        &#123;</span><br><span class="line">            Context.getCurrentLogger().log(Level.WARNING, <span class="string">&quot;Error while releasing the representation.&quot;</span>, var2);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">this</span>.stream = <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">super</span>.release();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到，此方法为public公用方法，没有地方调用，难道需要手动调用InputRePresentation的release()方法？<br>看了下StackOverFlow上这个<a href="https://stackoverflow.com/questions/22658056/restlet-not-closing-inputrepresentation-streams">问答</a>，说的是这个确实是个问题，更新了新版本之后还是没有看到在哪儿调用release()方法，结果回答的人又让手动调用release()方法，这。。</p>
+<p>看了下这篇<a href="http://restlet-discuss.1400322.n2.nabble.com/PROBLEM-WITH-org-restlet-representation-InputRepresentation-IN-1-2-M2-td3055389.html">讨论</a>，明天换个新版本试试～</p>
+<p>##continue<br>今天下载了restlet2.3.9的源码（Maven工程）：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">repositories</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">repository</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">id</span>&gt;</span>maven-restlet<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>Public online Restlet repository<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">url</span>&gt;</span>http://maven.restlet.org<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">repository</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">repositories</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.restlet.jee<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>org.restlet<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.3.9<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>通过从InputRePresentation逐层往父类查找，在RepresentationInfo中找到release()方法的解释：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Releases the representation and all associated objects like streams,</span></span><br><span class="line"><span class="comment"> * channels or files which are used to produce its content, transient or</span></span><br><span class="line"><span class="comment"> * not. This method must be systematically called when the representation is</span></span><br><span class="line"><span class="comment"> * no longer intended to be used. The framework automatically calls back</span></span><br><span class="line"><span class="comment"> * this method via its connectors on the server-side when sending responses</span></span><br><span class="line"><span class="comment"> * with an entity and on the client-side when sending a request with an</span></span><br><span class="line"><span class="comment"> * entity. By default, it calls the &#123;<span class="doctag">@link</span> #setAvailable(boolean)&#125; method</span></span><br><span class="line"><span class="comment"> * with &quot;false&quot; as a value.&lt;br&gt;</span></span><br><span class="line"><span class="comment"> * &lt;br&gt;</span></span><br><span class="line"><span class="comment"> * Note that for transient socket-bound representations, calling this method</span></span><br><span class="line"><span class="comment"> * after consuming the whole content shouldn&#x27;t prevent the reuse of</span></span><br><span class="line"><span class="comment"> * underlying socket via persistent connections for example. However, if the</span></span><br><span class="line"><span class="comment"> * content hasn&#x27;t been read, or has been partially read, the impact should</span></span><br><span class="line"><span class="comment"> * be to discard the remaining content and to close the underlying</span></span><br><span class="line"><span class="comment"> * connections.&lt;br&gt;</span></span><br><span class="line"><span class="comment"> * &lt;br&gt;</span></span><br><span class="line"><span class="comment"> * Therefore, if you are not interested in the content, or in the remaining</span></span><br><span class="line"><span class="comment"> * content, you should first call the &#123;<span class="doctag">@link</span> #exhaust()&#125; method or if this</span></span><br><span class="line"><span class="comment"> * could be too costly, you should instead explicitly abort the parent</span></span><br><span class="line"><span class="comment"> * request and the underlying connections using the &#123;<span class="doctag">@link</span> Request#abort()&#125;</span></span><br><span class="line"><span class="comment"> * method or a shortcut one like</span></span><br><span class="line"><span class="comment"> * &#123;<span class="doctag">@link</span> org.restlet.resource.ServerResource#abort()&#125; or</span></span><br><span class="line"><span class="comment"> * &#123;<span class="doctag">@link</span> Response#abort()&#125;.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"> <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">release</span><span class="params">()</span> &#123;</span><br><span class="line">    setAvailable(<span class="literal">false</span>);</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>查看此方法被引用的地方，其中最重要的一处为ServerCall类的sendResponse方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Sends the response back to the client. Commits the status, headers and</span></span><br><span class="line"><span class="comment"> * optional entity and send them over the network. The default</span></span><br><span class="line"><span class="comment"> * implementation only writes the response entity on the response stream or</span></span><br><span class="line"><span class="comment"> * channel. Subclasses will probably also copy the response headers and</span></span><br><span class="line"><span class="comment"> * status.</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> response</span></span><br><span class="line"><span class="comment"> *            The high-level response.</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@throws</span> IOException</span></span><br><span class="line"><span class="comment"> *             if the Response could not be written to the network.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"> <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">sendResponse</span><span class="params">(Response response)</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">    <span class="keyword">if</span> (response != <span class="literal">null</span>) &#123;</span><br><span class="line">        <span class="comment">// Get the connector service to callback</span></span><br><span class="line">        <span class="type">Representation</span> <span class="variable">responseEntity</span> <span class="operator">=</span> response.getEntity();</span><br><span class="line">        <span class="type">ConnectorService</span> <span class="variable">connectorService</span> <span class="operator">=</span> ConnectorHelper</span><br><span class="line">                    .getConnectorService();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (connectorService != <span class="literal">null</span>) &#123;</span><br><span class="line">            connectorService.beforeSend(responseEntity);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">OutputStream</span> <span class="variable">responseEntityStream</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            writeResponseHead(response);</span><br><span class="line">            <span class="keyword">if</span> (responseEntity != <span class="literal">null</span>) &#123;</span><br><span class="line">                responseEntityStream = getResponseEntityStream();</span><br><span class="line">                writeResponseBody(responseEntity, responseEntityStream);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (responseEntityStream != <span class="literal">null</span>) &#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    responseEntityStream.flush();</span><br><span class="line">                    responseEntityStream.close();</span><br><span class="line">                &#125; <span class="keyword">catch</span> (IOException ioe) &#123;</span><br><span class="line">                    <span class="comment">// The stream was probably already closed by the</span></span><br><span class="line">                    <span class="comment">// connector. Probably OK, low message priority.</span></span><br><span class="line">                    getLogger().log(Level.FINE,</span><br><span class="line">                                        <span class="string">&quot;Exception while flushing and closing the entity stream.&quot;</span>,</span><br><span class="line">                                        ioe);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (responseEntity != <span class="literal">null</span>) &#123;</span><br><span class="line">                responseEntity.release();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (connectorService != <span class="literal">null</span>) &#123;</span><br><span class="line">                connectorService.afterSend(responseEntity);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>##拨开云雾见天日 守得云开见月明<br>通过分析，在服务端返回消息给客户端时，会将Representation进行release()，那么InputStream也会释放～</p>
+<p>进一步联想：无论是struts／spring或者其他框架，其实都是基于servlet，那么servlet中的流是如何关闭的呢？</p>
+<p>有人说：在Servlet中，因为filter的关系，很多时候需要把response里面的内容拿出来，进行过滤，比如编码上的问题，如果你在自己的response里面getWriter().close()掉，其他的filter会出现异常。Servlet最后会帮你关闭的，放心。如果自己用PrintWriter的话，还是得关闭。</p>
+<p>有人说：servlet生命周期，用户可以在doGet或doPost中自己关闭输出流；也可以在destory中关闭释放；如果还没有做操作，destory，后会释放servlet实例，自然释放了servlet占用的所有资源。</p>
+<p>其实，一个filter、servlet只有一个实例来处理所有请求，<code>最基础的知识</code>,<code>servlet实例中压根没有request、response</code>，destory想释放估计心有余而力不足，也不要指望在destory里关闭response，他压根不是干这个用的</p>
+<p>查看tomcat的源码可以发现，resoponse如果没有关闭，tomcat会自动关闭，org.apache.catalina.core.ApplicationDispatcher.doForward(ServletRequest request, ServletResponse response)方法，最后一段代码是：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Close anyway</span></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="type">PrintWriter</span> <span class="variable">writer</span> <span class="operator">=</span> response.getWriter();</span><br><span class="line">    writer.close();</span><br><span class="line">&#125; <span class="keyword">catch</span> (IllegalStateException e) &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="type">ServletOutputStream</span> <span class="variable">stream</span> <span class="operator">=</span> response.getOutputStream();</span><br><span class="line">        stream.close();</span><br><span class="line">    &#125; <span class="keyword">catch</span> (IllegalStateException f) &#123;</span><br><span class="line">        <span class="comment">// Ignore</span></span><br><span class="line">    &#125; <span class="keyword">catch</span> (IOException f) &#123;</span><br><span class="line">        <span class="comment">// Ignore</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">    <span class="comment">// Ignore</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以清楚看到不管你有没有关闭，tomcat都重新关闭了一次</p>
+<p>所以说，javax.servlet是一种标准，是给人实现的。</p>
+<p>response应该是由Connector类实现的。对外是(javax.servlet.response) response 把方法限定在javax.servlet.response范围。</p>
+<p>所以你想要看实现。<br>我是看的是tomcat4.1.2(深入剖析tomcat这本书是用这个的。)<br>org.apache.catalina.connector.http.HttpProcessor  response.finishResponse();</p>
+<p>好了，就到此为止了，通过此次分析颇有感触，要真正弄懂底层原理才能更好的运用自如！</p>
+
+    </div>
+
+    
+</div>
+    <div class="footer" id="footer">
+    <div>
+        
+        
+            
+            <a href='/page/NaN'>
+                <i style="font-size:18px;" class="fa">&#xf104</i>
+            </a>
+        
+        Page  of 
+        
+    </div>
+    <p>Copyright©2015-2025 Powered by <a class="flink" href="https://hexo.io">Hexo</a>-<a class="flink" href="https://github.com/sanjinhub/hexo-theme-geek">Geek</a>.
+        <label class="el-switch el-switch-green el-switch-sm" style="vertical-align: sub;">
+            <input type="checkbox" name="switch" id="update_style">
+            <span class="el-switch-style"></span>
+        </label>
+<!--         <script type="text/javascript">
+        var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");
+        document.write(unescape("%3Cspan id='cnzz_stat_icon_1278548644'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "v1.cnzz.com/stat.php%3Fid%3D1278548644%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+        </script> -->
+    </p>
+</div>
+<input type="hidden" id="web_style" value="white">
+<input type="hidden" id="valine_appid" value="CmCti21ooOOIzFOhEyFkFvR0-gzGzoHsz">
+<input type="hidden" id="valine_appKey" value="FqiyUqbg7McKN2eG0MCewupf">
+
+<script src="/libs/jquery.min.js"></script>
+
+
+<script src="/libs/highlight/highlight.pack.js"></script>
+
+<script src='//cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js'></script>
+
+<script src="/js/js.js"></script>
+
+<style type="text/css">
+.v * {
+    color: #698fca;
+}
+
+.v .vlist .vcard .vhead .vsys {
+    color: #3a3e4a;
+}
+
+.v .vlist .vcard .vh .vmeta .vat {
+    color: #638fd5;
+}
+
+.v .vlist .vcard .vhead .vnick {
+    color: #6ba1ff;
+}
+
+.v a {
+    color: #8696b1;
+}
+
+.v .vlist .vcard .vhead .vnick:hover {
+    color: #669bfc;
+}
+</style>
+</body>
+
+</html>

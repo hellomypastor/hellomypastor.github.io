@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+    <title>
+        Alexac
+    </title>
+    
+<link rel="stylesheet" href="/libs/highlight/styles/monokai-sublime.css">
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body id="bodyx">
+    <div class="hd posts">
+    <a href="/index.html"><i class="fa fa-reply replay-btn" aria-hidden="true"></i></a>
+    <div class="post-title">
+        <p>
+            Java8新特性（序）
+        </p>
+        <hr>
+    </div>
+    <div class="post-content">
+        <p>Jdk目前已经发展到<code>Java 9</code>了，历史上有两个版本变化比较大，一个是<code>Java 5</code>，另一个就是<code>Java 8</code>。<br>本Java8新特性系列将着重分析理解Java8的新特性，以及其是怎么为我们开发提升效率的。</p>
+<span id="more"></span>
+<p>#历史版本如下：</p>
+<table>
+<thead>
+<tr>
+<th>版本</th>
+<th align="center">名称</th>
+<th align="right">发行日期</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>JDK 1.1.4</td>
+<td align="center">Sparkler（宝石）</td>
+<td align="right">1997-09-12</td>
+</tr>
+<tr>
+<td>JDK 1.1.5</td>
+<td align="center">Pumpkin（南瓜）</td>
+<td align="right">1997-12-13</td>
+</tr>
+<tr>
+<td>JDK 1.1.6</td>
+<td align="center">Abigail（阿比盖尔–女子名）</td>
+<td align="right">1998-04-24</td>
+</tr>
+<tr>
+<td>JDK 1.1.7</td>
+<td align="center">Brutus（布鲁图–古罗马政治家和将军）</td>
+<td align="right">1998-09-28</td>
+</tr>
+<tr>
+<td>JDK 1.1.8</td>
+<td align="center">Chelsea（切尔西–城市名）</td>
+<td align="right">1998-04-24</td>
+</tr>
+<tr>
+<td>J2SE 1.2</td>
+<td align="center">Playground（运动场</td>
+<td align="right">1998-12-04</td>
+</tr>
+<tr>
+<td>J2SE 1.2.1</td>
+<td align="center">none（无）</td>
+<td align="right">1999-03-30</td>
+</tr>
+<tr>
+<td>J2SE 1.2.2</td>
+<td align="center">Cricket（蟋蟀）</td>
+<td align="right">1999-07-08</td>
+</tr>
+<tr>
+<td>J2SE 1.3</td>
+<td align="center">Kestrel（美洲红隼）</td>
+<td align="right">2000-05-08</td>
+</tr>
+<tr>
+<td>J2SE 1.3.1</td>
+<td align="center">Ladybird（瓢虫）</td>
+<td align="right">2001-05-17</td>
+</tr>
+<tr>
+<td>J2SE 1.4.0</td>
+<td align="center">Merlin（灰背隼）</td>
+<td align="right">2002-02-13</td>
+</tr>
+<tr>
+<td>J2SE 1.4.1</td>
+<td align="center">grasshopper（蚱蜢）</td>
+<td align="right">2002-09-16</td>
+</tr>
+<tr>
+<td>J2SE 1.4.2</td>
+<td align="center">Mantis（螳螂）</td>
+<td align="right">2003-06-26</td>
+</tr>
+<tr>
+<td>Java SE 5.0 (1.5.0)</td>
+<td align="center">Tiger（老虎）</td>
+<td align="right">2004-09-30</td>
+</tr>
+<tr>
+<td>Java SE 6.0 (1.6.0)</td>
+<td align="center">Mustang（野马）</td>
+<td align="right">2006-04-xx</td>
+</tr>
+<tr>
+<td>Java SE 7.0 (1.7.0)</td>
+<td align="center">Dolphin（海豚）</td>
+<td align="right">2011-07-28</td>
+</tr>
+<tr>
+<td>Java SE 8.0 (1.8.0)</td>
+<td align="center">Spider（蜘蛛）</td>
+<td align="right">2014-03-18</td>
+</tr>
+<tr>
+<td>Java SE 9</td>
+<td align="center"></td>
+<td align="right">2017-09-21</td>
+</tr>
+</tbody></table>
+<p>#最近三个版本的新特性如下：<br>##Java 7</p>
+<blockquote>
+<p>开发代号是Dolphin（海豚），于2011-07-28发行</p>
+</blockquote>
+<p>引入的新特性包括：</p>
+<ul>
+<li>switch语句块中允许以字符串作为分支条件；</li>
+<li>在创建泛型对象时应用类型推断；</li>
+<li>在一个语句块中捕获多种异常；</li>
+<li>支持动态语言；</li>
+<li>支持try-with-resources；</li>
+<li>引入Java NIO.2开发包；</li>
+<li>数值类型可以用2进制字符串表示，并且可以在字符串表示中添加下划线；</li>
+<li>钻石型语法；</li>
+<li>null值的自动处理。</li>
+</ul>
+<p>##Java 8</p>
+<blockquote>
+<p>开发代号是Spider（蜘蛛），于2014年3月14号发布</p>
+</blockquote>
+<p>引入的新特性包括：</p>
+<ul>
+<li>Lambda表达式</li>
+<li>Pipelines和Streams</li>
+<li>Date和Time API</li>
+<li>Default方法</li>
+<li>Type注解</li>
+<li>Nashhorn JavaScript引擎</li>
+<li>并发计数器</li>
+<li>Parallel操作</li>
+<li>移除PermGen Error</li>
+<li>TLS SNI</li>
+</ul>
+<p>##Java 9</p>
+<blockquote>
+<p>于2017年9月21日发布</p>
+</blockquote>
+<p>引入的新特性包括：</p>
+<ul>
+<li>模块化系统–Jigsaw 项目</li>
+<li>JShell–Java 9 REPL</li>
+<li>集合工厂方法</li>
+<li>接口中的私有方法</li>
+<li>响应式流</li>
+<li>多分辨率图像API–JEP 251</li>
+<li>进程API的改进</li>
+<li>Try-With-Resources</li>
+<li>钻石（diamond）操作符范围的延伸</li>
+<li>增强的注释Deprecate</li>
+<li>统一的JVM日志</li>
+<li>注释SafeVarargs范围的延伸</li>
+<li>HTTP 2 客户端</li>
+<li>HTML5风格的Java帮助文档</li>
+<li>保留下划线字符。变量不能被命名为_；</li>
+<li>废弃Applet API；</li>
+<li>javac不再支持Java1.4以及之前的版本；</li>
+<li>废弃Java浏览器插件；</li>
+<li>栈遍历API–栈遍历API能过滤和迟访问在堆栈跟踪中的信息</li>
+</ul>
+<blockquote>
+<p>###目前<code>Java8</code>在Java各版本使用率中已高达<code>60%</code>以上，未来还会继续上升，所以学会用Java8，用好Java8势在必行，本系列将着重分析理解Java8的新特性，以及其是怎么为我们开发提升效率的。</p>
+<p>##<strong>人生苦短，拥抱Java8。</strong></p>
+</blockquote>
+
+    </div>
+
+    
+</div>
+    <div class="footer" id="footer">
+    <div>
+        
+        
+            
+            <a href='/page/NaN'>
+                <i style="font-size:18px;" class="fa">&#xf104</i>
+            </a>
+        
+        Page  of 
+        
+    </div>
+    <p>Copyright©2015-2025 Powered by <a class="flink" href="https://hexo.io">Hexo</a>-<a class="flink" href="https://github.com/sanjinhub/hexo-theme-geek">Geek</a>.
+        <label class="el-switch el-switch-green el-switch-sm" style="vertical-align: sub;">
+            <input type="checkbox" name="switch" id="update_style">
+            <span class="el-switch-style"></span>
+        </label>
+<!--         <script type="text/javascript">
+        var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");
+        document.write(unescape("%3Cspan id='cnzz_stat_icon_1278548644'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "v1.cnzz.com/stat.php%3Fid%3D1278548644%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+        </script> -->
+    </p>
+</div>
+<input type="hidden" id="web_style" value="white">
+<input type="hidden" id="valine_appid" value="CmCti21ooOOIzFOhEyFkFvR0-gzGzoHsz">
+<input type="hidden" id="valine_appKey" value="FqiyUqbg7McKN2eG0MCewupf">
+
+<script src="/libs/jquery.min.js"></script>
+
+
+<script src="/libs/highlight/highlight.pack.js"></script>
+
+<script src='//cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js'></script>
+
+<script src="/js/js.js"></script>
+
+<style type="text/css">
+.v * {
+    color: #698fca;
+}
+
+.v .vlist .vcard .vhead .vsys {
+    color: #3a3e4a;
+}
+
+.v .vlist .vcard .vh .vmeta .vat {
+    color: #638fd5;
+}
+
+.v .vlist .vcard .vhead .vnick {
+    color: #6ba1ff;
+}
+
+.v a {
+    color: #8696b1;
+}
+
+.v .vlist .vcard .vhead .vnick:hover {
+    color: #669bfc;
+}
+</style>
+</body>
+
+</html>

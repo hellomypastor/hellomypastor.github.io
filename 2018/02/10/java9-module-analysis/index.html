@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+    <title>
+        Alexac
+    </title>
+    
+<link rel="stylesheet" href="/libs/highlight/styles/monokai-sublime.css">
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body id="bodyx">
+    <div class="hd posts">
+    <a href="/index.html"><i class="fa fa-reply replay-btn" aria-hidden="true"></i></a>
+    <div class="post-title">
+        <p>
+            Java9新特性系列（深入理解模块化）
+        </p>
+        <hr>
+    </div>
+    <div class="post-content">
+        <p>前两篇文章介绍了Java9新特性系列<code>JDK与JRE</code>以及<code>模块化系统: Jigsaw-&gt;Modularity</code>，本篇我们将深入理解模块化。</p>
+<h1 id="模块化如何体现？"><a href="#模块化如何体现？" class="headerlink" title="模块化如何体现？"></a>模块化如何体现？</h1><p>如下图所示，Jdk8与Jdk9的目录结构，这个在之前的jdk与jre的文章已经提及。<br><img src="https://user-gold-cdn.xitu.io/2018/2/10/1617f5c7e2af83ec?w=807&h=560&f=png&s=19820"></p>
+<p><img src="https://user-gold-cdn.xitu.io/2018/2/10/1617f5c7e292d073?w=1240&h=445&f=png&s=44939"></p>
+<p>从上面两张图对比可以发现：<br>JDK8:<br>在Jdk8中有两个重要的jar，即rt.jar与tools.jar：<br><img src="https://user-gold-cdn.xitu.io/2018/2/10/1617f5c7e2b74006?w=988&h=36&f=png&s=13928"></p>
+<p><img src="https://user-gold-cdn.xitu.io/2018/2/10/1617f5c7e29267ed?w=1020&h=30&f=png&s=15027"></p>
+<p>在Jdk8中有jre，在jre&#x2F;lib目录中有一个rt.jar（大小约64M），即rutime，提供了运行环境所用到的一些类库；在lib目录有一个tools.jar（大小约17M），是java中最基本的包，里面包含了从java中最重要的lang包到各种高级功能如可视化swing的包。</p>
+<p>JDK9：<br>JDK9中没有jre，没有rt.jar，没有tools.jar，都是一个一个模块<br><img src="https://user-gold-cdn.xitu.io/2018/2/10/1617f5c7e2bbd5f7?w=1240&h=531&f=png&s=478335"></p>
+<p>总结：Java8其实是一个单体模式，一个简单的HelloWorld，都需要100多M的JRE环境，Java9引入模块后，模块之间依赖关系更加清晰，只需引用需要的模块。</p>
+<span id="more"></span>
+
+<h1 id="模块化的安全？"><a href="#模块化的安全？" class="headerlink" title="模块化的安全？"></a>模块化的安全？</h1><ul>
+<li><p>public不再意味着Accessible：<br><code>requires</code>：指明对其它模块的依赖<br><code>exports</code>：控制着哪些包可以被其它模块访问到。所有不被导出的包默认都被封装在模块里面。<br>所以说先有模块的可读性，进一步才是模块内的可访问性（public）。</p>
+</li>
+<li><p>模块的间接（Transitive）引用：<br>比如A模块requires了java.logging模块，B模块requires了A：<br>如果没有用transitive关键字，那么B模块还需要引入java.logging模块：</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">module</span> a_module &#123;</span><br><span class="line">    <span class="keyword">requires</span> java.logging;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">module</span> b_module &#123;</span><br><span class="line">    <span class="keyword">requires</span> java.logging;</span><br><span class="line">    <span class="keyword">requires</span> a_module;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果使用了transitive关键字，那么B模块就不需要引入java.logging模块：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">module</span> a_module &#123;</span><br><span class="line">    <span class="keyword">requires</span> java.logging;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">module</span> b_module &#123;</span><br><span class="line">    <span class="keyword">requires</span> a_module;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="module与maven-gradle是什么关系？"><a href="#module与maven-gradle是什么关系？" class="headerlink" title="module与maven&#x2F;gradle是什么关系？"></a>module与maven&#x2F;gradle是什么关系？</h1><p>模块化的依赖关系，很容易让人联想到mven和gradle，这个在上篇中也提及，后来有读者也提出module和maven是什么关系？解答如下：</p>
+<p>Maven 有两个主要的特征：依赖管理和构建管理。<br>依赖管理即可以决定库中的版本并从仓库中下载下来。<br>构建管理即管理开发过程中的任务，包括初始化、编译、测试、打包等。</p>
+<p>Module是系统内置用于表述组件之间的关系，对于版本的管理还是处于最原始的状体，管理一种强制的依赖关系。</p>
+<p>总结一下：Maven还是主要负责构建管理，Modules 对于像Maven这样的构建工具（build tools）来说扮演的是辅助补充的角色。因为这些构建工具在构建时建立的依赖关系图谱和他们版本可以根据Module来创建，Module强制确定了module和artifacts之间的依赖关系，而Maven对于依赖并非是强制的。<br>具体可参考StackOverflow上的一篇问答：<a href="https://stackoverflow.com/questions/39844602/project-jigsaw-vs-maven">Project Jigsaw vs Maven on StackOverflow</a></p>
+<h1 id="模块化之后如何打包？"><a href="#模块化之后如何打包？" class="headerlink" title="模块化之后如何打包？"></a>模块化之后如何打包？</h1><ul>
+<li>Jlink：<br>JLink是将Module打包的工具，打包后的文件非常精简。<br>使用如下：</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./jlink --module-path ../jmods/ --add-modules java.sql --output /Users/shipeipei/Desktop/xxx</span><br></pre></td></tr></table></figure>
+<p><img src="https://user-gold-cdn.xitu.io/2018/2/10/1617f5c7e463adb4?w=1240&h=28&f=png&s=31588"><br>执行脚本后，在桌面生成了xxx文件夹，整个文件夹其实就是一个裁剪后的jdk，大小为49.2M：<br><img src="https://user-gold-cdn.xitu.io/2018/2/10/1617f5c8477213e8?w=1240&h=663&f=png&s=251851"></p>
+<h1 id="模块化的原理？"><a href="#模块化的原理？" class="headerlink" title="模块化的原理？"></a>模块化的原理？</h1><p>1、将系统内部类进行模块化</p>
+<p>2、将ClassLoader分级：<br>将ClassLoader分为三个级别：</p>
+<ul>
+<li>Bootstrap Loader具有最高优先级和权限，主要是核心的系统类；</li>
+<li>Platform Loader用于扩展的一些系统类，例如SQL,XML等；</li>
+<li>Application Loader主要用于应用程序的Loader。</li>
+</ul>
+<p>在这三个级别的Loader下面有一个统一Module管理，用于控制和管理模块间的依赖关系，可读性，可访问性等。</p>
+
+    </div>
+
+    
+</div>
+    <div class="footer" id="footer">
+    <div>
+        
+        
+            
+            <a href='/page/NaN'>
+                <i style="font-size:18px;" class="fa">&#xf104</i>
+            </a>
+        
+        Page  of 
+        
+    </div>
+    <p>Copyright©2015-2025 Powered by <a class="flink" href="https://hexo.io">Hexo</a>-<a class="flink" href="https://github.com/sanjinhub/hexo-theme-geek">Geek</a>.
+        <label class="el-switch el-switch-green el-switch-sm" style="vertical-align: sub;">
+            <input type="checkbox" name="switch" id="update_style">
+            <span class="el-switch-style"></span>
+        </label>
+<!--         <script type="text/javascript">
+        var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");
+        document.write(unescape("%3Cspan id='cnzz_stat_icon_1278548644'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "v1.cnzz.com/stat.php%3Fid%3D1278548644%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+        </script> -->
+    </p>
+</div>
+<input type="hidden" id="web_style" value="white">
+<input type="hidden" id="valine_appid" value="CmCti21ooOOIzFOhEyFkFvR0-gzGzoHsz">
+<input type="hidden" id="valine_appKey" value="FqiyUqbg7McKN2eG0MCewupf">
+
+<script src="/libs/jquery.min.js"></script>
+
+
+<script src="/libs/highlight/highlight.pack.js"></script>
+
+<script src='//cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js'></script>
+
+<script src="/js/js.js"></script>
+
+<style type="text/css">
+.v * {
+    color: #698fca;
+}
+
+.v .vlist .vcard .vhead .vsys {
+    color: #3a3e4a;
+}
+
+.v .vlist .vcard .vh .vmeta .vat {
+    color: #638fd5;
+}
+
+.v .vlist .vcard .vhead .vnick {
+    color: #6ba1ff;
+}
+
+.v a {
+    color: #8696b1;
+}
+
+.v .vlist .vcard .vhead .vnick:hover {
+    color: #669bfc;
+}
+</style>
+</body>
+
+</html>

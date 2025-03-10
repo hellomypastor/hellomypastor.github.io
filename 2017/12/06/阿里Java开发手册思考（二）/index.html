@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+    <title>
+        Alexac
+    </title>
+    
+<link rel="stylesheet" href="/libs/highlight/styles/monokai-sublime.css">
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body id="bodyx">
+    <div class="hd posts">
+    <a href="/index.html"><i class="fa fa-reply replay-btn" aria-hidden="true"></i></a>
+    <div class="post-title">
+        <p>
+            阿里Java开发手册思考（二）
+        </p>
+        <hr>
+    </div>
+    <div class="post-content">
+        <blockquote>
+<p>上期我们分享了关于Java中equals与hashCode的理解</p>
+<p>本期我们将分享Java中if&#x2F;else复杂逻辑的处理</p>
+</blockquote>
+<span id="more"></span>
+<blockquote>
+<p>在github上曾看到一些issue，国外的程序员比较忌讳写else，看到了很多这样的评论<code>else is horrible</code>，那么对于逻辑很复杂的代码段，如果用太多的if&#x2F;else的话，那么会导致代码的阅读难度变大，同时会增加代码的<code>圈复杂度</code>，理论上，如果一个函数的圈复杂度超过8，那么这个函数就还有可优化的地方，那么如何优化这种多分支的复杂逻辑的函数呢？手册中给出了三种方法：<code>卫语句</code>、<code>策略模式</code>、<code>状态模式</code>，通过阅读<code>《重构：改善既有代码的设计》</code>发现，解决这个问题其实有很多种，下面我们就一一道来。</p>
+</blockquote>
+<p>##第一大类：重新组织函数</p>
+<p>###1、Extract Method（提炼函数）</p>
+<blockquote>
+<p>这种方法应该是最常用的方法之一，当函数过长或者分支太多的话，就可以考虑将其中的一段代码提炼成一个独立的函数。</p>
+</blockquote>
+<ul>
+<li>原始代码：</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">today</span><span class="params">()</span> &#123;</span><br><span class="line">	<span class="keyword">if</span> (isBusy()) &#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;change time.&quot;</span>);</span><br><span class="line">	&#125; <span class="keyword">else</span> <span class="keyword">if</span> (isFree()) &#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;go to travel.&quot;</span>);</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;stay at home to learn Alibaba Java Coding Guidelines.&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>改后代码：</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">today</span><span class="params">()</span> &#123;</span><br><span class="line">	<span class="keyword">if</span> (isBusy()) &#123;</span><br><span class="line">		changeTime();</span><br><span class="line">	&#125; <span class="keyword">else</span> <span class="keyword">if</span> (isFree()) &#123;</span><br><span class="line">		goToTravel();</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		stayAtHomeToLearn();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">changeTime</span><span class="params">()</span> &#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;change time.&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">goToTravel</span><span class="params">()</span> &#123;</span><br><span class="line">	System.out.println(<span class="string">&quot;go to travel.&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">stayAtHomeToLearn</span><span class="params">()</span> &#123;</span><br><span class="line">	System.out.println(<span class="string">&quot;stay at home to learn Alibaba Java Coding Guidelines.&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>用法：</p>
+<ul>
+<li>提炼新函数，根据这个函数的意图来命名，以它做什么来命名，而不是以他怎么做来命名</li>
+<li>仔细检查提炼出的代码是否引用了作用域限于源函数的变量，包括局部变量和源函数参数</li>
+<li>适用场景：函数过长或者需要注释才能让人理解用途的代码</li>
+</ul>
+<p>###2、Substitute Algorithm（替换算法）</p>
+<blockquote>
+<p>把某个算法替换成另一个更清晰的算法，或将函数本体替换为另一个算法。</p>
+</blockquote>
+<ul>
+<li>原始代码：</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> String <span class="title function_">foundPerson</span><span class="params">(String[] people)</span> &#123;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; people.length; i++) &#123;</span><br><span class="line">		<span class="keyword">if</span> (people[i].equals(<span class="string">&quot;Don&quot;</span>)) &#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="string">&quot;Don&quot;</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> (people[i].equals(<span class="string">&quot;John&quot;</span>)) &#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="string">&quot;John&quot;</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span> (people[i].equals(<span class="string">&quot;Kent&quot;</span>)) &#123;</span><br><span class="line">			<span class="keyword">return</span> <span class="string">&quot;Kent&quot;</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>改后代码：</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> String <span class="title function_">foundPerson</span><span class="params">(String[] people)</span> &#123;</span><br><span class="line">	List&lt;String&gt; candidates = Arrays.asList(<span class="keyword">new</span> <span class="title class_">String</span>[] &#123; <span class="string">&quot;Don&quot;</span>, <span class="string">&quot;John&quot;</span>, <span class="string">&quot;Kent&quot;</span> &#125;);</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; people.length; i++) &#123;</span><br><span class="line">		<span class="keyword">if</span> (candidates.contains(people[i])) &#123;</span><br><span class="line">			<span class="keyword">return</span> people[i];</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>用法：</p>
+<ul>
+<li>准备好另一个替换用的算法</li>
+<li>新算法，要与原本的算法结果相同</li>
+<li>适用场景：把某个算法替换为更清晰的算法，或者把函数替换为一个算法</li>
+</ul>
+<p>##第二大类：简化条件表达式</p>
+<p>###1、Eecompose Conditional（分解条件表达式）</p>
+<blockquote>
+<p>如果有复杂的条件（if-then-else）语句，从if、then、else三个段落中分别提炼出独立函数。</p>
+</blockquote>
+<ul>
+<li>原始代码：</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">today</span><span class="params">()</span> &#123;</span><br><span class="line">	<span class="keyword">if</span> (isBusy() || isNotWeekend()) &#123;</span><br><span class="line">	   System.out.println(<span class="string">&quot;change time.&quot;</span>);</span><br><span class="line">	<span class="keyword">return</span>;</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;go to travel.&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>改后代码：</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">today</span><span class="params">()</span> &#123;</span><br><span class="line">	<span class="keyword">if</span> (notFree()) &#123;</span><br><span class="line">		changeTime();</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		goToTravel();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="type">boolean</span> <span class="title function_">notFree</span><span class="params">()</span> &#123;</span><br><span class="line">	<span class="keyword">return</span> isBusy() || isNotWeekend();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">changeTime</span><span class="params">()</span> &#123;</span><br><span class="line">	System.out.println(<span class="string">&quot;change time.&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">goToTravel</span><span class="params">()</span> &#123;</span><br><span class="line">	System.out.println(<span class="string">&quot;go to travel.&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>用法：</p>
+<ul>
+<li>将if段落提炼出来，构成一个独立函数</li>
+<li>将then段落和else段落都提炼出来，各自构成一个独立函数</li>
+<li>适用场景：复杂的条件语句。如果发现嵌套的条件逻辑，先观察是否可以使用卫语句，如果不行，再开始分解其中的每个条件</li>
+</ul>
+<p>###2、Consolidate Conditioinal Expression（合并条件表达式）</p>
+<blockquote>
+<p>如果有一系列条件测试，都得到相同结果，将这些测试合并为一个条件表达式，并将这个条件表达式提炼成为一个独立函数。</p>
+</blockquote>
+<ul>
+<li>原始代码：</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">today</span><span class="params">()</span> &#123;</span><br><span class="line">	<span class="keyword">if</span> (isWeekend()) &#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;go to travel.&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> (isHoliday()) &#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;go to travel.&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> (noWork()) &#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;go to travel.&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>改后代码：</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">today</span><span class="params">()</span> &#123;</span><br><span class="line">	<span class="keyword">if</span> (isFree()) &#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;go to travel.&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="type">boolean</span> <span class="title function_">isFree</span><span class="params">()</span> &#123;</span><br><span class="line">	<span class="keyword">return</span> isWeekend() || isHoliday() || noWork();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>用法：</p>
+<ul>
+<li>确定这些条件语句都没有副作用</li>
+<li>使用适当的逻辑操作符，将一系列相关条件表达式合并为一个，并对合并后的表达式提炼函数</li>
+<li>适用场景：一系列条件测试，都得到相同的结果</li>
+</ul>
+<p>###3、Consolidate Duplicate Conditional Clauses（合并重复的条件判断）</p>
+<blockquote>
+<p>在条件表达式的每个分支上有相同的一段代码，将这段代码搬移到条件表达式之外。</p>
+</blockquote>
+<ul>
+<li>原始代码：</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">today</span><span class="params">()</span> &#123;</span><br><span class="line">	<span class="keyword">if</span> (isBusy()) &#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;change time.&quot;</span>);</span><br><span class="line">		sleep();</span><br><span class="line">	&#125; <span class="keyword">else</span> <span class="keyword">if</span> (isFree()) &#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;go to travel.&quot;</span>);</span><br><span class="line">		sleep();</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;stay at home to learn Alibaba Java Coding Guidelines.&quot;</span>);</span><br><span class="line">		sleep();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>改后代码：</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">today</span><span class="params">()</span> &#123;</span><br><span class="line">	<span class="keyword">if</span> (isBusy()) &#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;change time.&quot;</span>);</span><br><span class="line">	&#125; <span class="keyword">else</span> <span class="keyword">if</span> (isFree()) &#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;go to travel.&quot;</span>);</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;stay at home to learn Alibaba Java Coding Guidelines.&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	sleep();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>用法：</p>
+<ul>
+<li>鉴别出执行方式不随条件变化而变化的的代码</li>
+<li>如果这些共同代码位于条件表达式起始处，就将它移到条件表达式之前，如果在尾端，移到条件表达式之后</li>
+<li>适用场景：在条件表达式的每个分支上有相同的一段代码</li>
+</ul>
+<p>###4、Remove Control Flag（移除控制标记）<br>在一系列布尔表达式中，某个变量带有“控制标记（Flag）”的作用，以break语句或者return语句取代控制标记。</p>
+<p>###5、Replace Nested Confitional with Guard Clauses（以卫语句取代嵌套条件表达式）</p>
+<blockquote>
+<p>如果多个分支都属于正常行为，就应该使用if…else…的条件表达式，如果某个条件极其罕见，就应该单独检查该条件，并在该条件为真时立刻从函数中返回，这样的单独检查常常被称为卫语句。</p>
+</blockquote>
+<ul>
+<li>原始代码：</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">today</span><span class="params">()</span> &#123;</span><br><span class="line">	<span class="keyword">if</span> (isBusy()) &#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;change time.&quot;</span>);</span><br><span class="line">	&#125; <span class="keyword">else</span> <span class="keyword">if</span> (isFree()) &#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;go to travel.&quot;</span>);</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;stay at home to learn Alibaba Java Coding Guidelines.&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>改后代码：</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">today</span><span class="params">()</span> &#123;</span><br><span class="line">	<span class="keyword">if</span> (isBusy()) &#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;change time.&quot;</span>);</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> (isFree()) &#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;go to travel.&quot;</span>);</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	System.out.println(<span class="string">&quot;stay at home to learn Alibaba Java Coding Guidelines.&quot;</span>);</span><br><span class="line">	<span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>用法：</p>
+<ul>
+<li>对于每个检查，放进一个卫语句，卫语句要么就从函数中返回，要么就抛出一个异常</li>
+<li>每次将条件检查替换成卫语句后，编译并测试：如果所有的卫语句都导致同样的结果，请使用<code>合并条件表达式</code></li>
+<li>适用场景：使用卫语句返回所有特殊情况</li>
+</ul>
+<p>###6、Replace Conditional with Polymorphism（以多态取代条件表达式）</p>
+<blockquote>
+<p>条件表达式，根据对象的类型选择不同的行为，将这个条件表达式的每个分支放进一个子内的覆写函数中，然后将原始函数声明为抽象函数，这一项就是手册中说的策略模式以及状态模式。<br>正因为有了多态，所以“类型码的switch语句”以及“基于类型名称的if-then-else”语句在面向对象程序中很少出现。</p>
+</blockquote>
+<p>##第三大类：简化函数调用</p>
+<p>###1、Separate Query from Modifier（将查询函数和修改函数分离）</p>
+<blockquote>
+<p>某个函数既返回对象状态值，又修改了状态，建立两个不同的函数，其中一个负责查询，另一个负责修改。</p>
+</blockquote>
+<ul>
+<li>并发的情况：需要保留第三个函数来同时做这两件事</li>
+</ul>
+<p>###2、Parameterize Method（令函数携带参数）</p>
+<blockquote>
+<p>若干函数做了类似的工作，但在函数本体中却包含了不同的值，建立单一函数，以参数表达那些不同的值。</p>
+</blockquote>
+<ul>
+<li>原始代码：</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">tenPercentRaise</span><span class="params">()</span> &#123;</span><br><span class="line">	salary *= <span class="number">1.1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">fivePercentRaise</span><span class="params">()</span> &#123;</span><br><span class="line">	salary *= <span class="number">1.05</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>改后代码：</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">raise</span><span class="params">(<span class="type">double</span> factor)</span> &#123;</span><br><span class="line">	salary *= (<span class="number">1</span> + factor);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>要点在于：以可将少量数值视为参数为依据，找出带有重复性的代码</li>
+</ul>
+<p>###3、Replace Parameter with Explicit Methods（以明确函数取代参数）</p>
+<blockquote>
+<p>有一个函数，其中完全取决于参数值而采取不同行为，针对该参数的每一个可能值，建立一个独立的函数。</p>
+</blockquote>
+<ul>
+<li>原始代码：</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setValue</span><span class="params">(String name, <span class="type">int</span> value)</span> &#123;</span><br><span class="line">	<span class="keyword">if</span> (name.equals(<span class="string">&quot;height&quot;</span>)) &#123;</span><br><span class="line">		height = value;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (name.equals(<span class="string">&quot;width&quot;</span>)) &#123;</span><br><span class="line">		width = value;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>改后代码：</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setHeight</span><span class="params">(<span class="type">int</span> arg)</span> &#123;</span><br><span class="line">	height = arg;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setWidth</span><span class="params">(<span class="type">int</span> arg)</span> &#123;</span><br><span class="line">	width = arg;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>用法：</p>
+<ul>
+<li>针对参数的每一种可能值，新建一个明确的函数</li>
+<li>修改条件表达式的每个分支，使其调用合适的新函数</li>
+<li>适用场景：函数完全取决于参数值而采取不同行为</li>
+</ul>
+
+    </div>
+
+    
+</div>
+    <div class="footer" id="footer">
+    <div>
+        
+        
+            
+            <a href='/page/NaN'>
+                <i style="font-size:18px;" class="fa">&#xf104</i>
+            </a>
+        
+        Page  of 
+        
+    </div>
+    <p>Copyright©2015-2025 Powered by <a class="flink" href="https://hexo.io">Hexo</a>-<a class="flink" href="https://github.com/sanjinhub/hexo-theme-geek">Geek</a>.
+        <label class="el-switch el-switch-green el-switch-sm" style="vertical-align: sub;">
+            <input type="checkbox" name="switch" id="update_style">
+            <span class="el-switch-style"></span>
+        </label>
+<!--         <script type="text/javascript">
+        var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");
+        document.write(unescape("%3Cspan id='cnzz_stat_icon_1278548644'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "v1.cnzz.com/stat.php%3Fid%3D1278548644%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+        </script> -->
+    </p>
+</div>
+<input type="hidden" id="web_style" value="white">
+<input type="hidden" id="valine_appid" value="CmCti21ooOOIzFOhEyFkFvR0-gzGzoHsz">
+<input type="hidden" id="valine_appKey" value="FqiyUqbg7McKN2eG0MCewupf">
+
+<script src="/libs/jquery.min.js"></script>
+
+
+<script src="/libs/highlight/highlight.pack.js"></script>
+
+<script src='//cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js'></script>
+
+<script src="/js/js.js"></script>
+
+<style type="text/css">
+.v * {
+    color: #698fca;
+}
+
+.v .vlist .vcard .vhead .vsys {
+    color: #3a3e4a;
+}
+
+.v .vlist .vcard .vh .vmeta .vat {
+    color: #638fd5;
+}
+
+.v .vlist .vcard .vhead .vnick {
+    color: #6ba1ff;
+}
+
+.v a {
+    color: #8696b1;
+}
+
+.v .vlist .vcard .vhead .vnick:hover {
+    color: #669bfc;
+}
+</style>
+</body>
+
+</html>

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+    <title>
+        Alexac
+    </title>
+    
+<link rel="stylesheet" href="/libs/highlight/styles/monokai-sublime.css">
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body id="bodyx">
+    <div class="hd posts">
+    <a href="/index.html"><i class="fa fa-reply replay-btn" aria-hidden="true"></i></a>
+    <div class="post-title">
+        <p>
+            Java8新特性（时间/日期）
+        </p>
+        <hr>
+    </div>
+    <div class="post-content">
+        <blockquote>
+<p>上期我们介绍了Java8中的<code>Optional</code>，本期我们介绍Java8中新的时间日期API。</p>
+</blockquote>
+<span id="more"></span>
+<p>##JSR<br>在讲之前，首先讲一下JSR，什么是<code>JSR</code>呢？<code>Java Specification Requests</code>，是Java规范提案。<br>常见的JSR有：</p>
+<ul>
+<li><code>JSR-303</code> 参数验证</li>
+<li><code>JSR-310</code> 时间</li>
+<li><code>JSR-311</code> Restful API规范</li>
+</ul>
+<p><code>JSR-310</code>即时间规范标准：</p>
+<p>在Java8之前，操作时间日期的类为：<code>Date</code>和<code>Calendar</code>，第三方包如**<code>Joda-time</code>**<br>在Java8中，新增了许多时间日期API</p>
+<p>##Joda-time</p>
+<p>####引入Maven依赖</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>joda-time<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>joda-time<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.9.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>####核心类</p>
+<ul>
+<li>Instant：不可变的类，用来表示时间轴上一个瞬时的点</li>
+<li>DateTime：不可变的类，用来替换JDK的Calendar类</li>
+<li>LocalDate：不可变的类，表示一个本地的日期，而不包含时间部分（没有时区信息）</li>
+<li>LocalTime：不可变的类，表示一个本地的时间，而不包含日期部分（没有时区信息）</li>
+<li>LocalDateTime：不可变的类，表示一个本地的日期－时间（没有时区信息）</li>
+</ul>
+<p>####用法举例</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">    <span class="type">DateTime</span> <span class="variable">today</span> <span class="operator">=</span> DateTime.now();</span><br><span class="line">    <span class="type">DateTime</span> <span class="variable">tomorrow</span> <span class="operator">=</span> today.plusDays(<span class="number">1</span>);</span><br><span class="line">    <span class="type">DateTime</span> <span class="variable">oneHourAfter</span> <span class="operator">=</span> today.plusHours(<span class="number">1</span>);</span><br><span class="line">    System.out.println(today.toString());</span><br><span class="line">    System.out.println(tomorrow.toString());</span><br><span class="line">    System.out.println(oneHourAfter.toString());</span><br><span class="line"></span><br><span class="line">    <span class="type">DateTime</span> <span class="variable">day</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">DateTime</span>(<span class="number">2017</span>,<span class="number">12</span>,<span class="number">30</span>,<span class="number">17</span>,<span class="number">47</span>,<span class="number">30</span>);</span><br><span class="line">    System.out.println(day.dayOfYear().getAsString());</span><br><span class="line">    System.out.println(day.dayOfMonth().getAsString());</span><br><span class="line">    System.out.println(day.dayOfWeek().getAsString());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>结果：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">2017</span>-<span class="number">12</span>-30T17:<span class="number">49</span>:<span class="number">24.065</span>+08:<span class="number">00</span></span><br><span class="line"><span class="number">2017</span>-<span class="number">12</span>-31T17:<span class="number">49</span>:<span class="number">24.065</span>+08:<span class="number">00</span></span><br><span class="line"><span class="number">2017</span>-<span class="number">12</span>-30T18:<span class="number">49</span>:<span class="number">24.065</span>+08:<span class="number">00</span></span><br><span class="line"><span class="number">364</span></span><br><span class="line"><span class="number">30</span></span><br><span class="line"><span class="number">6</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>如果用过Joda-time的，那么Java8中新的时间日期API就很容易上手了。</p>
+</blockquote>
+<p>##Java8中新的时间日期API</p>
+<p>####LocalDate／LocalTime／LocalDateTime</p>
+<ul>
+<li>now() ：根据当前时间创建对象</li>
+<li>of()：根据指定日期&#x2F;时间创建对象</li>
+<li>plusDays／plusWeeks／plusMonths／plusYears 时间向后推移</li>
+<li>minusDays／minusWeeks／minusMonths／minusYears 时间向前推移</li>
+<li>plus／minus</li>
+<li>withDayOfMonth&#x2F;withDayOfYear&#x2F;withMonth&#x2F;withYear 修改</li>
+<li>getDayOfMonth 获得月份天数(1-31)</li>
+<li>getDayOfYear 获得年份天数(1-366)</li>
+<li>getDayOfWeek 获得星期几(返回一个 DayOfWeek 枚举值)</li>
+<li>getMonth 获得月份, 返回一个 Month 枚举值</li>
+<li>getMonthValue 获得月份(1-12)</li>
+<li>getYear 获得年份</li>
+<li>until 获得两个日期之间的 Period 对象， 或者指定 ChronoUnits 的数字</li>
+<li>isBefore／isAfter 比较两个 LocalDate</li>
+<li>isLeapYear 判断是否是闰年</li>
+</ul>
+<p>####Instant 时间戳<br>用于“时间戳”的运算。它是以Unix元年(传统 的设定为UTC时区1970年1月1日午夜时分)开始 所经历的描述进行运算。</p>
+<p>####Duration 和 Period</p>
+<ul>
+<li>Duration：用于计算两个“时间”间隔，Duration.between…</li>
+<li>Period：用于计算两个“日期”间隔，Period.between…</li>
+</ul>
+<p>####Clock 时钟<br>Clock类提供了访问当前日期和时间的方法，Clock是时区敏感的，可以用来取代System.currentTimeMillis() 来获取当前的微秒数。某一个特定的时间点也可以使用Instant类来表示，Instant类也可以用来创建老的java.util.Date对象。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">Clock</span> <span class="variable">clock</span> <span class="operator">=</span> Clock.systemDefaultZone();  </span><br><span class="line"><span class="type">long</span> <span class="variable">millis</span> <span class="operator">=</span> clock.millis();  </span><br><span class="line"><span class="type">Instant</span> <span class="variable">instant</span> <span class="operator">=</span> clock.instant();  </span><br><span class="line"><span class="type">Date</span> <span class="variable">date</span> <span class="operator">=</span> Date.from(instant);</span><br></pre></td></tr></table></figure>
+
+<p>####日期的操作</p>
+<ul>
+<li>TemporalAdjuster：时间校正器。有时我们可能需要获取例如：将日期调整到“下个周日”等操作。</li>
+<li>TemporalAdjusters：该类通过静态方法提供了大量的常用TemporalAdjuster的实现。</li>
+</ul>
+<p>####解析与格式化<br>java.time.format.DateTimeFormatter类：该类提供了三种格式化方法：</p>
+<ul>
+<li><ol>
+<li>预定义的标准格式</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>语言环境相关的格式</li>
+</ol>
+</li>
+<li><ol start="3">
+<li>自定义的格式</li>
+</ol>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">DateTimeFormatter</span> <span class="variable">isoDateTime</span> <span class="operator">=</span> DateTimeFormatter.ISO_DATE_TIME;</span><br><span class="line"><span class="type">DateTimeFormatter</span> <span class="variable">dateTimeFormatter</span> <span class="operator">=</span> DateTimeFormatter.ofPattern(<span class="string">&quot;yyyy年MM月dd日 HH:mm:ss E&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>####时区的处理<br>Java8中加入了对时区的支持，带时区的时间为分别为：</p>
+<ul>
+<li>ZonedDate</li>
+<li>ZonedTime</li>
+<li>ZonedDateTime</li>
+</ul>
+<p>其中每个时区都对应着ID，地区ID都为 “{区域}&#x2F;{城市}”的格式 例如 :Asia&#x2F;Shanghai等，ZoneId:该类中包含了所有的时区信息 </p>
+<ul>
+<li><ol>
+<li>getAvailableZoneIds() : 可以获取所有时区时区</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>of(id) : 用指定的时区信息获取 ZoneId 对象</li>
+</ol>
+</li>
+</ul>
+
+    </div>
+
+    
+</div>
+    <div class="footer" id="footer">
+    <div>
+        
+        
+            
+            <a href='/page/NaN'>
+                <i style="font-size:18px;" class="fa">&#xf104</i>
+            </a>
+        
+        Page  of 
+        
+    </div>
+    <p>Copyright©2015-2025 Powered by <a class="flink" href="https://hexo.io">Hexo</a>-<a class="flink" href="https://github.com/sanjinhub/hexo-theme-geek">Geek</a>.
+        <label class="el-switch el-switch-green el-switch-sm" style="vertical-align: sub;">
+            <input type="checkbox" name="switch" id="update_style">
+            <span class="el-switch-style"></span>
+        </label>
+<!--         <script type="text/javascript">
+        var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");
+        document.write(unescape("%3Cspan id='cnzz_stat_icon_1278548644'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "v1.cnzz.com/stat.php%3Fid%3D1278548644%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+        </script> -->
+    </p>
+</div>
+<input type="hidden" id="web_style" value="white">
+<input type="hidden" id="valine_appid" value="CmCti21ooOOIzFOhEyFkFvR0-gzGzoHsz">
+<input type="hidden" id="valine_appKey" value="FqiyUqbg7McKN2eG0MCewupf">
+
+<script src="/libs/jquery.min.js"></script>
+
+
+<script src="/libs/highlight/highlight.pack.js"></script>
+
+<script src='//cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js'></script>
+
+<script src="/js/js.js"></script>
+
+<style type="text/css">
+.v * {
+    color: #698fca;
+}
+
+.v .vlist .vcard .vhead .vsys {
+    color: #3a3e4a;
+}
+
+.v .vlist .vcard .vh .vmeta .vat {
+    color: #638fd5;
+}
+
+.v .vlist .vcard .vhead .vnick {
+    color: #6ba1ff;
+}
+
+.v a {
+    color: #8696b1;
+}
+
+.v .vlist .vcard .vhead .vnick:hover {
+    color: #669bfc;
+}
+</style>
+</body>
+
+</html>

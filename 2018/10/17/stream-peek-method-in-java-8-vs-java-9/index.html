@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+    <title>
+        Alexac
+    </title>
+    
+<link rel="stylesheet" href="/libs/highlight/styles/monokai-sublime.css">
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body id="bodyx">
+    <div class="hd posts">
+    <a href="/index.html"><i class="fa fa-reply replay-btn" aria-hidden="true"></i></a>
+    <div class="post-title">
+        <p>
+            Stream.peek() method in Java 8 vs Java 9
+        </p>
+        <hr>
+    </div>
+    <div class="post-content">
+        <p>最近从 <code>Oracle Jdk8</code> 切换到 <code>OpenJdk 10</code> 后，遇到了一个诡异的问题，通过 Debug 排查后发现原来是 <code>Stream.peek()</code> 方法在搞鬼，特此记录下，以防后续使用 <code>Java 9及以上</code> 版本时再次犯同样的错误。</p>
+<p>示例代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">    List&lt;String&gt; list = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;() &#123;&#123;</span><br><span class="line">        add(<span class="string">&quot;a&quot;</span>);</span><br><span class="line">        add(<span class="string">&quot;b&quot;</span>);</span><br><span class="line">        add(<span class="string">&quot;c&quot;</span>);</span><br><span class="line">    &#125;&#125;;</span><br><span class="line"></span><br><span class="line">    list.stream().peek(System.out::println).count();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在 <code>Java 8</code> 中，输出应如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a</span><br><span class="line">b</span><br><span class="line">c</span><br></pre></td></tr></table></figure>
+
+<p>切换到 <code>Java 9</code> 后，没有任何输出!!!</p>
+<p>突然有点怀疑人生的感觉-_-#</p>
+<span id="more"></span>
+
+<p>于是就去 <code>StackOverFlow</code> （如果你不知道的话，赶紧去访问看看～）问答网站上搜索，发现也有人出现一样的问题：<a href="https://stackoverflow.com/questions/48221783/stream-peek-method-in-java-8-vs-java-9">Stream.peek() method in Java 8 vs Java 9</a></p>
+<p>针对以上问题，分析如下：</p>
+<h4 id="Stream-peek-方法介绍"><a href="#Stream-peek-方法介绍" class="headerlink" title="Stream.peek() 方法介绍"></a>Stream.peek() 方法介绍</h4><p>生成一个包含原 <code>Stream</code> 的所有元素的新 Stream，同时会提供一个消费函数（ <code>Consumer</code> 实例），新 Stream 每个元素被消费的时候都会执行给定的消费函数；</p>
+<p>代码定义如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Stream&lt;T&gt; <span class="title function_">peek</span><span class="params">(Consumer&lt;? <span class="built_in">super</span> T&gt; action)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>示意图如下：</p>
+<p><img src="https://p1-jj.byteimg.com/tos-cn-i-t2oaga2asx/gold-user-assets/2018/2/8/16175d1f567a2012~tplv-t2oaga2asx-jj-mark:3024:0:0:0:q75.awebp"></p>
+<h4 id="Java-9-中-Stream-peek-不执行的原因"><a href="#Java-9-中-Stream-peek-不执行的原因" class="headerlink" title="Java 9 中 Stream.peek() 不执行的原因"></a>Java 9 中 Stream.peek() 不执行的原因</h4><p><code>Javadoc</code> 关于 <code>Stream</code> 说明如下：</p>
+<blockquote>
+<p>A stream implementation is permitted significant latitude in optimizing the computation of the result. For example, <code>a stream implementation is free to elide operations (or entire stages) from a stream pipeline -- and therefore elide invocation of behavioral parameters -- if it can prove that it would not affect the result of the computation</code>. This means that <code>side-effects of behavioral parameters may not always be executed</code> and should not be relied upon, unless otherwise specified (such as by the terminal operations forEach and forEachOrdered). (For a specific example of such an optimization, see the API note documented on the count() operation. For more detail, see the side-effects section of the stream package documentation.)</p>
+</blockquote>
+<p><code>Javadoc</code> 关于 <code>count()</code> 说明如下：</p>
+<blockquote>
+<p>API Note:<br><br><code>An implementation may choose to not execute the stream pipeline (either sequentially or in parallel) if it is capable of computing the count directly from the stream source</code>. In such cases no source elements will be traversed and <code>no intermediate operations will be evaluated</code>. Behavioral parameters with side-effects, which are strongly discouraged except for harmless cases such as debugging, may be affected. </p>
+</blockquote>
+<p>从 <code>Javadoc</code> 中可以知道，当 <code>List</code> 的元素个数没有变化时，没必要执行 <code>map</code> 和 <code>peek</code> 方法，而且<code>终止操作</code>为 <code>count()</code>，元素个数没有变化时，也没必要执行 <code>map</code> 和 <code>peek</code> 方法，除非使用能影响元素个数的一些方法，如 <code>filter</code> 和 <code>distinct</code>，所以在 <code>Java 9</code> 中使用 <code>Stream.peek()</code> 与 <code>Stream.map()</code> 方法要注意使用场景，否则方法是不会执行的。</p>
+<p><code>Javadoc</code> 中还有一段说明，<code>peek()</code> 方法主要用于 <code>debug</code>：</p>
+<blockquote>
+<p>API Note <br>This method exists mainly to <code>support debugging</code>, where you want to see the elements as they flow past a certain point in a pipeline.</p>
+</blockquote>
+
+    </div>
+
+    
+</div>
+    <div class="footer" id="footer">
+    <div>
+        
+        
+            
+            <a href='/page/NaN'>
+                <i style="font-size:18px;" class="fa">&#xf104</i>
+            </a>
+        
+        Page  of 
+        
+    </div>
+    <p>Copyright©2015-2025 Powered by <a class="flink" href="https://hexo.io">Hexo</a>-<a class="flink" href="https://github.com/sanjinhub/hexo-theme-geek">Geek</a>.
+        <label class="el-switch el-switch-green el-switch-sm" style="vertical-align: sub;">
+            <input type="checkbox" name="switch" id="update_style">
+            <span class="el-switch-style"></span>
+        </label>
+<!--         <script type="text/javascript">
+        var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");
+        document.write(unescape("%3Cspan id='cnzz_stat_icon_1278548644'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "v1.cnzz.com/stat.php%3Fid%3D1278548644%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+        </script> -->
+    </p>
+</div>
+<input type="hidden" id="web_style" value="white">
+<input type="hidden" id="valine_appid" value="CmCti21ooOOIzFOhEyFkFvR0-gzGzoHsz">
+<input type="hidden" id="valine_appKey" value="FqiyUqbg7McKN2eG0MCewupf">
+
+<script src="/libs/jquery.min.js"></script>
+
+
+<script src="/libs/highlight/highlight.pack.js"></script>
+
+<script src='//cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js'></script>
+
+<script src="/js/js.js"></script>
+
+<style type="text/css">
+.v * {
+    color: #698fca;
+}
+
+.v .vlist .vcard .vhead .vsys {
+    color: #3a3e4a;
+}
+
+.v .vlist .vcard .vh .vmeta .vat {
+    color: #638fd5;
+}
+
+.v .vlist .vcard .vhead .vnick {
+    color: #6ba1ff;
+}
+
+.v a {
+    color: #8696b1;
+}
+
+.v .vlist .vcard .vhead .vnick:hover {
+    color: #669bfc;
+}
+</style>
+</body>
+
+</html>

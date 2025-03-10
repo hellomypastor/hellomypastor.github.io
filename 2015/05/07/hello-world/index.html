@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+    <title>
+        Alexac
+    </title>
+    
+<link rel="stylesheet" href="/libs/highlight/styles/monokai-sublime.css">
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body id="bodyx">
+    <div class="hd posts">
+    <a href="/index.html"><i class="fa fa-reply replay-btn" aria-hidden="true"></i></a>
+    <div class="post-title">
+        <p>
+            Hello World
+        </p>
+        <hr>
+    </div>
+    <div class="post-content">
+        <p>一直想搭建一个属于自己的博客，本来想基于<code>Python</code>搭建的，但无奈云服务器太贵，所以只能放弃，后来看到了这篇文章<a href="http://andrewliu.in/2014/11/21/%E9%80%9A%E8%BF%87Hexo%E5%9C%A8Github%E4%B8%8A%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2%E6%95%99%E7%A8%8B/">通过Hexo在Github上搭建博客教程</a>，顿时眼前一亮，这个博客终于搭建起来了。<br>折腾了两天多，在github page上看到自己的博客加载下来时，突然有种错综复杂的恍惚感。是的，它不是qq空间，不是新浪博客，不是豆瓣小站，也不是贴吧。它更像是属于自己的一块小小的领地，因而我满足于这种归属感。我愿在上面安静劳作。<br>一个农民，通过自身努力终于分到了一块地，不再需要在地主的土地上创造流量价值时，于是翻身作主的他可以宣告说：Hello World。当然这个农民确切来说是个码农。<br>感谢<a href="http://hexo.io/">Hexo</a>框架，感谢<a href="http://litten.github.io/">Litten</a>提供的<a href="https://github.com/litten/hexo-theme-yilia">Yilia</a>主题，我很喜欢这种色调。</p>
+<span id="more"></span>
+
+<h2 id="附上搭建过程中遇到的问题"><a href="#附上搭建过程中遇到的问题" class="headerlink" title="附上搭建过程中遇到的问题"></a>附上搭建过程中遇到的问题</h2><h3 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#第一次使用执行前需执行 npm install</span><br><span class="line">hexo generate  #自动根据当前目录下的文件，生成静态网页</span><br></pre></td></tr></table></figure>
+
+<h3 id="部署到Github-config-yml"><a href="#部署到Github-config-yml" class="headerlink" title="部署到Github(_config.yml)"></a>部署到Github(<code>_config.yml</code>)</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#执行</span><br><span class="line">hexo deploy</span><br><span class="line">#出现如下错误</span><br><span class="line">error deployer not found:github</span><br><span class="line">#要将_config.yml中github改成git</span><br><span class="line">deploy:</span><br><span class="line">  type: git    #部署类型, 本文使用Git</span><br><span class="line">#并在执行hexo deploy前先执行</span><br><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="http://www.v2ex.com/t/175940">搭建 hexo，在执行 hexo deploy 后,出现 error deployer not found:github 的错误</a></p>
+<h3 id="绑定域名-新建CNAME文件"><a href="#绑定域名-新建CNAME文件" class="headerlink" title="绑定域名(新建CNAME文件)"></a>绑定域名(新建<code>CNAME</code>文件)</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#在自己的域名管理界面添加CNAME域名解析</span><br><span class="line">#在public目录下新建CNAME文件</span><br><span class="line">hellomypastor.net</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+</div>
+    <div class="footer" id="footer">
+    <div>
+        
+        
+            
+            <a href='/page/NaN'>
+                <i style="font-size:18px;" class="fa">&#xf104</i>
+            </a>
+        
+        Page  of 
+        
+    </div>
+    <p>Copyright©2015-2025 Powered by <a class="flink" href="https://hexo.io">Hexo</a>-<a class="flink" href="https://github.com/sanjinhub/hexo-theme-geek">Geek</a>.
+        <label class="el-switch el-switch-green el-switch-sm" style="vertical-align: sub;">
+            <input type="checkbox" name="switch" id="update_style">
+            <span class="el-switch-style"></span>
+        </label>
+<!--         <script type="text/javascript">
+        var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");
+        document.write(unescape("%3Cspan id='cnzz_stat_icon_1278548644'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "v1.cnzz.com/stat.php%3Fid%3D1278548644%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+        </script> -->
+    </p>
+</div>
+<input type="hidden" id="web_style" value="white">
+<input type="hidden" id="valine_appid" value="CmCti21ooOOIzFOhEyFkFvR0-gzGzoHsz">
+<input type="hidden" id="valine_appKey" value="FqiyUqbg7McKN2eG0MCewupf">
+
+<script src="/libs/jquery.min.js"></script>
+
+
+<script src="/libs/highlight/highlight.pack.js"></script>
+
+<script src='//cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js'></script>
+
+<script src="/js/js.js"></script>
+
+<style type="text/css">
+.v * {
+    color: #698fca;
+}
+
+.v .vlist .vcard .vhead .vsys {
+    color: #3a3e4a;
+}
+
+.v .vlist .vcard .vh .vmeta .vat {
+    color: #638fd5;
+}
+
+.v .vlist .vcard .vhead .vnick {
+    color: #6ba1ff;
+}
+
+.v a {
+    color: #8696b1;
+}
+
+.v .vlist .vcard .vhead .vnick:hover {
+    color: #669bfc;
+}
+</style>
+</body>
+
+</html>

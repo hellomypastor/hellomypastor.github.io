@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+    <title>
+        Alexac
+    </title>
+    
+<link rel="stylesheet" href="/libs/highlight/styles/monokai-sublime.css">
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body id="bodyx">
+    <div class="hd posts">
+    <a href="/index.html"><i class="fa fa-reply replay-btn" aria-hidden="true"></i></a>
+    <div class="post-title">
+        <p>
+            Java9新特性系列（Interface改进）
+        </p>
+        <hr>
+    </div>
+    <div class="post-content">
+        <h1 id="Java8前时代的Interface"><a href="#Java8前时代的Interface" class="headerlink" title="Java8前时代的Interface"></a>Java8前时代的Interface</h1><blockquote>
+<p>在Java8版本以前，Interface接口中所有的方法都是<code>抽象方法</code>和<code>常量</code></p>
+</blockquote>
+<h1 id="Java8"><a href="#Java8" class="headerlink" title="Java8"></a>Java8</h1><p>Java8接口相关的可以看之前的一篇文章<a href="http://hellomypastor.net/2017/12/21/Java8%E6%96%B0%E7%89%B9%E6%80%A7%EF%BC%88Interface%EF%BC%89/">Java8新特性系列（Interface）</a></p>
+<h2 id="静态成员"><a href="#静态成员" class="headerlink" title="静态成员"></a>静态成员</h2><blockquote>
+<p>在Java8中Interface支持<code>静态成员</code>，成员默认是<code>public final static</code>的，可以在类外直接调用。</p>
+</blockquote>
+<h2 id="default函数"><a href="#default函数" class="headerlink" title="default函数"></a>default函数</h2><blockquote>
+<p>在Java8中，Interface中支持函数有实现，只要在函数前加上<code>default</code>关键字即可，如下：</p>
+</blockquote>
+<h2 id="static函数"><a href="#static函数" class="headerlink" title="static函数"></a>static函数</h2><blockquote>
+<p>在Java8中允许Interface定义<code>static</code>方法，这允许API设计者在接口中定义像getInstance一样的静态工具方法，这样就能够使得API简洁而精练。</p>
+</blockquote>
+<h2 id="FunctionalInterface注解"><a href="#FunctionalInterface注解" class="headerlink" title="@FunctionalInterface注解"></a>@FunctionalInterface注解</h2><ul>
+<li>什么是<code>函数式接口</code>？</li>
+</ul>
+<blockquote>
+<p>函数式接口其实本质上还是一个接口，但是它是一种特殊的接口：SAM类型的接口（Single Abstract Method）。定义了这种类型的接口，使得以其为参数的方法，可以在调用时，使用一个<code>Lambda</code>表达式作为参数。<code>@FunctionalInterface</code>注解能帮我们检测Interface是否是函数式接口，但是这个注解<strong>是非必须的，不加也不会报错</strong>。</p>
+</blockquote>
+<ul>
+<li>函数式接口的作用？</li>
+</ul>
+<blockquote>
+<p>函数式接口，可以在调用时，使用一个lambda表达式作为参数。</p>
+</blockquote>
+<p>Java8中的Interface扩展了Java8之前的接口，更像是一个抽象类。</p>
+<span id="more"></span>
+
+<h1 id="Java9"><a href="#Java9" class="headerlink" title="Java9"></a>Java9</h1><p>Java9中Interface更加灵活强大，支持私有方法，<a href="http://openjdk.java.net/jeps/213">官方Feature</a>给出了如下说明：</p>
+<blockquote>
+<p><strong>Support for private methods in interfaces</strong> was briefly in consideration for inclusion in Java SE 8 as part of the effort to add support for Lambda Expressions, but was withdrawn to enable better focus on higher priority tasks for Java SE 8. It is now proposed that support for private interface methods be undertaken thereby enabling non abstract methods of an interface to share code between them.</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> net.hellomypastor.java9;</span><br><span class="line"></span><br><span class="line"><span class="meta">@FunctionalInterface</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">interface</span> <span class="title class_">MyInterface</span> &#123;</span><br><span class="line">    <span class="keyword">void</span> <span class="title function_">test</span><span class="params">()</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">default</span> <span class="keyword">void</span> <span class="title function_">defaultMethod</span><span class="params">()</span> &#123;</span><br><span class="line">        privateMethod();</span><br><span class="line">        System.out.println(<span class="string">&quot;defaultMethod&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">staticMethod</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;staticMethod&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">privateMethod</span><span class="params">()</span> &#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;privateMethod&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>接口中的私有方法供内部调用，不会暴露给实现类。</p>
+</blockquote>
+
+    </div>
+
+    
+</div>
+    <div class="footer" id="footer">
+    <div>
+        
+        
+            
+            <a href='/page/NaN'>
+                <i style="font-size:18px;" class="fa">&#xf104</i>
+            </a>
+        
+        Page  of 
+        
+    </div>
+    <p>Copyright©2015-2025 Powered by <a class="flink" href="https://hexo.io">Hexo</a>-<a class="flink" href="https://github.com/sanjinhub/hexo-theme-geek">Geek</a>.
+        <label class="el-switch el-switch-green el-switch-sm" style="vertical-align: sub;">
+            <input type="checkbox" name="switch" id="update_style">
+            <span class="el-switch-style"></span>
+        </label>
+<!--         <script type="text/javascript">
+        var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");
+        document.write(unescape("%3Cspan id='cnzz_stat_icon_1278548644'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "v1.cnzz.com/stat.php%3Fid%3D1278548644%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+        </script> -->
+    </p>
+</div>
+<input type="hidden" id="web_style" value="white">
+<input type="hidden" id="valine_appid" value="CmCti21ooOOIzFOhEyFkFvR0-gzGzoHsz">
+<input type="hidden" id="valine_appKey" value="FqiyUqbg7McKN2eG0MCewupf">
+
+<script src="/libs/jquery.min.js"></script>
+
+
+<script src="/libs/highlight/highlight.pack.js"></script>
+
+<script src='//cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js'></script>
+
+<script src="/js/js.js"></script>
+
+<style type="text/css">
+.v * {
+    color: #698fca;
+}
+
+.v .vlist .vcard .vhead .vsys {
+    color: #3a3e4a;
+}
+
+.v .vlist .vcard .vh .vmeta .vat {
+    color: #638fd5;
+}
+
+.v .vlist .vcard .vhead .vnick {
+    color: #6ba1ff;
+}
+
+.v a {
+    color: #8696b1;
+}
+
+.v .vlist .vcard .vhead .vnick:hover {
+    color: #669bfc;
+}
+</style>
+</body>
+
+</html>

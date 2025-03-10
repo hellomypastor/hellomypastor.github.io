@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+    <title>
+        Alexac
+    </title>
+    
+<link rel="stylesheet" href="/libs/highlight/styles/monokai-sublime.css">
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body id="bodyx">
+    <div class="hd posts">
+    <a href="/index.html"><i class="fa fa-reply replay-btn" aria-hidden="true"></i></a>
+    <div class="post-title">
+        <p>
+            阿里Java开发手册思考（四）
+        </p>
+        <hr>
+    </div>
+    <div class="post-content">
+        <blockquote>
+<p>上期我们分享了Java中日志的处理（上）：Java中日志的相关知识、Slf4j的原理及源码分析</p>
+<p>本期我们将分享Java中日志的处理（下）</p>
+</blockquote>
+<span id="more"></span>
+<p>##首先看下阿里Java开发手册中日志规约的剩余几条并给出分析：</p>
+<ul>
+<li>2.【强制】日志文件推荐至少保存 15 天，因为有些异常具备以“周”为频次发生的特点。</li>
+</ul>
+<blockquote>
+<ul>
+<li>分析：<ul>
+<li>如果使用的是<code>Log4j</code>，且采用的<code>RollingFileAppender</code>方式, 通过设置<code>maxBackupIndex</code>属性来指定要保留的日志文件数的最大值可以间接实现删除N天前的日志文件</li>
+<li>如果使用的是<code>Log4j</code>,且采用的<code>DailyRollingFileAppender</code>方式，由于该方式不支持<code>maxBackupIndex</code>，需要重新实现<code>DailyRollingFileAppender</code>，用以支持<code>maxBackupIndex</code>的设置</li>
+<li>如果使用的是<code>Logback</code>,可以通过设置<code>maxHistory</code>实现删除N天前的日志</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<ul>
+<li><p>3.【强制】应用中的扩展日志(如打点、临时监控、访问日志等)命名方式: appName_logType_logName.log。logType:日志类型，推荐分类有stats&#x2F;desc&#x2F;monitor&#x2F;visit 等;logName:日志 述。这种命名的好处:通过文件名就可知道日志文件属于什么应用，什么类型，什么目的，也有利于归类查找。<br>正例:mppserver应用中单独监控时区转换异常，如:<br>mppserver_monitor_timeZoneConvert.log<br>说明:推荐对日志进行分类，如将错误日志和业务日志分开存放，便于开发人员查看，也便于 通过日志对系统进行及时监控。</p>
+</li>
+<li><p>4.【强制】对trace&#x2F;debug&#x2F;info级别的日志输出，必须使用条件输出形式或者使用占位符的方 式。<br>说明:logger.debug(“Processing trade with id: “ + id + “ and symbol: “ + symbol); 如果日志级别是warn，上述日志不会打印，但是会执行字符串拼接操作，如果 symbol是对象， 会执行toString()方法，浪费了系统资源，执行了上述操作，最终日志却没有打印。</p>
+</li>
+</ul>
+<blockquote>
+<p>正例:(条件)</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (logger.isDebugEnabled()) &#123;</span><br><span class="line">    logger.debug(<span class="string">&quot;Processing trade with id: &quot;</span> + id + <span class="string">&quot; and symbol: &quot;</span> + symbol);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>正例:(占位符)</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">logger.debug(<span class="string">&quot;Processing trade with id: &#123;&#125; and symbol : &#123;&#125; &quot;</span>, id, symbol);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<ul>
+<li>分析：<ul>
+<li>正如上篇分析的，推荐所有使用<code>Slf4j</code>，打印日志统一使用<code>占位符</code>，且不需判读isxxxEnabled()</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<ul>
+<li>5.【强制】避免重复打印日志，浪费磁盘空间，务必在 log4j.xml 中设置 additivity&#x3D;false。<br>正例:</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">logger</span> <span class="attr">name</span>=<span class="string">&quot;com.taobao.dubbo.config&quot;</span> <span class="attr">additivity</span>=<span class="string">&quot;false&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>6.【强制】异常信息应该包括两类信息:案发现场信息和异常堆栈信息。如果不处理，那么通过 关键字 throws 往上抛出。<br>正例:</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">logger.error(各类参数或者对象 toString + <span class="string">&quot;_&quot;</span> + e.getMessage(), e);</span><br></pre></td></tr></table></figure>
+<ul>
+<li>7.【推荐】谨慎地记录日志。生产环境禁止输出 debug 日志;有选择地输出 info日志;如果使 用 warn 来记录刚上线时的业务行为信息，一定要注意日志输出量的问题，避免把服务器磁盘 撑爆，并记得及时删除这些观察日志。 说明:大量地输出无效日志，不利于系统性能升，也不利于快速定位错误点。记录日志时请 思考:这些日志真的有人看吗?看到这条日志你能做什么?能不能给问题排查带来好处?</li>
+<li>8.【参考】可以使用warn 日志级别来记录用户输入参数错误的情况，避免用户投诉时，无所适 从。注意日志输出的级别，error级别只记录系统逻辑出错、异常等重要的错误信息。如非必 要，请不要在此场景打出 error级别。</li>
+</ul>
+<p>##补充</p>
+<ul>
+<li>1、 涉及到多线程时，日志中最好将线程id打印出来，以区分不同的线程</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">class</span> <span class="title class_">LogIdThreadLocal</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> ThreadLocal&lt;String&gt; logIdThreadLocal = <span class="keyword">new</span> <span class="title class_">ThreadLocal</span>&lt;String&gt;();</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">MyPatternLayout</span> <span class="keyword">extends</span> <span class="title class_">PatternLayout</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">String</span> <span class="variable">SPLIT_STRING</span> <span class="operator">=</span> <span class="string">&quot;|&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">format</span><span class="params">(LoggingEvent event)</span> &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">log</span> <span class="operator">=</span> <span class="built_in">super</span>.format(event);</span><br><span class="line"></span><br><span class="line">        <span class="type">String</span> <span class="variable">threadLocalId</span> <span class="operator">=</span> LogIdThreadLocal.getLogId();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (StringUtils.isEmpty(threadLocalId)) &#123;</span><br><span class="line">            threadLocalId = LogIdThreadLocal.create();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> log + threadLocalId + SPLIT_STRING + event.getMessage() + Layout.LINE_SEP;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">log4j.appender.output.layout</span>=<span class="string">com.test.log.MyPatternLayout</span></span><br><span class="line"><span class="attr">log4j.appender.output.layout.ConversionPattern</span>=<span class="string">%-d&#123;yyyy-MM-dd HH:mm:ss:SSS&#125;|%t|%-5p|%C&#123;1&#125;.%M:%L| </span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>2、 提供动态修改日志级别的接口或者使用Log4j Web Tracker</li>
+</ul>
+<blockquote>
+<p>对于生产环境，默认的日志级别可能是error&#x2F;warning&#x2F;info，对于debug的日志就没有打出来，如果要让debug日志能打印出来，那么常见的方法就是修改log4j.xml或者log4j.properties文件，修改了之后需要重启tomcat，我们知道，生产环境是不可能随随便便重启的，那么有没有其他方法呢？答案是：有。<br>Log4j为我们提供了这样的API,通过调用Log4j的API，提供rest接口，使得客户端可以动态修改某个日志的级别：</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> String <span class="title function_">changeLoggerLevel</span><span class="params">(String loggerName, String level)</span> &#123;  </span><br><span class="line">    <span class="type">Logger</span> <span class="variable">logger</span> <span class="operator">=</span> LogManager.exists(loggerName);  </span><br><span class="line">    <span class="type">String</span> <span class="variable">result</span> <span class="operator">=</span> <span class="literal">null</span>;  </span><br><span class="line">    <span class="keyword">if</span> (logger != <span class="literal">null</span>) &#123;  </span><br><span class="line">        logger.setLevel(Level.toLevel(level));  </span><br><span class="line">        result = logger.getName() + <span class="string">&quot;|&quot;</span> + logger.getLevel();  </span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;  </span><br><span class="line">        result = <span class="string">&quot;logger not exist.&quot;</span>;  </span><br><span class="line">    &#125;  </span><br><span class="line">    <span class="keyword">return</span> result;  </span><br><span class="line">&#125;  </span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>此外，推荐一个开源的第三方组件：<a href="https://github.com/mrsarm/log4jwebtracker">Log4j Web Track</a>（链接为Github地址），如下图：</p>
+</blockquote>
+<p><img src="https://camo.githubusercontent.com/cfe2a15ea9620ccd2d8993a4a65ac0e2139a18f7/68747470733a2f2f7261772e6769746875622e636f6d2f6d727361726d2f6c6f67346a776562747261636b65722f6d61737465722f617274776f726b2f6c6f67346a776562747261636b65725f636f6e6669672e706e67" alt="Log4j Web Tracker"></p>
+<blockquote>
+<p>相关配置：</p>
+</blockquote>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">servlet</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>TrackerServlet<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-class</span>&gt;</span>log4jwebtracker.servlet.TrackerServlet<span class="tag">&lt;/<span class="name">servlet-class</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">servlet</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>TrackerServlet<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">url-pattern</span>&gt;</span>/tracker/*<span class="tag">&lt;/<span class="name">url-pattern</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">servlet-mapping</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">servlet</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-name</span>&gt;</span>Log4jInitServlet<span class="tag">&lt;/<span class="name">servlet-name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servlet-class</span>&gt;</span>log4jwebtracker.servlet.init.Log4jInitServlet<span class="tag">&lt;/<span class="name">servlet-class</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">init-param</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">param-name</span>&gt;</span>log4jConfigLocation<span class="tag">&lt;/<span class="name">param-name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">param-value</span>&gt;</span>WEB-INF/classes/log4j.xml<span class="tag">&lt;/<span class="name">param-value</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">init-param</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">load-on-startup</span>&gt;</span>1<span class="tag">&lt;/<span class="name">load-on-startup</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">servlet</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>通过阅读源码，其也是调用了Log4j的API，进行了展示：</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">abstract</span> <span class="keyword">class</span> <span class="title class_">LoggingUtils</span> &#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">static</span> <span class="keyword">synchronized</span> <span class="keyword">public</span> List <span class="title function_">getFileAppenders</span><span class="params">()</span> &#123;</span><br><span class="line">		<span class="type">List</span> <span class="variable">list</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">ArrayList</span>();</span><br><span class="line">		<span class="type">Enumeration</span> <span class="variable">e</span> <span class="operator">=</span> LogManager.getRootLogger().getAllAppenders();</span><br><span class="line">		<span class="keyword">while</span>(e.hasMoreElements()) &#123;</span><br><span class="line">			<span class="type">Appender</span> <span class="variable">a</span> <span class="operator">=</span> (Appender) e.nextElement();</span><br><span class="line">			<span class="keyword">if</span>(a <span class="keyword">instanceof</span> FileAppender) &#123;</span><br><span class="line">				list.add(a);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> list;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">static</span> <span class="keyword">synchronized</span> <span class="keyword">public</span> FileAppender <span class="title function_">getFileAppender</span><span class="params">(String appenderName)</span> &#123;</span><br><span class="line">		<span class="type">Enumeration</span> <span class="variable">e</span> <span class="operator">=</span> LogManager.getRootLogger().getAllAppenders();</span><br><span class="line">		<span class="keyword">while</span>(e.hasMoreElements()) &#123;</span><br><span class="line">			<span class="type">Appender</span> <span class="variable">a</span> <span class="operator">=</span> (Appender) e.nextElement();</span><br><span class="line">			<span class="keyword">if</span>(a <span class="keyword">instanceof</span> FileAppender &amp;&amp; a.getName().equals(appenderName)) &#123;</span><br><span class="line">				<span class="keyword">return</span> (FileAppender) a;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">static</span> <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">contains</span><span class="params">(List loggers, String loggerName)</span> &#123;</span><br><span class="line">		<span class="type">int</span> i=<span class="number">0</span>;</span><br><span class="line">		<span class="keyword">while</span>(i&lt;loggers.size()) &#123;</span><br><span class="line">			<span class="keyword">if</span>(((Logger)loggers.get(i)).getName().equals(loggerName)) &#123;</span><br><span class="line">				<span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">			&#125;</span><br><span class="line">			i++;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">static</span> <span class="keyword">public</span> List <span class="title function_">getLoggers</span><span class="params">()</span> &#123;</span><br><span class="line">		<span class="type">Enumeration</span> <span class="variable">e</span> <span class="operator">=</span> LogManager.getCurrentLoggers();</span><br><span class="line">		<span class="type">List</span> <span class="variable">loggersList</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">LinkedList</span>();</span><br><span class="line">		<span class="keyword">while</span>(e.hasMoreElements()) &#123;</span><br><span class="line">			loggersList.add(e.nextElement());</span><br><span class="line">		&#125;</span><br><span class="line">		Collections.sort(loggersList, <span class="keyword">new</span> <span class="title class_">Comparator</span>() &#123;</span><br><span class="line">			<span class="keyword">public</span> <span class="type">int</span> <span class="title function_">compare</span><span class="params">(Object arg0, Object arg1)</span> &#123;</span><br><span class="line">				<span class="type">Logger</span> <span class="variable">log0</span> <span class="operator">=</span> (Logger) arg0;</span><br><span class="line">				<span class="type">Logger</span> <span class="variable">log1</span> <span class="operator">=</span> (Logger) arg1;</span><br><span class="line">				<span class="keyword">return</span> log0.getName().compareTo(log1.getName());</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;);</span><br><span class="line">		loggersList.add(<span class="number">0</span>, LogManager.getRootLogger());</span><br><span class="line">		<span class="keyword">return</span> loggersList;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>如果有兴趣的话，我们可以实现一个Web Tracker的门面，类似于Slf4j，那么对于Log4j1&#x2F;2、LogBack、Juc、Commons Logging的日志都能实现可视化以及动态修改日志级别的功能</strong></p>
+</blockquote>
+
+    </div>
+
+    
+</div>
+    <div class="footer" id="footer">
+    <div>
+        
+        
+            
+            <a href='/page/NaN'>
+                <i style="font-size:18px;" class="fa">&#xf104</i>
+            </a>
+        
+        Page  of 
+        
+    </div>
+    <p>Copyright©2015-2025 Powered by <a class="flink" href="https://hexo.io">Hexo</a>-<a class="flink" href="https://github.com/sanjinhub/hexo-theme-geek">Geek</a>.
+        <label class="el-switch el-switch-green el-switch-sm" style="vertical-align: sub;">
+            <input type="checkbox" name="switch" id="update_style">
+            <span class="el-switch-style"></span>
+        </label>
+<!--         <script type="text/javascript">
+        var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");
+        document.write(unescape("%3Cspan id='cnzz_stat_icon_1278548644'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "v1.cnzz.com/stat.php%3Fid%3D1278548644%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+        </script> -->
+    </p>
+</div>
+<input type="hidden" id="web_style" value="white">
+<input type="hidden" id="valine_appid" value="CmCti21ooOOIzFOhEyFkFvR0-gzGzoHsz">
+<input type="hidden" id="valine_appKey" value="FqiyUqbg7McKN2eG0MCewupf">
+
+<script src="/libs/jquery.min.js"></script>
+
+
+<script src="/libs/highlight/highlight.pack.js"></script>
+
+<script src='//cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js'></script>
+
+<script src="/js/js.js"></script>
+
+<style type="text/css">
+.v * {
+    color: #698fca;
+}
+
+.v .vlist .vcard .vhead .vsys {
+    color: #3a3e4a;
+}
+
+.v .vlist .vcard .vh .vmeta .vat {
+    color: #638fd5;
+}
+
+.v .vlist .vcard .vhead .vnick {
+    color: #6ba1ff;
+}
+
+.v a {
+    color: #8696b1;
+}
+
+.v .vlist .vcard .vhead .vnick:hover {
+    color: #669bfc;
+}
+</style>
+</body>
+
+</html>

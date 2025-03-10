@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+    <title>
+        Alexac
+    </title>
+    
+<link rel="stylesheet" href="/libs/highlight/styles/monokai-sublime.css">
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body id="bodyx">
+    <div class="hd posts">
+    <a href="/index.html"><i class="fa fa-reply replay-btn" aria-hidden="true"></i></a>
+    <div class="post-title">
+        <p>
+            如何克服解决Git冲突的恐惧症？（Git基础篇--下）
+        </p>
+        <hr>
+    </div>
+    <div class="post-content">
+        <p>在上一篇中，介绍了git的初始化配置配置、获取帮助、初始化仓库、跟踪新文件、提交、忽略某些文件，以及分支，具体文章：<a href="http://hellomypastor.net/2018/03/07/%E5%A6%82%E4%BD%95%E5%85%8B%E6%9C%8D%E8%A7%A3%E5%86%B3Git%E5%86%B2%E7%AA%81%E7%9A%84%E6%81%90%E6%83%A7%E7%97%87%EF%BC%9F%EF%BC%88Git%E5%9F%BA%E7%A1%80%E7%AF%87-%E4%B8%8A%EF%BC%89/">如何克服解决Git冲突的恐惧症？（Git基础篇–上）</a>，本篇将介绍分支合并相关的<code>git merge</code>与<code>git rebase</code>。</p>
+<h1 id="merge"><a href="#merge" class="headerlink" title="merge"></a>merge</h1><p>分支合并的方法一就是git merge，通过图示更容易理解：</p>
+<p>执行命令如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git merge bugFix</span><br><span class="line">git checkout bugFix</span><br><span class="line">git merge master</span><br></pre></td></tr></table></figure>
+
+<p>执行过程如下：</p>
+<p><img src="https://user-gold-cdn.xitu.io/2018/3/8/1620636c82b68567?w=1024&h=768&f=gif&s=1432430"></p>
+<h1 id="rebase"><a href="#rebase" class="headerlink" title="rebase"></a>rebase</h1><p>分支合并的方法二就是git rebase，通过图示更容易理解：</p>
+<p>执行命令如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git rebase master</span><br><span class="line"><span class="comment">//下面两步只是示例，不建议使用</span></span><br><span class="line">git checkout master</span><br><span class="line">git rebase bugFix</span><br></pre></td></tr></table></figure>
+
+<p>执行过程如下：</p>
+<p><img src="https://user-gold-cdn.xitu.io/2018/3/8/16206385e6ce291b?w=1024&h=768&f=gif&s=2051942"></p>
+<span id="more"></span>
+
+<h1 id="merge与rebase的对比"><a href="#merge与rebase的对比" class="headerlink" title="merge与rebase的对比"></a>merge与rebase的对比</h1><p>Merge好在它是一个安全的操作。现有的分支不会被更改，避免了rebase潜在的缺点，另一方面，这同样意味着每次合并上游更改时feature分支都会引入一个外来的合并提交。如果master非常活跃的话，这或多或少会污染你的分支历史。虽然高级的git log选项可以减轻这个问题，但对于开发者来说，还是会增加理解项目历史的难度。</p>
+<p>Rebase最大的好处是你的项目历史会非常整洁。首先，它不像git merge 那样引入不必要的合并提交。其次，rebase导致最后的项目历史呈现出完美的线性——你可以从项目终点到起点浏览而不需要任何的Fork。这让你更容易使用git log、git bisect和gitk来查看项目历史。</p>
+<p>不过，这种简单的提交历史会带来两个后果：安全性和可跟踪性。如果你违反了Rebase黄金法则，重写项目历史可能会给你的协作工作流带来灾难性的影响。此外，rebase不会有合并提交中附带的信息——你看不到feature分支中并入了上游的哪些更改。</p>
+<h1 id="rebase黄金法则"><a href="#rebase黄金法则" class="headerlink" title="rebase黄金法则"></a>rebase黄金法则</h1><p>当你理解rebase是什么的时候，最重要的就是什么时候不能用rebase。git rebase的黄金法则便是，绝不要在公共的分支上使用它。</p>
+<h1 id="rebase冲突解决"><a href="#rebase冲突解决" class="headerlink" title="rebase冲突解决"></a>rebase冲突解决</h1><p>假设有两个分支，master与bugFix：</p>
+<p>master分支的README.md文件内容如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">史培培</span><br></pre></td></tr></table></figure>
+
+<p>bugFix分支的README.md文件内容如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">码上论剑</span><br><span class="line"></span><br><span class="line">欢迎关注我的公众号</span><br><span class="line"></span><br><span class="line">http:<span class="comment">//hellomypastor.net</span></span><br></pre></td></tr></table></figure>
+
+<p>在bugFix分支执行如下命令：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git pull --rebase</span><br></pre></td></tr></table></figure>
+
+<p>发现冲突：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</span><br><span class="line">史培培</span><br><span class="line">=======</span><br><span class="line">码上论剑</span><br><span class="line"></span><br><span class="line">欢迎关注我的公众号</span><br><span class="line"></span><br><span class="line">http:<span class="comment">//hellomypastor.net</span></span><br><span class="line">&gt;&gt;&gt;&gt;&gt;&gt;&gt; init</span><br></pre></td></tr></table></figure>
+
+<p>解决冲突之后，执行：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git add README.md</span><br><span class="line">git rebase --<span class="keyword">continue</span></span><br></pre></td></tr></table></figure>
+
+<p>这样就解决冲突了，是不是很简单？</p>
+<h1 id="建议"><a href="#建议" class="headerlink" title="建议"></a>建议</h1><p>用pull –rebase，而不用pull（默认merge），这样的话在pull的时候就自行在本地解决两路冲突，而不是merge的时候麻烦的多路merge，这才是git的正确使用方式。</p>
+<blockquote>
+<p>相信大家对git的基础已经基本掌握，不妨在自己的git环境中动手试一试，下篇将讲述《Git分支管理策略》，主要介绍git分支的管理相关内容，敬请期待～</p>
+</blockquote>
+
+    </div>
+
+    
+</div>
+    <div class="footer" id="footer">
+    <div>
+        
+        
+            
+            <a href='/page/NaN'>
+                <i style="font-size:18px;" class="fa">&#xf104</i>
+            </a>
+        
+        Page  of 
+        
+    </div>
+    <p>Copyright©2015-2025 Powered by <a class="flink" href="https://hexo.io">Hexo</a>-<a class="flink" href="https://github.com/sanjinhub/hexo-theme-geek">Geek</a>.
+        <label class="el-switch el-switch-green el-switch-sm" style="vertical-align: sub;">
+            <input type="checkbox" name="switch" id="update_style">
+            <span class="el-switch-style"></span>
+        </label>
+<!--         <script type="text/javascript">
+        var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");
+        document.write(unescape("%3Cspan id='cnzz_stat_icon_1278548644'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "v1.cnzz.com/stat.php%3Fid%3D1278548644%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+        </script> -->
+    </p>
+</div>
+<input type="hidden" id="web_style" value="white">
+<input type="hidden" id="valine_appid" value="CmCti21ooOOIzFOhEyFkFvR0-gzGzoHsz">
+<input type="hidden" id="valine_appKey" value="FqiyUqbg7McKN2eG0MCewupf">
+
+<script src="/libs/jquery.min.js"></script>
+
+
+<script src="/libs/highlight/highlight.pack.js"></script>
+
+<script src='//cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js'></script>
+
+<script src="/js/js.js"></script>
+
+<style type="text/css">
+.v * {
+    color: #698fca;
+}
+
+.v .vlist .vcard .vhead .vsys {
+    color: #3a3e4a;
+}
+
+.v .vlist .vcard .vh .vmeta .vat {
+    color: #638fd5;
+}
+
+.v .vlist .vcard .vhead .vnick {
+    color: #6ba1ff;
+}
+
+.v a {
+    color: #8696b1;
+}
+
+.v .vlist .vcard .vhead .vnick:hover {
+    color: #669bfc;
+}
+</style>
+</body>
+
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+    <title>
+        Alexac
+    </title>
+    
+<link rel="stylesheet" href="/libs/highlight/styles/monokai-sublime.css">
+
+    
+<link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+
+    
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body id="bodyx">
+    <div class="hd posts">
+    <a href="/index.html"><i class="fa fa-reply replay-btn" aria-hidden="true"></i></a>
+    <div class="post-title">
+        <p>
+            Java9新特性系列（Java9新特性系列（Stream改进））
+        </p>
+        <hr>
+    </div>
+    <div class="post-content">
+        <h1 id="Java8的Stream"><a href="#Java8的Stream" class="headerlink" title="Java8的Stream"></a>Java8的Stream</h1><p>在Java8中，一个比较大的变化就是流（Stream），具体可以看之前的一篇文章：<a href="http://hellomypastor.net/2017/12/28/Java8%E6%96%B0%E7%89%B9%E6%80%A7%EF%BC%88Stream%EF%BC%89/">Java8新特性系列（Stream）</a></p>
+<span id="more"></span>
+
+<h1 id="Java9的Stream"><a href="#Java9的Stream" class="headerlink" title="Java9的Stream"></a>Java9的Stream</h1><p>Java9中Stream增加了4个方法，分别是：</p>
+<ul>
+<li><code>takeWhile</code>：在有序的Stream中，takeWhile返回从开头开始的尽量多的元素</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">default</span> Stream&lt;T&gt; <span class="title function_">takeWhile</span><span class="params">(Predicate&lt;? <span class="built_in">super</span> T&gt; predicate)</span> &#123;</span><br><span class="line">    Objects.requireNonNull(predicate);</span><br><span class="line">    <span class="comment">// Reuses the unordered spliterator, which, when encounter is present,</span></span><br><span class="line">    <span class="comment">// is safe to use as long as it configured not to split</span></span><br><span class="line">    <span class="keyword">return</span> StreamSupport.stream(</span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">WhileOps</span>.UnorderedWhileSpliterator.OfRef.Taking&lt;&gt;(spliterator(), <span class="literal">true</span>, predicate),</span><br><span class="line">            isParallel()).onClose(<span class="built_in">this</span>::close);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><code>dropWhile</code>：与<code>takeWhile</code>相反</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">default</span> Stream&lt;T&gt; <span class="title function_">dropWhile</span><span class="params">(Predicate&lt;? <span class="built_in">super</span> T&gt; predicate)</span> &#123;</span><br><span class="line">    Objects.requireNonNull(predicate);</span><br><span class="line">    <span class="comment">// Reuses the unordered spliterator, which, when encounter is present,</span></span><br><span class="line">    <span class="comment">// is safe to use as long as it configured not to split</span></span><br><span class="line">    <span class="keyword">return</span> StreamSupport.stream(</span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">WhileOps</span>.UnorderedWhileSpliterator.OfRef.Dropping&lt;&gt;(spliterator(), <span class="literal">true</span>, predicate),</span><br><span class="line">            isParallel()).onClose(<span class="built_in">this</span>::close);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>ofNullable：可以创建一个单元素Stream，可以为null</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span>&lt;T&gt; Stream&lt;T&gt; <span class="title function_">ofNullable</span><span class="params">(T t)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> t == <span class="literal">null</span> ? Stream.empty()</span><br><span class="line">         : StreamSupport.stream(<span class="keyword">new</span> <span class="title class_">Streams</span>.StreamBuilderImpl&lt;&gt;(t), <span class="literal">false</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>iterate</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span>&lt;T&gt; Stream&lt;T&gt; <span class="title function_">iterate</span><span class="params">(<span class="keyword">final</span> T seed, <span class="keyword">final</span> UnaryOperator&lt;T&gt; f)</span> &#123;</span><br><span class="line">    Objects.requireNonNull(f);</span><br><span class="line">    Spliterator&lt;T&gt; spliterator = <span class="keyword">new</span> <span class="title class_">Spliterators</span>.AbstractSpliterator&lt;&gt;(Long.MAX_VALUE,</span><br><span class="line">    Spliterator.ORDERED | Spliterator.IMMUTABLE) &#123;</span><br><span class="line">        T prev;</span><br><span class="line">        <span class="type">boolean</span> started;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">tryAdvance</span><span class="params">(Consumer&lt;? <span class="built_in">super</span> T&gt; action)</span> &#123;</span><br><span class="line">            Objects.requireNonNull(action);</span><br><span class="line">            T t;</span><br><span class="line">            <span class="keyword">if</span> (started)</span><br><span class="line">                t = f.apply(prev);</span><br><span class="line">            <span class="keyword">else</span> &#123;</span><br><span class="line">                t = seed;</span><br><span class="line">                started = <span class="literal">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            action.accept(prev = t);</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">return</span> StreamSupport.stream(spliterator, <span class="literal">false</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>除了对 Stream 本身的扩展，Optional和Stream之间的结合也得到了改进，可以将optional对象转化为stream对象：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">List&lt;String&gt; list = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;() &#123;&#123;</span><br><span class="line">    add(<span class="string">&quot;a&quot;</span>);add(<span class="string">&quot;b&quot;</span>);add(<span class="string">&quot;c&quot;</span>);</span><br><span class="line">&#125;&#125;;</span><br><span class="line">Optional&lt;List&lt;String&gt;&gt; optional = Optional.ofNullable(list);</span><br><span class="line">Stream&lt;List&lt;String&gt;&gt; stream = optional.stream();</span><br><span class="line">stream.flatMap(x -&gt; x.stream()).forEach(System.out::println);</span><br></pre></td></tr></table></figure>
+
+<h1 id="使用举例"><a href="#使用举例" class="headerlink" title="使用举例"></a>使用举例</h1><ul>
+<li>takeWhile</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Integer&gt; list = Arrays.asList(<span class="number">1</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>);</span><br><span class="line">list.stream().takeWhile(x -&gt; x &lt; <span class="number">5</span>).forEach(System.out::println);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>输出：<br>1<br>4</p>
+</blockquote>
+<ul>
+<li>dropWhile</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Integer&gt; list = Arrays.asList(<span class="number">1</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">10</span>);</span><br><span class="line">list.stream().dropWhile(x -&gt; x &lt; <span class="number">5</span>).forEach(System.out::println);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>输出：<br>5<br>2<br>3<br>6<br>7<br>8<br>9<br>10</p>
+</blockquote>
+<ul>
+<li>ofNullable</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">Stream&lt;String&gt; stream = Stream.of(<span class="string">&quot;&quot;</span>, <span class="literal">null</span>);</span><br><span class="line">System.out.println(stream.count());</span><br><span class="line"></span><br><span class="line">Stream&lt;String&gt; stream = Stream.of(<span class="literal">null</span>);</span><br><span class="line">System.out.println(stream.count());<span class="comment">//会抛空指针异常</span></span><br><span class="line"></span><br><span class="line">Stream&lt;String&gt; stream = Stream.ofNullable(<span class="literal">null</span>);</span><br><span class="line">System.out.println(stream.count());</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>输出：<br>2<br>0</p>
+</blockquote>
+<ul>
+<li>iterate</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//java8</span></span><br><span class="line">Stream.iterate(<span class="number">1</span>, i -&gt; i + <span class="number">1</span>).limit(<span class="number">5</span>).forEach(System.out::println);</span><br><span class="line"></span><br><span class="line"><span class="comment">//java9</span></span><br><span class="line">Stream.iterate(<span class="number">1</span>, i -&gt; i &lt; <span class="number">6</span>, i -&gt; i + <span class="number">1</span>).forEach(System.out::println);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>输出：<br>1<br>2<br>3<br>4<br>5</p>
+</blockquote>
+
+    </div>
+
+    
+</div>
+    <div class="footer" id="footer">
+    <div>
+        
+        
+            
+            <a href='/page/NaN'>
+                <i style="font-size:18px;" class="fa">&#xf104</i>
+            </a>
+        
+        Page  of 
+        
+    </div>
+    <p>Copyright©2015-2025 Powered by <a class="flink" href="https://hexo.io">Hexo</a>-<a class="flink" href="https://github.com/sanjinhub/hexo-theme-geek">Geek</a>.
+        <label class="el-switch el-switch-green el-switch-sm" style="vertical-align: sub;">
+            <input type="checkbox" name="switch" id="update_style">
+            <span class="el-switch-style"></span>
+        </label>
+<!--         <script type="text/javascript">
+        var cnzz_protocol = (("https:" == document.location.protocol) ? "https://" : "http://");
+        document.write(unescape("%3Cspan id='cnzz_stat_icon_1278548644'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "v1.cnzz.com/stat.php%3Fid%3D1278548644%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));
+        </script> -->
+    </p>
+</div>
+<input type="hidden" id="web_style" value="white">
+<input type="hidden" id="valine_appid" value="CmCti21ooOOIzFOhEyFkFvR0-gzGzoHsz">
+<input type="hidden" id="valine_appKey" value="FqiyUqbg7McKN2eG0MCewupf">
+
+<script src="/libs/jquery.min.js"></script>
+
+
+<script src="/libs/highlight/highlight.pack.js"></script>
+
+<script src='//cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js'></script>
+
+<script src="/js/js.js"></script>
+
+<style type="text/css">
+.v * {
+    color: #698fca;
+}
+
+.v .vlist .vcard .vhead .vsys {
+    color: #3a3e4a;
+}
+
+.v .vlist .vcard .vh .vmeta .vat {
+    color: #638fd5;
+}
+
+.v .vlist .vcard .vhead .vnick {
+    color: #6ba1ff;
+}
+
+.v a {
+    color: #8696b1;
+}
+
+.v .vlist .vcard .vhead .vnick:hover {
+    color: #669bfc;
+}
+</style>
+</body>
+
+</html>
