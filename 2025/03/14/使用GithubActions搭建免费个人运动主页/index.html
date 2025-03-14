@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.jpg">
+  <link rel="mask-icon" href="/images/logo.jpg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"anchen.me","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.22.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="利用 Github Actioins &amp; Github Pages 打造个人运动主页 我的个人运动主页：https:&#x2F;&#x2F;anchenspp.github.io&#x2F;running_page&#x2F;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用 GithubActions 打造免费个人运动主页">
+<meta property="og:url" content="http://anchen.me/2025/03/14/%E4%BD%BF%E7%94%A8GithubActions%E6%90%AD%E5%BB%BA%E5%85%8D%E8%B4%B9%E4%B8%AA%E4%BA%BA%E8%BF%90%E5%8A%A8%E4%B8%BB%E9%A1%B5/index.html">
+<meta property="og:site_name" content="安辰">
+<meta property="og:description" content="利用 Github Actioins &amp; Github Pages 打造个人运动主页 我的个人运动主页：https:&#x2F;&#x2F;anchenspp.github.io&#x2F;running_page&#x2F;">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://anchen.me/2025/03/14/%E4%BD%BF%E7%94%A8GithubActions%E6%90%AD%E5%BB%BA%E5%85%8D%E8%B4%B9%E4%B8%AA%E4%BA%BA%E8%BF%90%E5%8A%A8%E4%B8%BB%E9%A1%B5/coros.png">
+<meta property="og:image" content="http://anchen.me/2025/03/14/%E4%BD%BF%E7%94%A8GithubActions%E6%90%AD%E5%BB%BA%E5%85%8D%E8%B4%B9%E4%B8%AA%E4%BA%BA%E8%BF%90%E5%8A%A8%E4%B8%BB%E9%A1%B5/strava.png">
+<meta property="og:image" content="http://anchen.me/2025/03/14/%E4%BD%BF%E7%94%A8GithubActions%E6%90%AD%E5%BB%BA%E5%85%8D%E8%B4%B9%E4%B8%AA%E4%BA%BA%E8%BF%90%E5%8A%A8%E4%B8%BB%E9%A1%B5/redbook.png">
+<meta property="og:image" content="http://anchen.me/2025/03/14/%E4%BD%BF%E7%94%A8GithubActions%E6%90%AD%E5%BB%BA%E5%85%8D%E8%B4%B9%E4%B8%AA%E4%BA%BA%E8%BF%90%E5%8A%A8%E4%B8%BB%E9%A1%B5/runalyze.png">
+<meta property="og:image" content="http://anchen.me/2025/03/14/%E4%BD%BF%E7%94%A8GithubActions%E6%90%AD%E5%BB%BA%E5%85%8D%E8%B4%B9%E4%B8%AA%E4%BA%BA%E8%BF%90%E5%8A%A8%E4%B8%BB%E9%A1%B5/dashclip.png">
+<meta property="og:image" content="http://anchen.me/2025/03/14/%E4%BD%BF%E7%94%A8GithubActions%E6%90%AD%E5%BB%BA%E5%85%8D%E8%B4%B9%E4%B8%AA%E4%BA%BA%E8%BF%90%E5%8A%A8%E4%B8%BB%E9%A1%B5/running_page.png">
+<meta property="og:image" content="http://anchen.me/2025/03/14/%E4%BD%BF%E7%94%A8GithubActions%E6%90%AD%E5%BB%BA%E5%85%8D%E8%B4%B9%E4%B8%AA%E4%BA%BA%E8%BF%90%E5%8A%A8%E4%B8%BB%E9%A1%B5/fork.png">
+<meta property="og:image" content="http://anchen.me/2025/03/14/%E4%BD%BF%E7%94%A8GithubActions%E6%90%AD%E5%BB%BA%E5%85%8D%E8%B4%B9%E4%B8%AA%E4%BA%BA%E8%BF%90%E5%8A%A8%E4%B8%BB%E9%A1%B5/sync_config.png">
+<meta property="og:image" content="http://anchen.me/2025/03/14/%E4%BD%BF%E7%94%A8GithubActions%E6%90%AD%E5%BB%BA%E5%85%8D%E8%B4%B9%E4%B8%AA%E4%BA%BA%E8%BF%90%E5%8A%A8%E4%B8%BB%E9%A1%B5/deploy1.png">
+<meta property="og:image" content="http://anchen.me/2025/03/14/%E4%BD%BF%E7%94%A8GithubActions%E6%90%AD%E5%BB%BA%E5%85%8D%E8%B4%B9%E4%B8%AA%E4%BA%BA%E8%BF%90%E5%8A%A8%E4%B8%BB%E9%A1%B5/deploy2.png">
+<meta property="og:image" content="http://anchen.me/2025/03/14/%E4%BD%BF%E7%94%A8GithubActions%E6%90%AD%E5%BB%BA%E5%85%8D%E8%B4%B9%E4%B8%AA%E4%BA%BA%E8%BF%90%E5%8A%A8%E4%B8%BB%E9%A1%B5/deploy3.png">
+<meta property="og:image" content="http://anchen.me/2025/03/14/%E4%BD%BF%E7%94%A8GithubActions%E6%90%AD%E5%BB%BA%E5%85%8D%E8%B4%B9%E4%B8%AA%E4%BA%BA%E8%BF%90%E5%8A%A8%E4%B8%BB%E9%A1%B5/deploy4.png">
+<meta property="og:image" content="http://anchen.me/2025/03/14/%E4%BD%BF%E7%94%A8GithubActions%E6%90%AD%E5%BB%BA%E5%85%8D%E8%B4%B9%E4%B8%AA%E4%BA%BA%E8%BF%90%E5%8A%A8%E4%B8%BB%E9%A1%B5/deploy5.png">
+<meta property="og:image" content="http://anchen.me/2025/03/14/%E4%BD%BF%E7%94%A8GithubActions%E6%90%AD%E5%BB%BA%E5%85%8D%E8%B4%B9%E4%B8%AA%E4%BA%BA%E8%BF%90%E5%8A%A8%E4%B8%BB%E9%A1%B5/deploy6.png">
+<meta property="og:image" content="http://anchen.me/2025/03/14/%E4%BD%BF%E7%94%A8GithubActions%E6%90%AD%E5%BB%BA%E5%85%8D%E8%B4%B9%E4%B8%AA%E4%BA%BA%E8%BF%90%E5%8A%A8%E4%B8%BB%E9%A1%B5/deploy7.png">
+<meta property="og:image" content="http://anchen.me/2025/03/14/%E4%BD%BF%E7%94%A8GithubActions%E6%90%AD%E5%BB%BA%E5%85%8D%E8%B4%B9%E4%B8%AA%E4%BA%BA%E8%BF%90%E5%8A%A8%E4%B8%BB%E9%A1%B5/deploy8.png">
+<meta property="og:image" content="http://anchen.me/2025/03/14/%E4%BD%BF%E7%94%A8GithubActions%E6%90%AD%E5%BB%BA%E5%85%8D%E8%B4%B9%E4%B8%AA%E4%BA%BA%E8%BF%90%E5%8A%A8%E4%B8%BB%E9%A1%B5/deploy9.png">
+<meta property="og:image" content="http://anchen.me/2025/03/14/%E4%BD%BF%E7%94%A8GithubActions%E6%90%AD%E5%BB%BA%E5%85%8D%E8%B4%B9%E4%B8%AA%E4%BA%BA%E8%BF%90%E5%8A%A8%E4%B8%BB%E9%A1%B5/principle.png">
+<meta property="article:published_time" content="2025-03-14T12:30:46.000Z">
+<meta property="article:modified_time" content="2025-03-14T07:55:01.545Z">
+<meta property="article:author" content="安辰">
+<meta property="article:tag" content="GithubActions">
+<meta property="article:tag" content="GithubPages">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://anchen.me/2025/03/14/%E4%BD%BF%E7%94%A8GithubActions%E6%90%AD%E5%BB%BA%E5%85%8D%E8%B4%B9%E4%B8%AA%E4%BA%BA%E8%BF%90%E5%8A%A8%E4%B8%BB%E9%A1%B5/coros.png">
+
+
+<link rel="canonical" href="http://anchen.me/2025/03/14/%E4%BD%BF%E7%94%A8GithubActions%E6%90%AD%E5%BB%BA%E5%85%8D%E8%B4%B9%E4%B8%AA%E4%BA%BA%E8%BF%90%E5%8A%A8%E4%B8%BB%E9%A1%B5/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://anchen.me/2025/03/14/%E4%BD%BF%E7%94%A8GithubActions%E6%90%AD%E5%BB%BA%E5%85%8D%E8%B4%B9%E4%B8%AA%E4%BA%BA%E8%BF%90%E5%8A%A8%E4%B8%BB%E9%A1%B5/","path":"2025/03/14/使用GithubActions搭建免费个人运动主页/","title":"使用 GithubActions 打造免费个人运动主页"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>使用 GithubActions 打造免费个人运动主页 | 安辰</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">安辰</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">stay hungry stay foolish</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-commonweal"><a href="/404.html" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%98%E8%B5%B7"><span class="nav-number">1.</span> <span class="nav-text">缘起</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E8%BF%87%E7%A8%8B"><span class="nav-number">2.</span> <span class="nav-text">实现过程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Fork-%E9%A1%B9%E7%9B%AE"><span class="nav-number">2.1.</span> <span class="nav-text">Fork 项目</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE"><span class="nav-number">2.2.</span> <span class="nav-text">环境配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%AA%E6%80%A7%E5%8C%96%E9%85%8D%E7%BD%AE"><span class="nav-number">2.3.</span> <span class="nav-text">个性化配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E4%B8%8B%E8%BD%BD"><span class="nav-number">2.4.</span> <span class="nav-text">数据下载</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%8C%E6%AD%A5%E9%85%8D%E7%BD%AE"><span class="nav-number">2.5.</span> <span class="nav-text">同步配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8F%90%E4%BA%A4%E4%BB%A3%E7%A0%81"><span class="nav-number">2.6.</span> <span class="nav-text">提交代码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%83%A8%E7%BD%B2-%E5%AE%9A%E6%97%B6%E5%90%8C%E6%AD%A5"><span class="nav-number">2.7.</span> <span class="nav-text">部署 &amp; 定时同步</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%88%E6%9E%9C"><span class="nav-number">2.8.</span> <span class="nav-text">效果</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E7%90%86"><span class="nav-number">3.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%99%E5%9C%A8%E6%9C%80%E5%90%8E"><span class="nav-number">4.</span> <span class="nav-text">写在最后</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="安辰"
+      src="/images/logo.jpg">
+  <p class="site-author-name" itemprop="name">安辰</p>
+  <div class="site-description" itemprop="description">stay hungry stay foolish</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">54</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://anchen.me/running_page" title="https:&#x2F;&#x2F;anchen.me&#x2F;running_page">我的运动</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="http://www.jianshu.com/u/f66899a37408" title="http:&#x2F;&#x2F;www.jianshu.com&#x2F;u&#x2F;f66899a37408" rel="noopener" target="_blank">我的简书</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://juejin.im/user/587467c2128fe100583131af/posts" title="https:&#x2F;&#x2F;juejin.im&#x2F;user&#x2F;587467c2128fe100583131af&#x2F;posts" rel="noopener" target="_blank">我的掘金</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://oceanjack.github.io/" title="https:&#x2F;&#x2F;oceanjack.github.io&#x2F;" rel="noopener" target="_blank">OceanJack</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://anchen.me/2025/03/14/%E4%BD%BF%E7%94%A8GithubActions%E6%90%AD%E5%BB%BA%E5%85%8D%E8%B4%B9%E4%B8%AA%E4%BA%BA%E8%BF%90%E5%8A%A8%E4%B8%BB%E9%A1%B5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/logo.jpg">
+      <meta itemprop="name" content="安辰">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="安辰">
+      <meta itemprop="description" content="stay hungry stay foolish">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="使用 GithubActions 打造免费个人运动主页 | 安辰">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          使用 GithubActions 打造免费个人运动主页
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2025-03-14 12:30:46 / 修改时间：07:55:01" itemprop="dateCreated datePublished" datetime="2025-03-14T12:30:46+00:00">2025-03-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Personal/" itemprop="url" rel="index"><span itemprop="name">Personal</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2025/03/14/%E4%BD%BF%E7%94%A8GithubActions%E6%90%AD%E5%BB%BA%E5%85%8D%E8%B4%B9%E4%B8%AA%E4%BA%BA%E8%BF%90%E5%8A%A8%E4%B8%BB%E9%A1%B5/" class="post-meta-item leancloud_visitors" data-flag-title="使用 GithubActions 打造免费个人运动主页" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>971</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><blockquote>
+<p>利用 Github Actioins &amp; Github Pages 打造个人运动主页</p>
+<p>我的个人运动主页：<a href="https://anchenspp.github.io/running_page/">https://anchenspp.github.io/running_page&#x2F;</a></p>
+</blockquote>
+<span id="more"></span>
+
+<h3 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h3><p>每到年末岁尾，各大平台都会推出年度总结，对于刚入坑越野跑的我，自然很关心我过去一年的数据。我平时使用的是 coros pace2 watch + strava app，coros 和 strava 都给了我一份年度报告，如下：</p>
+<img src="/2025/03/14/%E4%BD%BF%E7%94%A8GithubActions%E6%90%AD%E5%BB%BA%E5%85%8D%E8%B4%B9%E4%B8%AA%E4%BA%BA%E8%BF%90%E5%8A%A8%E4%B8%BB%E9%A1%B5/coros.png" class="">
+
+<img src="/2025/03/14/%E4%BD%BF%E7%94%A8GithubActions%E6%90%AD%E5%BB%BA%E5%85%8D%E8%B4%B9%E4%B8%AA%E4%BA%BA%E8%BF%90%E5%8A%A8%E4%B8%BB%E9%A1%B5/strava.png" class="">
+
+<p>偶然闲逛小红书 🍠，看到了更加有趣的报告，可以把跑步的轨迹做成海报，这像不像是一种记录跑者的象形文字，如下：</p>
+<img src="/2025/03/14/%E4%BD%BF%E7%94%A8GithubActions%E6%90%AD%E5%BB%BA%E5%85%8D%E8%B4%B9%E4%B8%AA%E4%BA%BA%E8%BF%90%E5%8A%A8%E4%B8%BB%E9%A1%B5/redbook.png" class="">
+
+<p>搜了下，网上有 3 个工具可以生成上述的效果图，对比如下：</p>
+<table>
+<thead>
+<tr>
+<th>****</th>
+<th><strong>runalyze</strong></th>
+<th><strong>dashclip</strong></th>
+<th><strong>running_page</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>链接</strong></td>
+<td><a href="https://runalyze.com/dashboard">https://runalyze.com/dashboard</a></td>
+<td><a href="https://apps.apple.com/lu/app/dashclip/id6479593003">https://apps.apple.com/lu/app/dashclip/id6479593003</a></td>
+<td><a href="https://github.com/yihong0618/running_page">https://github.com/yihong0618/running_page</a></td>
+</tr>
+<tr>
+<td><strong>是否免费</strong></td>
+<td>免费（高级功能收费）</td>
+<td>免费（高级功能收费）</td>
+<td>免费（开源）</td>
+</tr>
+<tr>
+<td><strong>特点&amp;优势</strong></td>
+<td>专业分析</td>
+<td>轻量级、手机 app</td>
+<td>公开访问、自动同步</td>
+</tr>
+<tr>
+<td><strong>截图</strong></td>
+<td><img src="/2025/03/14/%E4%BD%BF%E7%94%A8GithubActions%E6%90%AD%E5%BB%BA%E5%85%8D%E8%B4%B9%E4%B8%AA%E4%BA%BA%E8%BF%90%E5%8A%A8%E4%B8%BB%E9%A1%B5/runalyze.png" class=""></td>
+<td><img src="/2025/03/14/%E4%BD%BF%E7%94%A8GithubActions%E6%90%AD%E5%BB%BA%E5%85%8D%E8%B4%B9%E4%B8%AA%E4%BA%BA%E8%BF%90%E5%8A%A8%E4%B8%BB%E9%A1%B5/dashclip.png" class=""></td>
+<td><img src="/2025/03/14/%E4%BD%BF%E7%94%A8GithubActions%E6%90%AD%E5%BB%BA%E5%85%8D%E8%B4%B9%E4%B8%AA%E4%BA%BA%E8%BF%90%E5%8A%A8%E4%B8%BB%E9%A1%B5/running_page.png" class=""></td>
+</tr>
+</tbody></table>
+<p>最终决定使用 running_page，通过 Github actions &amp; Github pages 打造免费个人运动主页。</p>
+<h3 id="实现过程"><a href="#实现过程" class="headerlink" title="实现过程"></a>实现过程</h3><h4 id="Fork-项目"><a href="#Fork-项目" class="headerlink" title="Fork 项目"></a>Fork 项目</h4><img src="/2025/03/14/%E4%BD%BF%E7%94%A8GithubActions%E6%90%AD%E5%BB%BA%E5%85%8D%E8%B4%B9%E4%B8%AA%E4%BA%BA%E8%BF%90%E5%8A%A8%E4%B8%BB%E9%A1%B5/fork.png" class="">
+
+<p>我的仓库地址：<a href="https://github.com/anchenspp/running_page">https://github.com/anchenspp/running_page</a></p>
+<h4 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h4><p><font style="color:rgb(25, 27, 31);">将项目 clone 到本地</font></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/xxxx/running_page.git --depth=1</span><br></pre></td></tr></table></figure>
+
+<p><font style="color:rgb(25, 27, 31);">安装及测试 (node &gt;&#x3D; 16 python &gt;&#x3D; 3.8)</font></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pip3 install -r requirements.txt</span><br><span class="line">npm install -g corepack &amp;&amp; corepack enable &amp;&amp; pnpm install</span><br><span class="line">pnpm develop</span><br></pre></td></tr></table></figure>
+
+<p><font style="color:rgb(25, 27, 31);">访问 <a href="http://localhost:5173/">http://localhost:5173/</a> 查看效果</font></p>
+<h4 id="个性化配置"><a href="#个性化配置" class="headerlink" title="个性化配置"></a><font style="color:rgb(25, 27, 31);">个性化配置</font></h4><p><font style="color:rgb(25, 27, 31);">在仓库目录下找到 src&#x2F;static&#x2F;site-metadata.ts，找到以下内容并修改成你自己想要的：</font></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">siteMetadata: &#123;</span><br><span class="line">  siteTitle: &#x27;Running Page&#x27;, #网站标题</span><br><span class="line">  siteUrl: &#x27;https://yihong.run&#x27;, #网站域名</span><br><span class="line">  logo: &#x27;https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTtc69JxHNcmN1ETpMUX4dozAgAN6iPjWalQ&amp;usqp=CAU&#x27;, #左上角 LOGO</span><br><span class="line">  description: &#x27;Personal site and blog&#x27;,</span><br><span class="line">  navLinks: [</span><br><span class="line">    &#123;</span><br><span class="line">      name: &#x27;Blog&#x27;, #右上角导航名称</span><br><span class="line">      url: &#x27;https://yihong.run/running&#x27;, #右上角导航链接</span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      name: &#x27;About&#x27;,</span><br><span class="line">      url: &#x27;https://github.com/yihong0618/running_page/blob/master/README-CN.md&#x27;,</span><br><span class="line">    &#125;,</span><br><span class="line">  ],</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+
+<h4 id="数据下载"><a href="#数据下载" class="headerlink" title="数据下载"></a>数据下载</h4><p>以 coros 为例，获取数据命令为：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python run_page/coros_sync.py &#x27;your coros account&#x27; &#x27;your coros password&#x27;</span><br></pre></td></tr></table></figure>
+
+<h4 id="同步配置"><a href="#同步配置" class="headerlink" title="同步配置"></a>同步配置</h4><p><font style="color:rgb(25, 27, 31);">在仓库目录下找到 .github&#x2F;workflows&#x2F;run_data_sync.yml，修改同步配置：</font></p>
+<img src="/2025/03/14/%E4%BD%BF%E7%94%A8GithubActions%E6%90%AD%E5%BB%BA%E5%85%8D%E8%B4%B9%E4%B8%AA%E4%BA%BA%E8%BF%90%E5%8A%A8%E4%B8%BB%E9%A1%B5/sync_config.png" class="">
+
+<h4 id="提交代码"><a href="#提交代码" class="headerlink" title="提交代码"></a>提交代码</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git add .</span><br><span class="line">git commit -m &quot;update&quot;</span><br><span class="line">git push</span><br></pre></td></tr></table></figure>
+
+<h4 id="部署-定时同步"><a href="#部署-定时同步" class="headerlink" title="部署 &amp; 定时同步"></a>部署 &amp; 定时同步</h4><p><font style="color:rgb(25, 27, 31);">进入仓库的 Settings -&gt; GitHub Pages -&gt; Source，选择 “GitHub Actions”</font></p>
+<img src="/2025/03/14/%E4%BD%BF%E7%94%A8GithubActions%E6%90%AD%E5%BB%BA%E5%85%8D%E8%B4%B9%E4%B8%AA%E4%BA%BA%E8%BF%90%E5%8A%A8%E4%B8%BB%E9%A1%B5/deploy1.png" class="">
+
+<p><font style="color:rgb(25, 27, 31);">为 GitHub Actions 添加代码提交权限，访问仓库的 Settings &gt; Actions &gt; General页面，找到 Workflow permissions 的设置项，将选项配置为 Read and write permissions，支持 CI 将运动数据更新后提交到仓库中</font></p>
+<img src="/2025/03/14/%E4%BD%BF%E7%94%A8GithubActions%E6%90%AD%E5%BB%BA%E5%85%8D%E8%B4%B9%E4%B8%AA%E4%BA%BA%E8%BF%90%E5%8A%A8%E4%B8%BB%E9%A1%B5/deploy2.png" class="">
+
+<p><font style="color:rgb(25, 27, 31);">访问仓库的 Settings &gt; Security &gt; Secrets and variables &gt; Actions 页面，添加 coros 账号及密钥信息</font></p>
+<img src="/2025/03/14/%E4%BD%BF%E7%94%A8GithubActions%E6%90%AD%E5%BB%BA%E5%85%8D%E8%B4%B9%E4%B8%AA%E4%BA%BA%E8%BF%90%E5%8A%A8%E4%B8%BB%E9%A1%B5/deploy3.png" class="">
+
+<p><font style="color:rgb(25, 27, 31);">点击 “Run Data Sync” 更新数据，触发 “Publish GitHub Pages” 工作流</font></p>
+<img src="/2025/03/14/%E4%BD%BF%E7%94%A8GithubActions%E6%90%AD%E5%BB%BA%E5%85%8D%E8%B4%B9%E4%B8%AA%E4%BA%BA%E8%BF%90%E5%8A%A8%E4%B8%BB%E9%A1%B5/deploy4.png" class="">
+
+<img src="/2025/03/14/%E4%BD%BF%E7%94%A8GithubActions%E6%90%AD%E5%BB%BA%E5%85%8D%E8%B4%B9%E4%B8%AA%E4%BA%BA%E8%BF%90%E5%8A%A8%E4%B8%BB%E9%A1%B5/deploy5.png" class="">
+
+<p>同步任务支持手工触发，也支持定时触发</p>
+<img src="/2025/03/14/%E4%BD%BF%E7%94%A8GithubActions%E6%90%AD%E5%BB%BA%E5%85%8D%E8%B4%B9%E4%B8%AA%E4%BA%BA%E8%BF%90%E5%8A%A8%E4%B8%BB%E9%A1%B5/deploy6.png" class="">
+
+<h4 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h4><img src="/2025/03/14/%E4%BD%BF%E7%94%A8GithubActions%E6%90%AD%E5%BB%BA%E5%85%8D%E8%B4%B9%E4%B8%AA%E4%BA%BA%E8%BF%90%E5%8A%A8%E4%B8%BB%E9%A1%B5/deploy7.png" class="">
+
+<img src="/2025/03/14/%E4%BD%BF%E7%94%A8GithubActions%E6%90%AD%E5%BB%BA%E5%85%8D%E8%B4%B9%E4%B8%AA%E4%BA%BA%E8%BF%90%E5%8A%A8%E4%B8%BB%E9%A1%B5/deploy8.png" class="">
+
+<img src="/2025/03/14/%E4%BD%BF%E7%94%A8GithubActions%E6%90%AD%E5%BB%BA%E5%85%8D%E8%B4%B9%E4%B8%AA%E4%BA%BA%E8%BF%90%E5%8A%A8%E4%B8%BB%E9%A1%B5/deploy9.png" class="">
+
+<h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><img src="/2025/03/14/%E4%BD%BF%E7%94%A8GithubActions%E6%90%AD%E5%BB%BA%E5%85%8D%E8%B4%B9%E4%B8%AA%E4%BA%BA%E8%BF%90%E5%8A%A8%E4%B8%BB%E9%A1%B5/principle.png" class="">
+
+
+
+<blockquote>
+<ol>
+<li><font style="color:rgb(31, 35, 40);">GitHub Actions 自动同步跑步数据，生成展示页面</font></li>
+<li><font style="color:rgb(25, 27, 31);">Gatsby 生成的</font>静态网页<font style="color:rgb(25, 27, 31);">，速度快</font></li>
+<li><font style="color:rgb(31, 35, 40);">支持 GitHub Pages 自动部署</font></li>
+<li><font style="color:rgb(31, 35, 40);">React Hooks</font></li>
+<li><font style="color:rgb(31, 35, 40);">Mapbox 进行地图展示</font></li>
+<li><font style="color:rgb(31, 35, 40);">Nike、Strava、佳明（佳明中国）及 Keep 等，自动备份 GPX 数据，方便备份及上传到其它软件</font></li>
+</ol>
+<p>因为数据存在 gpx 和 data.db 中，理论上支持几个软件一起，你可以把之前各类 App 的数据都同步到这里（建议本地同步，之后 Actions 选择正在用的 App）</p>
+</blockquote>
+<p>Github Actions Job 示例</p>
+<p><a href="https://github.com/anchenspp/running_page/actions/runs/13276073371/job/37065801672">https://github.com/anchenspp/running_page&#x2F;actions&#x2F;runs&#x2F;13276073371&#x2F;job&#x2F;37065801672</a></p>
+<p>Commit 示例</p>
+<p><a href="https://github.com/anchenspp/running_page/commit/3e51907993f62ff53988279cdd91143171456e72#diff-45cd37dc7670a2ca7f85ada88010c57418f9db57b2cebb401ce36435082f043f">https://github.com/anchenspp/running_page&#x2F;commit&#x2F;3e51907993f62ff53988279cdd91143171456e72#diff-45cd37dc7670a2ca7f85ada88010c57418f9db57b2cebb401ce36435082f043f</a></p>
+<h3 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h3><p>整个搭建过程差不多耗时 20 分钟，除了部署的时候遇到了几个坑之外，其他都很顺利，有兴趣的同学可以试试，这件事在我看来还是很有趣很酷的。</p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p>【1】<a href="https://github.com/yihong0618/running_page">https://github.com/yihong0618/running_page</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/GithubActions/" rel="tag"># GithubActions</a>
+              <a href="/tags/GithubPages/" rel="tag"># GithubPages</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/10/17/stream-peek-method-in-java-8-vs-java-9/" rel="prev" title="Stream.peek() method in Java 8 vs Java 9">
+                  <i class="fa fa-angle-left"></i> Stream.peek() method in Java 8 vs Java 9
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2015 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">安辰</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">42k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:32</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"server_url":null,"security":true,"enable":true,"app_id":"7vnqelnmehb5id738td3d541e3ap3wq9q29n9t6khpw10r03","app_key":"6hbvt6y29jytyow09w1y1gbl3725wlpedl5o565wuglteym7"}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+
+</body>
+</html>
