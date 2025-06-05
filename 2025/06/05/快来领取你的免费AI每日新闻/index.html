@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.jpg">
+  <link rel="mask-icon" href="/images/logo.jpg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"anchen.me","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.22.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="基于 RSS 地址，每天定时采集一次前一天的内容，通过 GPT 进行分析总结，形成一份每日报告，利用 Github Actioins &amp; Vercel 一键部署独属于你的每日新闻总览,支持 OpenAI、Gemini Pro、Qwen3 模型。 我的每日新闻主页：https:&#x2F;&#x2F;ai.anchen.me&#x2F;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="快来领取你的免费 AI 每日新闻">
+<meta property="og:url" content="http://anchen.me/2025/06/05/%E5%BF%AB%E6%9D%A5%E9%A2%86%E5%8F%96%E4%BD%A0%E7%9A%84%E5%85%8D%E8%B4%B9AI%E6%AF%8F%E6%97%A5%E6%96%B0%E9%97%BB/index.html">
+<meta property="og:site_name" content="安辰">
+<meta property="og:description" content="基于 RSS 地址，每天定时采集一次前一天的内容，通过 GPT 进行分析总结，形成一份每日报告，利用 Github Actioins &amp; Vercel 一键部署独属于你的每日新闻总览,支持 OpenAI、Gemini Pro、Qwen3 模型。 我的每日新闻主页：https:&#x2F;&#x2F;ai.anchen.me&#x2F;">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://anchen.me/2025/06/05/%E5%BF%AB%E6%9D%A5%E9%A2%86%E5%8F%96%E4%BD%A0%E7%9A%84%E5%85%8D%E8%B4%B9AI%E6%AF%8F%E6%97%A5%E6%96%B0%E9%97%BB/fork.png">
+<meta property="og:image" content="http://anchen.me/2025/06/05/%E5%BF%AB%E6%9D%A5%E9%A2%86%E5%8F%96%E4%BD%A0%E7%9A%84%E5%85%8D%E8%B4%B9AI%E6%AF%8F%E6%97%A5%E6%96%B0%E9%97%BB/siliconflow-1.png">
+<meta property="og:image" content="http://anchen.me/2025/06/05/%E5%BF%AB%E6%9D%A5%E9%A2%86%E5%8F%96%E4%BD%A0%E7%9A%84%E5%85%8D%E8%B4%B9AI%E6%AF%8F%E6%97%A5%E6%96%B0%E9%97%BB/siliconflow-2.png">
+<meta property="og:image" content="http://anchen.me/2025/06/05/%E5%BF%AB%E6%9D%A5%E9%A2%86%E5%8F%96%E4%BD%A0%E7%9A%84%E5%85%8D%E8%B4%B9AI%E6%AF%8F%E6%97%A5%E6%96%B0%E9%97%BB/vercel-new.png">
+<meta property="og:image" content="http://anchen.me/2025/06/05/%E5%BF%AB%E6%9D%A5%E9%A2%86%E5%8F%96%E4%BD%A0%E7%9A%84%E5%85%8D%E8%B4%B9AI%E6%AF%8F%E6%97%A5%E6%96%B0%E9%97%BB/vercel-hook-1.png">
+<meta property="og:image" content="http://anchen.me/2025/06/05/%E5%BF%AB%E6%9D%A5%E9%A2%86%E5%8F%96%E4%BD%A0%E7%9A%84%E5%85%8D%E8%B4%B9AI%E6%AF%8F%E6%97%A5%E6%96%B0%E9%97%BB/vercel-hook-2.png">
+<meta property="og:image" content="http://anchen.me/2025/06/05/%E5%BF%AB%E6%9D%A5%E9%A2%86%E5%8F%96%E4%BD%A0%E7%9A%84%E5%85%8D%E8%B4%B9AI%E6%AF%8F%E6%97%A5%E6%96%B0%E9%97%BB/workflow-permission.png">
+<meta property="og:image" content="http://anchen.me/2025/06/05/%E5%BF%AB%E6%9D%A5%E9%A2%86%E5%8F%96%E4%BD%A0%E7%9A%84%E5%85%8D%E8%B4%B9AI%E6%AF%8F%E6%97%A5%E6%96%B0%E9%97%BB/action.png">
+<meta property="og:image" content="http://anchen.me/2025/06/05/%E5%BF%AB%E6%9D%A5%E9%A2%86%E5%8F%96%E4%BD%A0%E7%9A%84%E5%85%8D%E8%B4%B9AI%E6%AF%8F%E6%97%A5%E6%96%B0%E9%97%BB/domain-1.png">
+<meta property="og:image" content="http://anchen.me/2025/06/05/%E5%BF%AB%E6%9D%A5%E9%A2%86%E5%8F%96%E4%BD%A0%E7%9A%84%E5%85%8D%E8%B4%B9AI%E6%AF%8F%E6%97%A5%E6%96%B0%E9%97%BB/domain-2.png">
+<meta property="og:image" content="http://anchen.me/2025/06/05/%E5%BF%AB%E6%9D%A5%E9%A2%86%E5%8F%96%E4%BD%A0%E7%9A%84%E5%85%8D%E8%B4%B9AI%E6%AF%8F%E6%97%A5%E6%96%B0%E9%97%BB/vercel-deploy.png">
+<meta property="og:image" content="http://anchen.me/2025/06/05/%E5%BF%AB%E6%9D%A5%E9%A2%86%E5%8F%96%E4%BD%A0%E7%9A%84%E5%85%8D%E8%B4%B9AI%E6%AF%8F%E6%97%A5%E6%96%B0%E9%97%BB/demo.png">
+<meta property="og:image" content="http://anchen.me/2025/06/05/%E5%BF%AB%E6%9D%A5%E9%A2%86%E5%8F%96%E4%BD%A0%E7%9A%84%E5%85%8D%E8%B4%B9AI%E6%AF%8F%E6%97%A5%E6%96%B0%E9%97%BB/tidyread.png">
+<meta property="og:image" content="http://anchen.me/2025/06/05/%E5%BF%AB%E6%9D%A5%E9%A2%86%E5%8F%96%E4%BD%A0%E7%9A%84%E5%85%8D%E8%B4%B9AI%E6%AF%8F%E6%97%A5%E6%96%B0%E9%97%BB/principle.png">
+<meta property="article:published_time" content="2025-06-05T12:30:46.000Z">
+<meta property="article:modified_time" content="2025-06-05T16:04:12.454Z">
+<meta property="article:author" content="安辰">
+<meta property="article:tag" content="GithubActions">
+<meta property="article:tag" content="Vercel">
+<meta property="article:tag" content="AI">
+<meta property="article:tag" content="RSS">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://anchen.me/2025/06/05/%E5%BF%AB%E6%9D%A5%E9%A2%86%E5%8F%96%E4%BD%A0%E7%9A%84%E5%85%8D%E8%B4%B9AI%E6%AF%8F%E6%97%A5%E6%96%B0%E9%97%BB/fork.png">
+
+
+<link rel="canonical" href="http://anchen.me/2025/06/05/%E5%BF%AB%E6%9D%A5%E9%A2%86%E5%8F%96%E4%BD%A0%E7%9A%84%E5%85%8D%E8%B4%B9AI%E6%AF%8F%E6%97%A5%E6%96%B0%E9%97%BB/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://anchen.me/2025/06/05/%E5%BF%AB%E6%9D%A5%E9%A2%86%E5%8F%96%E4%BD%A0%E7%9A%84%E5%85%8D%E8%B4%B9AI%E6%AF%8F%E6%97%A5%E6%96%B0%E9%97%BB/","path":"2025/06/05/快来领取你的免费AI每日新闻/","title":"快来领取你的免费 AI 每日新闻"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>快来领取你的免费 AI 每日新闻 | 安辰</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">安辰</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">stay hungry stay foolish</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-commonweal"><a href="/404.html" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%98%E8%B5%B7"><span class="nav-number">1.</span> <span class="nav-text">缘起</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E8%BF%87%E7%A8%8B"><span class="nav-number">2.</span> <span class="nav-text">实现过程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Fork-%E9%A1%B9%E7%9B%AE"><span class="nav-number">2.1.</span> <span class="nav-text">Fork 项目</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%AA%E6%80%A7%E5%8C%96%E9%85%8D%E7%BD%AE"><span class="nav-number">2.2.</span> <span class="nav-text">个性化配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%A8%A1%E5%9E%8B%E6%94%AF%E6%8C%81"><span class="nav-number">2.3.</span> <span class="nav-text">模型支持</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%8C%E6%AD%A5%E9%85%8D%E7%BD%AE"><span class="nav-number">2.4.</span> <span class="nav-text">同步配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%83%A8%E7%BD%B2-%E5%AE%9A%E6%97%B6%E5%90%8C%E6%AD%A5"><span class="nav-number">2.5.</span> <span class="nav-text">部署 &amp; 定时同步</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E5%9F%9F%E5%90%8D"><span class="nav-number">2.6.</span> <span class="nav-text">自定义域名</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%88%E6%9E%9C"><span class="nav-number">2.7.</span> <span class="nav-text">效果</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%89%A9%E5%B1%95"><span class="nav-number">2.8.</span> <span class="nav-text">扩展</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8E%9F%E7%90%86"><span class="nav-number">3.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%86%99%E5%9C%A8%E6%9C%80%E5%90%8E"><span class="nav-number">4.</span> <span class="nav-text">写在最后</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">5.</span> <span class="nav-text">参考</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="安辰"
+      src="/images/logo.jpg">
+  <p class="site-author-name" itemprop="name">安辰</p>
+  <div class="site-description" itemprop="description">stay hungry stay foolish</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">55</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://anchen.me/running_page" title="https:&#x2F;&#x2F;anchen.me&#x2F;running_page">我的运动</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="http://www.jianshu.com/u/f66899a37408" title="http:&#x2F;&#x2F;www.jianshu.com&#x2F;u&#x2F;f66899a37408" rel="noopener" target="_blank">我的简书</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://juejin.im/user/587467c2128fe100583131af/posts" title="https:&#x2F;&#x2F;juejin.im&#x2F;user&#x2F;587467c2128fe100583131af&#x2F;posts" rel="noopener" target="_blank">我的掘金</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://oceanjack.github.io/" title="https:&#x2F;&#x2F;oceanjack.github.io&#x2F;" rel="noopener" target="_blank">OceanJack</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://anchen.me/2025/06/05/%E5%BF%AB%E6%9D%A5%E9%A2%86%E5%8F%96%E4%BD%A0%E7%9A%84%E5%85%8D%E8%B4%B9AI%E6%AF%8F%E6%97%A5%E6%96%B0%E9%97%BB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/logo.jpg">
+      <meta itemprop="name" content="安辰">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="安辰">
+      <meta itemprop="description" content="stay hungry stay foolish">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="快来领取你的免费 AI 每日新闻 | 安辰">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          快来领取你的免费 AI 每日新闻
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2025-06-05 12:30:46 / 修改时间：16:04:12" itemprop="dateCreated datePublished" datetime="2025-06-05T12:30:46+00:00">2025-06-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Personal/" itemprop="url" rel="index"><span itemprop="name">Personal</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2025/06/05/%E5%BF%AB%E6%9D%A5%E9%A2%86%E5%8F%96%E4%BD%A0%E7%9A%84%E5%85%8D%E8%B4%B9AI%E6%AF%8F%E6%97%A5%E6%96%B0%E9%97%BB/" class="post-meta-item leancloud_visitors" data-flag-title="快来领取你的免费 AI 每日新闻" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.2k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><blockquote>
+<p><font style="color:rgb(31, 35, 40);">基于 RSS 地址，每天定时采集一次前一天的内容，通过 GPT 进行分析总结，形成一份每日报告，</font>利用 Github Actioins &amp; Vercel <font style="color:rgb(31, 35, 40);">一键部署独属于你的每日新闻总览,支持 OpenAI、Gemini Pro、Qwen3 模型。</font></p>
+<p>我的每日新闻主页：<a href="https://ai.anchen.me/">https://ai.anchen.me/</a></p>
+</blockquote>
+<span id="more"></span>
+
+<h3 id="缘起"><a href="#缘起" class="headerlink" title="缘起"></a>缘起</h3><p>AI 就像一场风暴，从最初的 ChatGPT，到 Copilot RAG，到 Workflow Agent，到 Cursor，再到 Devin，发展的速度之快，日新月异，需要时刻关注业界的新技术、新方向，靠人肉每天吭哧吭哧去搜集信息已经不能满足需求了，所以在想，是否可以用自动化的方式去搜集信息，通过 AI 去分析总结，形成一份报告。</p>
+<p>搜了下，网上有个开源工具可以满足我的诉求：<a href="https://github.com/zhangferry/AIDailyNews">https://github.com/zhangferry/AIDailyNews</a></p>
+<h3 id="实现过程"><a href="#实现过程" class="headerlink" title="实现过程"></a>实现过程</h3><h4 id="Fork-项目"><a href="#Fork-项目" class="headerlink" title="Fork 项目"></a>Fork 项目</h4><p><img src="/2025/06/05/%E5%BF%AB%E6%9D%A5%E9%A2%86%E5%8F%96%E4%BD%A0%E7%9A%84%E5%85%8D%E8%B4%B9AI%E6%AF%8F%E6%97%A5%E6%96%B0%E9%97%BB/fork.png" alt="fork.png"></p>
+<p>我的仓库地址：<a href="https://github.com/hellomypastor/daily-news">https://github.com/hellomypastor/daily-news</a></p>
+<h4 id="个性化配置"><a href="#个性化配置" class="headerlink" title="个性化配置"></a>个性化配置</h4><p><font style="color:rgb(25, 27, 31);">在仓库目录下找到 workflow&#x2F;resources&#x2F;rss.json，找到以下内容并修改成你自己想要的：</font></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;configuration&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;rsshub_domain&quot;</span><span class="punctuation">:</span> <span class="string">&quot;https://rsshub.zhangferry.com/&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;categories&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;category&quot;</span><span class="punctuation">:</span> <span class="string">&quot;\uD83E\uDD16 AI News&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;items&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">        <span class="punctuation">&#123;</span></span><br><span class="line">          <span class="attr">&quot;title&quot;</span><span class="punctuation">:</span> <span class="string">&quot;oneminute_daily_ai_news RSS&quot;</span><span class="punctuation">,</span></span><br><span class="line">          <span class="attr">&quot;url&quot;</span><span class="punctuation">:</span> <span class="string">&quot;https://www.reddit.com/user/Excellent-Target-847/.rss&quot;</span><span class="punctuation">,</span></span><br><span class="line">          <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;link&quot;</span><span class="punctuation">,</span></span><br><span class="line">          <span class="attr">&quot;output_count&quot;</span><span class="punctuation">:</span> <span class="number">1</span></span><br><span class="line">        <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span></span><br><span class="line">          <span class="attr">&quot;title&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Hacker News - AI&quot;</span><span class="punctuation">,</span></span><br><span class="line">          <span class="attr">&quot;url&quot;</span><span class="punctuation">:</span> <span class="string">&quot;https://hnrss.org/newest?q=AI&quot;</span><span class="punctuation">,</span></span><br><span class="line">          <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;link&quot;</span><span class="punctuation">,</span></span><br><span class="line">          <span class="attr">&quot;output_count&quot;</span><span class="punctuation">:</span> <span class="number">3</span></span><br><span class="line">        <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span></span><br><span class="line">          <span class="attr">&quot;title&quot;</span><span class="punctuation">:</span> <span class="string">&quot;36Kr&quot;</span><span class="punctuation">,</span></span><br><span class="line">          <span class="attr">&quot;url&quot;</span><span class="punctuation">:</span> <span class="string">&quot;https://rss.aishort.top/?type=36kr&quot;</span><span class="punctuation">,</span></span><br><span class="line">          <span class="attr">&quot;output_count&quot;</span><span class="punctuation">:</span> <span class="number">1</span></span><br><span class="line">        <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="punctuation">&#123;</span></span><br><span class="line">          <span class="attr">&quot;title&quot;</span><span class="punctuation">:</span> <span class="string">&quot;AIShort&quot;</span><span class="punctuation">,</span></span><br><span class="line">          <span class="attr">&quot;url&quot;</span><span class="punctuation">:</span> <span class="string">&quot;https://rss.aishort.top/?type=wasi&quot;</span><span class="punctuation">,</span></span><br><span class="line">          <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;link&quot;</span><span class="punctuation">,</span></span><br><span class="line">          <span class="attr">&quot;output_count&quot;</span><span class="punctuation">:</span> <span class="number">0</span></span><br><span class="line">        <span class="punctuation">&#125;</span></span><br><span class="line">      <span class="punctuation">]</span></span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="模型支持"><a href="#模型支持" class="headerlink" title="模型支持"></a>模型支持</h4><p>仓库里只支持了 OpenAI 和 Gemini 模型，这里我做了修改，支持了 Qwen3 模型，具体可查看 &#x2F;workflow&#x2F;gpt&#x2F;requests.py 内容</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">request_siliconflow</span>(<span class="params">provider: AIProvider, prompt, content</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    https://docs.siliconflow.cn/cn/api-reference/chat-completions/chat-completions</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    client = OpenAI(api_key=provider.api_key,</span><br><span class="line">                    base_url=provider.base_url)</span><br><span class="line"></span><br><span class="line">    chat_completion = client.chat.completions.create(messages=[</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="string">&quot;role&quot;</span>: <span class="string">&quot;system&quot;</span>,</span><br><span class="line">            <span class="string">&quot;content&quot;</span>: prompt</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="string">&quot;role&quot;</span>: <span class="string">&quot;user&quot;</span>,</span><br><span class="line">            <span class="string">&quot;content&quot;</span>: content</span><br><span class="line">        &#125;</span><br><span class="line">    ], model=provider.model)</span><br><span class="line">    <span class="keyword">return</span> chat_completion.choices[<span class="number">0</span>].message.content</span><br></pre></td></tr></table></figure>
+
+<p>因为 Qwen3 的 API 兼容了 OpenAI 的 sdk，所以实现起来比较简单。</p>
+<blockquote>
+<p>我使用的是 硅基流动 平台，<a href="https://cloud.siliconflow.cn/models">https://cloud.siliconflow.cn/models</a>，使用的是 Qwen3 8B 的免费模型</p>
+</blockquote>
+<p><img src="/2025/06/05/%E5%BF%AB%E6%9D%A5%E9%A2%86%E5%8F%96%E4%BD%A0%E7%9A%84%E5%85%8D%E8%B4%B9AI%E6%AF%8F%E6%97%A5%E6%96%B0%E9%97%BB/siliconflow-1.png"></p>
+<p><img src="/2025/06/05/%E5%BF%AB%E6%9D%A5%E9%A2%86%E5%8F%96%E4%BD%A0%E7%9A%84%E5%85%8D%E8%B4%B9AI%E6%AF%8F%E6%97%A5%E6%96%B0%E9%97%BB/siliconflow-2.png"></p>
+<h4 id="同步配置"><a href="#同步配置" class="headerlink" title="同步配置"></a>同步配置</h4><p><font style="color:rgb(25, 27, 31);">在仓库目录下找到 .github&#x2F;workflows&#x2F;main.yml，修改同步配置：</font></p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="attr">name:</span> <span class="string">CI</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Controls when the workflow will run</span></span><br><span class="line"><span class="attr">on:</span></span><br><span class="line">  <span class="comment"># Triggers the workflow on push or pull request events but only for the main branch</span></span><br><span class="line">  <span class="attr">push:</span></span><br><span class="line">    <span class="attr">branches:</span> [ <span class="string">main</span> ]</span><br><span class="line">  <span class="attr">pull_request:</span></span><br><span class="line">    <span class="attr">branches:</span> [ <span class="string">main</span> ]</span><br><span class="line">  <span class="attr">schedule:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">cron:</span> <span class="number">0</span> <span class="number">15</span> <span class="string">*</span> <span class="string">*</span> <span class="string">*</span>  <span class="comment"># every 23:59 UTC +8</span></span><br><span class="line"></span><br><span class="line">  <span class="comment"># Allows you to run this workflow manually from the Actions tab</span></span><br><span class="line">  <span class="attr">workflow_dispatch:</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># A workflow run is made up of one or more jobs that can run sequentially or in parallel</span></span><br><span class="line"><span class="attr">jobs:</span></span><br><span class="line">  <span class="attr">create-daily-news:</span></span><br><span class="line">    <span class="attr">runs-on:</span> <span class="string">ubuntu-latest</span></span><br><span class="line"></span><br><span class="line">    <span class="attr">env:</span></span><br><span class="line">      <span class="attr">GIT_NAME:</span> <span class="string">$&#123;&#123;</span> <span class="string">secrets.GIT_NAME</span> <span class="string">&#125;&#125;</span></span><br><span class="line">      <span class="attr">GIT_EMAIL:</span> <span class="string">$&#123;&#123;</span> <span class="string">secrets.GIT_EMAIL</span> <span class="string">&#125;&#125;</span></span><br><span class="line">      <span class="attr">AI_PROVIDER:</span> <span class="string">$&#123;&#123;</span> <span class="string">secrets.AI_PROVIDER</span> <span class="string">&#125;&#125;</span></span><br><span class="line">      <span class="attr">GPT_MODEL_NAME:</span> <span class="string">$&#123;&#123;</span> <span class="string">secrets.GPT_MODEL_NAME</span> <span class="string">&#125;&#125;</span></span><br><span class="line">      <span class="attr">GPT_BASE_URL:</span> <span class="string">$&#123;&#123;</span> <span class="string">secrets.GPT_BASE_URL</span> <span class="string">&#125;&#125;</span></span><br><span class="line">      <span class="attr">GPT_API_KEY:</span> <span class="string">$&#123;&#123;</span> <span class="string">secrets.GPT_API_KEY</span> <span class="string">&#125;&#125;</span></span><br><span class="line"></span><br><span class="line">    <span class="attr">steps:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Checkout</span></span><br><span class="line">        <span class="attr">uses:</span> <span class="string">actions/checkout@v2</span></span><br><span class="line"></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Before</span> <span class="string">Execute</span></span><br><span class="line">        <span class="comment"># You may pin to the exact commit or the version.</span></span><br><span class="line">        <span class="attr">run:</span> <span class="string">|</span></span><br><span class="line"><span class="string">          echo $GPT_API_KEY</span></span><br><span class="line"><span class="string">          echo $AI_PROVIDER</span></span><br><span class="line"><span class="string">          ls -l</span></span><br><span class="line"><span class="string"></span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Set</span> <span class="string">up</span> <span class="string">Python</span></span><br><span class="line">        <span class="attr">uses:</span> <span class="string">actions/setup-python@v2</span></span><br><span class="line">        <span class="attr">with:</span></span><br><span class="line">          <span class="attr">python-version:</span> <span class="string">&#x27;3.x&#x27;</span></span><br><span class="line"></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Install</span> <span class="string">requirements</span></span><br><span class="line">        <span class="attr">run:</span> <span class="string">|</span></span><br><span class="line"><span class="string">          python3 -m pip install --upgrade pip</span></span><br><span class="line"><span class="string">          pip3 install -r ./requirements.txt</span></span><br><span class="line"><span class="string"></span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Create</span> <span class="string">Daily</span> <span class="string">News</span></span><br><span class="line">        <span class="comment"># You may pin to the exact commit or the version.</span></span><br><span class="line">        <span class="attr">run:</span> <span class="string">python3</span> <span class="string">./main.py</span></span><br><span class="line"></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Get</span> <span class="string">branch</span> <span class="string">name</span></span><br><span class="line">        <span class="attr">run:</span> <span class="string">echo</span> <span class="string">&quot;BRANCH_NAME=$&#123;GITHUB_REF#refs/heads/&#125;&quot;</span> <span class="string">&gt;&gt;</span> <span class="string">$GITHUB_ENV</span></span><br><span class="line"></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Commit</span></span><br><span class="line">        <span class="attr">run:</span> <span class="string">|</span></span><br><span class="line"><span class="string">          git config --local user.name $GIT_NAME</span></span><br><span class="line"><span class="string">          git config --local user.email $GIT_EMAIL</span></span><br><span class="line"><span class="string">          git add .</span></span><br><span class="line"><span class="string">          git commit -m &quot;Github action update at `date &#x27;+%Y-%m-%d %H:%M:%S&#x27;`.&quot;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">Push</span></span><br><span class="line">        <span class="attr">uses:</span> <span class="string">ad-m/github-push-action@master</span></span><br><span class="line">        <span class="attr">if:</span> <span class="string">$&#123;&#123;</span> <span class="string">env.BRANCH_NAME</span> <span class="string">==</span> <span class="string">&#x27;main&#x27;</span> <span class="string">&#125;&#125;</span> <span class="comment"># only for main</span></span><br><span class="line">        <span class="attr">with:</span></span><br><span class="line">          <span class="attr">github_token:</span> <span class="string">$&#123;&#123;</span> <span class="string">secrets.ACCESS_TOKEN</span> <span class="string">&#125;&#125;</span></span><br><span class="line">          <span class="attr">branch:</span> <span class="string">main</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h4 id="部署-定时同步"><a href="#部署-定时同步" class="headerlink" title="部署 &amp; 定时同步"></a>部署 &amp; 定时同步</h4><p>使用 Vercel 部署（自定更换地址中的个人路径信息）：</p>
+<p><a href="https://vercel.com/new/clone?repository-url=https://github.com/hellomypastor/AIDailyNews&teamSlug=hellomypastors-projects">https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fhellomypastor%2FAIDailyNews&amp;teamSlug=hellomypastors-projects</a></p>
+<p><img src="/2025/06/05/%E5%BF%AB%E6%9D%A5%E9%A2%86%E5%8F%96%E4%BD%A0%E7%9A%84%E5%85%8D%E8%B4%B9AI%E6%AF%8F%E6%97%A5%E6%96%B0%E9%97%BB/vercel-new.png"></p>
+<p>在 Vercel 中新增 Deploy Hooks：</p>
+<p><img src="/2025/06/05/%E5%BF%AB%E6%9D%A5%E9%A2%86%E5%8F%96%E4%BD%A0%E7%9A%84%E5%85%8D%E8%B4%B9AI%E6%AF%8F%E6%97%A5%E6%96%B0%E9%97%BB/vercel-hook-1.png"></p>
+<p>在仓库中配置 Webhooks：</p>
+<p><img src="/2025/06/05/%E5%BF%AB%E6%9D%A5%E9%A2%86%E5%8F%96%E4%BD%A0%E7%9A%84%E5%85%8D%E8%B4%B9AI%E6%AF%8F%E6%97%A5%E6%96%B0%E9%97%BB/vercel-hook-2.png"></p>
+<p><font style="color:rgb(25, 27, 31);">为 GitHub Actions 添加代码提交权限，访问仓库的 Settings &gt; Actions &gt; General页面，找到 Workflow permissions 的设置项，将选项配置为 Read and write permissions，支持 CI 将数据更新后提交到仓库中</font></p>
+<p><img src="/2025/06/05/%E5%BF%AB%E6%9D%A5%E9%A2%86%E5%8F%96%E4%BD%A0%E7%9A%84%E5%85%8D%E8%B4%B9AI%E6%AF%8F%E6%97%A5%E6%96%B0%E9%97%BB/workflow-permission.png"></p>
+<p><font style="color:rgb(25, 27, 31);">访问仓库的 Settings &gt; Security &gt; Secrets and variables &gt; Actions 页面，添加账号及密钥信息</font></p>
+<p><img src="/2025/06/05/%E5%BF%AB%E6%9D%A5%E9%A2%86%E5%8F%96%E4%BD%A0%E7%9A%84%E5%85%8D%E8%B4%B9AI%E6%AF%8F%E6%97%A5%E6%96%B0%E9%97%BB/action.png"></p>
+<h4 id="自定义域名"><a href="#自定义域名" class="headerlink" title="自定义域名"></a>自定义域名</h4><p>Vercel 提供了域名，但域名比较长，不易记住</p>
+<p><img src="/2025/06/05/%E5%BF%AB%E6%9D%A5%E9%A2%86%E5%8F%96%E4%BD%A0%E7%9A%84%E5%85%8D%E8%B4%B9AI%E6%AF%8F%E6%97%A5%E6%96%B0%E9%97%BB/domain-1.png"></p>
+<p>可以自定义域名：</p>
+<p><img src="/2025/06/05/%E5%BF%AB%E6%9D%A5%E9%A2%86%E5%8F%96%E4%BD%A0%E7%9A%84%E5%85%8D%E8%B4%B9AI%E6%AF%8F%E6%97%A5%E6%96%B0%E9%97%BB/domain-2.png"></p>
+<h4 id="效果"><a href="#效果" class="headerlink" title="效果"></a>效果</h4><p>Vercel 部署页面：</p>
+<p><img src="/2025/06/05/%E5%BF%AB%E6%9D%A5%E9%A2%86%E5%8F%96%E4%BD%A0%E7%9A%84%E5%85%8D%E8%B4%B9AI%E6%AF%8F%E6%97%A5%E6%96%B0%E9%97%BB/vercel-deploy.png"></p>
+<p>生成的新闻总览页面：</p>
+<p><img src="/2025/06/05/%E5%BF%AB%E6%9D%A5%E9%A2%86%E5%8F%96%E4%BD%A0%E7%9A%84%E5%85%8D%E8%B4%B9AI%E6%AF%8F%E6%97%A5%E6%96%B0%E9%97%BB/demo.png"></p>
+<h4 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h4><p>有一个 Chrome 插件，正好是做这个事情的，可以填自己的 API key 免费用，还支持配钉钉机器人定时推送：<a href="https://chromewebstore.google.com/detail/tidyread-read-more-in-les/gpfnpbpkadjgeoneammbiiidbkgkncaa">https://chromewebstore.google.com/detail/tidyread-read-more-in-les/gpfnpbpkadjgeoneammbiiidbkgkncaa</a></p>
+<p><img src="/2025/06/05/%E5%BF%AB%E6%9D%A5%E9%A2%86%E5%8F%96%E4%BD%A0%E7%9A%84%E5%85%8D%E8%B4%B9AI%E6%AF%8F%E6%97%A5%E6%96%B0%E9%97%BB/tidyread.png"></p>
+<h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p><img src="/2025/06/05/%E5%BF%AB%E6%9D%A5%E9%A2%86%E5%8F%96%E4%BD%A0%E7%9A%84%E5%85%8D%E8%B4%B9AI%E6%AF%8F%E6%97%A5%E6%96%B0%E9%97%BB/principle.png"></p>
+<blockquote>
+<ol>
+<li><font style="color:rgb(31, 35, 40);">GitHub Actions 自动从 RSS 采集数据</font></li>
+<li><font style="color:rgb(25, 27, 31);">采集后的数据 输入给 AI，AI 进行分析总结后，生成 MarkDown 文档后，push 到仓库中</font></li>
+<li><font style="color:rgb(31, 35, 40);">通过 Vercel 自动部署</font></li>
+<li><font style="color:rgb(31, 35, 40);">支持 OpenAI、Gemini、Qwen3 等模型</font></li>
+</ol>
+</blockquote>
+<h3 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h3><p>整个搭建过程差不多耗时 1 小时，除了部署的时候遇到了几个坑之外，其他都很顺利，有兴趣的同学可以试试。</p>
+<p>让 AI 去帮我们分析总结 AI 相关的新闻，这件事在我看来还是很有趣很酷的。AI 时代，事情再难总有机会，不要怕，坚持下去，坚持到最后的胜利。</p>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p>【1】<a href="https://github.com/zhangferry/AIDailyNews">https://github.com/zhangferry/AIDailyNews</a></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/GithubActions/" rel="tag"># GithubActions</a>
+              <a href="/tags/Vercel/" rel="tag"># Vercel</a>
+              <a href="/tags/AI/" rel="tag"># AI</a>
+              <a href="/tags/RSS/" rel="tag"># RSS</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2025/03/14/%E4%BD%BF%E7%94%A8GithubActions%E6%90%AD%E5%BB%BA%E5%85%8D%E8%B4%B9%E4%B8%AA%E4%BA%BA%E8%BF%90%E5%8A%A8%E4%B8%BB%E9%A1%B5/" rel="prev" title="使用 GithubActions 打造免费个人运动主页">
+                  <i class="fa fa-angle-left"></i> 使用 GithubActions 打造免费个人运动主页
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2015 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">安辰</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">43k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:36</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"server_url":null,"security":true,"enable":true,"app_id":"7vnqelnmehb5id738td3d541e3ap3wq9q29n9t6khpw10r03","app_key":"6hbvt6y29jytyow09w1y1gbl3725wlpedl5o565wuglteym7"}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+
+</body>
+</html>

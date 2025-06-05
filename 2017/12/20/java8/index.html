@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.jpg">
+  <link rel="mask-icon" href="/images/logo.jpg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"anchen.me","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.22.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Jdk目前已经发展到Java 9了，历史上有两个版本变化比较大，一个是Java 5，另一个就是Java 8。本Java8新特性系列将着重分析理解Java8的新特性，以及其是怎么为我们开发提升效率的。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java8新特性（序）">
+<meta property="og:url" content="http://anchen.me/2017/12/20/java8/index.html">
+<meta property="og:site_name" content="安辰">
+<meta property="og:description" content="Jdk目前已经发展到Java 9了，历史上有两个版本变化比较大，一个是Java 5，另一个就是Java 8。本Java8新特性系列将着重分析理解Java8的新特性，以及其是怎么为我们开发提升效率的。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-12-20T23:42:37.000Z">
+<meta property="article:modified_time" content="2025-06-05T16:04:12.422Z">
+<meta property="article:author" content="安辰">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="Java8新特性">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://anchen.me/2017/12/20/java8/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://anchen.me/2017/12/20/java8/","path":"2017/12/20/java8/","title":"Java8新特性（序）"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Java8新特性（序） | 安辰</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">安辰</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">stay hungry stay foolish</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-commonweal"><a href="/404.html" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="安辰"
+      src="/images/logo.jpg">
+  <p class="site-author-name" itemprop="name">安辰</p>
+  <div class="site-description" itemprop="description">stay hungry stay foolish</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">55</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://anchen.me/running_page" title="https:&#x2F;&#x2F;anchen.me&#x2F;running_page">我的运动</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="http://www.jianshu.com/u/f66899a37408" title="http:&#x2F;&#x2F;www.jianshu.com&#x2F;u&#x2F;f66899a37408" rel="noopener" target="_blank">我的简书</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://juejin.im/user/587467c2128fe100583131af/posts" title="https:&#x2F;&#x2F;juejin.im&#x2F;user&#x2F;587467c2128fe100583131af&#x2F;posts" rel="noopener" target="_blank">我的掘金</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://oceanjack.github.io/" title="https:&#x2F;&#x2F;oceanjack.github.io&#x2F;" rel="noopener" target="_blank">OceanJack</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://anchen.me/2017/12/20/java8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/logo.jpg">
+      <meta itemprop="name" content="安辰">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="安辰">
+      <meta itemprop="description" content="stay hungry stay foolish">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Java8新特性（序） | 安辰">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java8新特性（序）
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2017-12-20 23:42:37" itemprop="dateCreated datePublished" datetime="2017-12-20T23:42:37+00:00">2017-12-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-06-05 16:04:12" itemprop="dateModified" datetime="2025-06-05T16:04:12+00:00">2025-06-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2017/12/20/java8/" class="post-meta-item leancloud_visitors" data-flag-title="Java8新特性（序）" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>715</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>Jdk目前已经发展到<code>Java 9</code>了，历史上有两个版本变化比较大，一个是<code>Java 5</code>，另一个就是<code>Java 8</code>。<br>本Java8新特性系列将着重分析理解Java8的新特性，以及其是怎么为我们开发提升效率的。</p>
+<span id="more"></span>
+<p>#历史版本如下：</p>
+<table>
+<thead>
+<tr>
+<th>版本</th>
+<th align="center">名称</th>
+<th align="right">发行日期</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>JDK 1.1.4</td>
+<td align="center">Sparkler（宝石）</td>
+<td align="right">1997-09-12</td>
+</tr>
+<tr>
+<td>JDK 1.1.5</td>
+<td align="center">Pumpkin（南瓜）</td>
+<td align="right">1997-12-13</td>
+</tr>
+<tr>
+<td>JDK 1.1.6</td>
+<td align="center">Abigail（阿比盖尔–女子名）</td>
+<td align="right">1998-04-24</td>
+</tr>
+<tr>
+<td>JDK 1.1.7</td>
+<td align="center">Brutus（布鲁图–古罗马政治家和将军）</td>
+<td align="right">1998-09-28</td>
+</tr>
+<tr>
+<td>JDK 1.1.8</td>
+<td align="center">Chelsea（切尔西–城市名）</td>
+<td align="right">1998-04-24</td>
+</tr>
+<tr>
+<td>J2SE 1.2</td>
+<td align="center">Playground（运动场</td>
+<td align="right">1998-12-04</td>
+</tr>
+<tr>
+<td>J2SE 1.2.1</td>
+<td align="center">none（无）</td>
+<td align="right">1999-03-30</td>
+</tr>
+<tr>
+<td>J2SE 1.2.2</td>
+<td align="center">Cricket（蟋蟀）</td>
+<td align="right">1999-07-08</td>
+</tr>
+<tr>
+<td>J2SE 1.3</td>
+<td align="center">Kestrel（美洲红隼）</td>
+<td align="right">2000-05-08</td>
+</tr>
+<tr>
+<td>J2SE 1.3.1</td>
+<td align="center">Ladybird（瓢虫）</td>
+<td align="right">2001-05-17</td>
+</tr>
+<tr>
+<td>J2SE 1.4.0</td>
+<td align="center">Merlin（灰背隼）</td>
+<td align="right">2002-02-13</td>
+</tr>
+<tr>
+<td>J2SE 1.4.1</td>
+<td align="center">grasshopper（蚱蜢）</td>
+<td align="right">2002-09-16</td>
+</tr>
+<tr>
+<td>J2SE 1.4.2</td>
+<td align="center">Mantis（螳螂）</td>
+<td align="right">2003-06-26</td>
+</tr>
+<tr>
+<td>Java SE 5.0 (1.5.0)</td>
+<td align="center">Tiger（老虎）</td>
+<td align="right">2004-09-30</td>
+</tr>
+<tr>
+<td>Java SE 6.0 (1.6.0)</td>
+<td align="center">Mustang（野马）</td>
+<td align="right">2006-04-xx</td>
+</tr>
+<tr>
+<td>Java SE 7.0 (1.7.0)</td>
+<td align="center">Dolphin（海豚）</td>
+<td align="right">2011-07-28</td>
+</tr>
+<tr>
+<td>Java SE 8.0 (1.8.0)</td>
+<td align="center">Spider（蜘蛛）</td>
+<td align="right">2014-03-18</td>
+</tr>
+<tr>
+<td>Java SE 9</td>
+<td align="center"></td>
+<td align="right">2017-09-21</td>
+</tr>
+</tbody></table>
+<p>#最近三个版本的新特性如下：<br>##Java 7</p>
+<blockquote>
+<p>开发代号是Dolphin（海豚），于2011-07-28发行</p>
+</blockquote>
+<p>引入的新特性包括：</p>
+<ul>
+<li>switch语句块中允许以字符串作为分支条件；</li>
+<li>在创建泛型对象时应用类型推断；</li>
+<li>在一个语句块中捕获多种异常；</li>
+<li>支持动态语言；</li>
+<li>支持try-with-resources；</li>
+<li>引入Java NIO.2开发包；</li>
+<li>数值类型可以用2进制字符串表示，并且可以在字符串表示中添加下划线；</li>
+<li>钻石型语法；</li>
+<li>null值的自动处理。</li>
+</ul>
+<p>##Java 8</p>
+<blockquote>
+<p>开发代号是Spider（蜘蛛），于2014年3月14号发布</p>
+</blockquote>
+<p>引入的新特性包括：</p>
+<ul>
+<li>Lambda表达式</li>
+<li>Pipelines和Streams</li>
+<li>Date和Time API</li>
+<li>Default方法</li>
+<li>Type注解</li>
+<li>Nashhorn JavaScript引擎</li>
+<li>并发计数器</li>
+<li>Parallel操作</li>
+<li>移除PermGen Error</li>
+<li>TLS SNI</li>
+</ul>
+<p>##Java 9</p>
+<blockquote>
+<p>于2017年9月21日发布</p>
+</blockquote>
+<p>引入的新特性包括：</p>
+<ul>
+<li>模块化系统–Jigsaw 项目</li>
+<li>JShell–Java 9 REPL</li>
+<li>集合工厂方法</li>
+<li>接口中的私有方法</li>
+<li>响应式流</li>
+<li>多分辨率图像API–JEP 251</li>
+<li>进程API的改进</li>
+<li>Try-With-Resources</li>
+<li>钻石（diamond）操作符范围的延伸</li>
+<li>增强的注释Deprecate</li>
+<li>统一的JVM日志</li>
+<li>注释SafeVarargs范围的延伸</li>
+<li>HTTP 2 客户端</li>
+<li>HTML5风格的Java帮助文档</li>
+<li>保留下划线字符。变量不能被命名为_；</li>
+<li>废弃Applet API；</li>
+<li>javac不再支持Java1.4以及之前的版本；</li>
+<li>废弃Java浏览器插件；</li>
+<li>栈遍历API–栈遍历API能过滤和迟访问在堆栈跟踪中的信息</li>
+</ul>
+<blockquote>
+<p>###目前<code>Java8</code>在Java各版本使用率中已高达<code>60%</code>以上，未来还会继续上升，所以学会用Java8，用好Java8势在必行，本系列将着重分析理解Java8的新特性，以及其是怎么为我们开发提升效率的。</p>
+<p>##<strong>人生苦短，拥抱Java8。</strong></p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Java/" rel="tag"># Java</a>
+              <a href="/tags/Java8%E6%96%B0%E7%89%B9%E6%80%A7/" rel="tag"># Java8新特性</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2017/12/17/%E9%98%BF%E9%87%8CJava%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C%E6%80%9D%E8%80%83%EF%BC%88%E4%BA%94%EF%BC%89/" rel="prev" title="阿里Java开发手册思考（五）">
+                  <i class="fa fa-angle-left"></i> 阿里Java开发手册思考（五）
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2017/12/21/java8-interface/" rel="next" title="Java8新特性（Interface）">
+                  Java8新特性（Interface） <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2015 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">安辰</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">43k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:36</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"server_url":null,"security":true,"enable":true,"app_id":"7vnqelnmehb5id738td3d541e3ap3wq9q29n9t6khpw10r03","app_key":"6hbvt6y29jytyow09w1y1gbl3725wlpedl5o565wuglteym7"}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+
+</body>
+</html>

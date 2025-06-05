@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.jpg">
+  <link rel="mask-icon" href="/images/logo.jpg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"anchen.me","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.22.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="在上一篇中，介绍了git的初始化配置配置、获取帮助、初始化仓库、跟踪新文件、提交、忽略某些文件，以及分支，具体文章：如何克服解决Git冲突的恐惧症？（Git基础篇–上），本篇将介绍分支合并相关的git merge与git rebase。 merge分支合并的方法一就是git merge，通过图示更容易理解： 执行命令如下： 123git merge bugFixgit checkout bugFi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何克服解决Git冲突的恐惧症？（Git基础篇--下）">
+<meta property="og:url" content="http://anchen.me/2018/03/11/%E5%A6%82%E4%BD%95%E5%85%8B%E6%9C%8D%E8%A7%A3%E5%86%B3Git%E5%86%B2%E7%AA%81%E7%9A%84%E6%81%90%E6%83%A7%E7%97%87%EF%BC%9F%EF%BC%88Git%E5%9F%BA%E7%A1%80%E7%AF%87-%E4%B8%8B%EF%BC%89/index.html">
+<meta property="og:site_name" content="安辰">
+<meta property="og:description" content="在上一篇中，介绍了git的初始化配置配置、获取帮助、初始化仓库、跟踪新文件、提交、忽略某些文件，以及分支，具体文章：如何克服解决Git冲突的恐惧症？（Git基础篇–上），本篇将介绍分支合并相关的git merge与git rebase。 merge分支合并的方法一就是git merge，通过图示更容易理解： 执行命令如下： 123git merge bugFixgit checkout bugFi">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/3/8/1620636c82b68567?w=1024&h=768&f=gif&s=1432430">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/3/8/16206385e6ce291b?w=1024&h=768&f=gif&s=2051942">
+<meta property="article:published_time" content="2018-03-11T07:48:00.000Z">
+<meta property="article:modified_time" content="2025-06-05T16:04:12.454Z">
+<meta property="article:author" content="安辰">
+<meta property="article:tag" content="Git">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://user-gold-cdn.xitu.io/2018/3/8/1620636c82b68567?w=1024&h=768&f=gif&s=1432430">
+
+
+<link rel="canonical" href="http://anchen.me/2018/03/11/%E5%A6%82%E4%BD%95%E5%85%8B%E6%9C%8D%E8%A7%A3%E5%86%B3Git%E5%86%B2%E7%AA%81%E7%9A%84%E6%81%90%E6%83%A7%E7%97%87%EF%BC%9F%EF%BC%88Git%E5%9F%BA%E7%A1%80%E7%AF%87-%E4%B8%8B%EF%BC%89/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://anchen.me/2018/03/11/%E5%A6%82%E4%BD%95%E5%85%8B%E6%9C%8D%E8%A7%A3%E5%86%B3Git%E5%86%B2%E7%AA%81%E7%9A%84%E6%81%90%E6%83%A7%E7%97%87%EF%BC%9F%EF%BC%88Git%E5%9F%BA%E7%A1%80%E7%AF%87-%E4%B8%8B%EF%BC%89/","path":"2018/03/11/如何克服解决Git冲突的恐惧症？（Git基础篇-下）/","title":"如何克服解决Git冲突的恐惧症？（Git基础篇--下）"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>如何克服解决Git冲突的恐惧症？（Git基础篇--下） | 安辰</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">安辰</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">stay hungry stay foolish</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-commonweal"><a href="/404.html" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#merge"><span class="nav-number">1.</span> <span class="nav-text">merge</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#rebase"><span class="nav-number">2.</span> <span class="nav-text">rebase</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#merge%E4%B8%8Erebase%E7%9A%84%E5%AF%B9%E6%AF%94"><span class="nav-number">3.</span> <span class="nav-text">merge与rebase的对比</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#rebase%E9%BB%84%E9%87%91%E6%B3%95%E5%88%99"><span class="nav-number">4.</span> <span class="nav-text">rebase黄金法则</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#rebase%E5%86%B2%E7%AA%81%E8%A7%A3%E5%86%B3"><span class="nav-number">5.</span> <span class="nav-text">rebase冲突解决</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BB%BA%E8%AE%AE"><span class="nav-number">6.</span> <span class="nav-text">建议</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="安辰"
+      src="/images/logo.jpg">
+  <p class="site-author-name" itemprop="name">安辰</p>
+  <div class="site-description" itemprop="description">stay hungry stay foolish</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">55</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://anchen.me/running_page" title="https:&#x2F;&#x2F;anchen.me&#x2F;running_page">我的运动</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="http://www.jianshu.com/u/f66899a37408" title="http:&#x2F;&#x2F;www.jianshu.com&#x2F;u&#x2F;f66899a37408" rel="noopener" target="_blank">我的简书</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://juejin.im/user/587467c2128fe100583131af/posts" title="https:&#x2F;&#x2F;juejin.im&#x2F;user&#x2F;587467c2128fe100583131af&#x2F;posts" rel="noopener" target="_blank">我的掘金</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://oceanjack.github.io/" title="https:&#x2F;&#x2F;oceanjack.github.io&#x2F;" rel="noopener" target="_blank">OceanJack</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://anchen.me/2018/03/11/%E5%A6%82%E4%BD%95%E5%85%8B%E6%9C%8D%E8%A7%A3%E5%86%B3Git%E5%86%B2%E7%AA%81%E7%9A%84%E6%81%90%E6%83%A7%E7%97%87%EF%BC%9F%EF%BC%88Git%E5%9F%BA%E7%A1%80%E7%AF%87-%E4%B8%8B%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/logo.jpg">
+      <meta itemprop="name" content="安辰">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="安辰">
+      <meta itemprop="description" content="stay hungry stay foolish">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="如何克服解决Git冲突的恐惧症？（Git基础篇--下） | 安辰">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          如何克服解决Git冲突的恐惧症？（Git基础篇--下）
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-03-11 07:48:00" itemprop="dateCreated datePublished" datetime="2018-03-11T07:48:00+00:00">2018-03-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-06-05 16:04:12" itemprop="dateModified" datetime="2025-06-05T16:04:12+00:00">2025-06-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Git/" itemprop="url" rel="index"><span itemprop="name">Git</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2018/03/11/%E5%A6%82%E4%BD%95%E5%85%8B%E6%9C%8D%E8%A7%A3%E5%86%B3Git%E5%86%B2%E7%AA%81%E7%9A%84%E6%81%90%E6%83%A7%E7%97%87%EF%BC%9F%EF%BC%88Git%E5%9F%BA%E7%A1%80%E7%AF%87-%E4%B8%8B%EF%BC%89/" class="post-meta-item leancloud_visitors" data-flag-title="如何克服解决Git冲突的恐惧症？（Git基础篇--下）" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>807</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>在上一篇中，介绍了git的初始化配置配置、获取帮助、初始化仓库、跟踪新文件、提交、忽略某些文件，以及分支，具体文章：<a href="http://hellomypastor.net/2018/03/07/%E5%A6%82%E4%BD%95%E5%85%8B%E6%9C%8D%E8%A7%A3%E5%86%B3Git%E5%86%B2%E7%AA%81%E7%9A%84%E6%81%90%E6%83%A7%E7%97%87%EF%BC%9F%EF%BC%88Git%E5%9F%BA%E7%A1%80%E7%AF%87-%E4%B8%8A%EF%BC%89/">如何克服解决Git冲突的恐惧症？（Git基础篇–上）</a>，本篇将介绍分支合并相关的<code>git merge</code>与<code>git rebase</code>。</p>
+<h1 id="merge"><a href="#merge" class="headerlink" title="merge"></a>merge</h1><p>分支合并的方法一就是git merge，通过图示更容易理解：</p>
+<p>执行命令如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git merge bugFix</span><br><span class="line">git checkout bugFix</span><br><span class="line">git merge master</span><br></pre></td></tr></table></figure>
+
+<p>执行过程如下：</p>
+<p><img src="https://user-gold-cdn.xitu.io/2018/3/8/1620636c82b68567?w=1024&h=768&f=gif&s=1432430"></p>
+<h1 id="rebase"><a href="#rebase" class="headerlink" title="rebase"></a>rebase</h1><p>分支合并的方法二就是git rebase，通过图示更容易理解：</p>
+<p>执行命令如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git rebase master</span><br><span class="line"><span class="comment">//下面两步只是示例，不建议使用</span></span><br><span class="line">git checkout master</span><br><span class="line">git rebase bugFix</span><br></pre></td></tr></table></figure>
+
+<p>执行过程如下：</p>
+<p><img src="https://user-gold-cdn.xitu.io/2018/3/8/16206385e6ce291b?w=1024&h=768&f=gif&s=2051942"></p>
+<span id="more"></span>
+
+<h1 id="merge与rebase的对比"><a href="#merge与rebase的对比" class="headerlink" title="merge与rebase的对比"></a>merge与rebase的对比</h1><p>Merge好在它是一个安全的操作。现有的分支不会被更改，避免了rebase潜在的缺点，另一方面，这同样意味着每次合并上游更改时feature分支都会引入一个外来的合并提交。如果master非常活跃的话，这或多或少会污染你的分支历史。虽然高级的git log选项可以减轻这个问题，但对于开发者来说，还是会增加理解项目历史的难度。</p>
+<p>Rebase最大的好处是你的项目历史会非常整洁。首先，它不像git merge 那样引入不必要的合并提交。其次，rebase导致最后的项目历史呈现出完美的线性——你可以从项目终点到起点浏览而不需要任何的Fork。这让你更容易使用git log、git bisect和gitk来查看项目历史。</p>
+<p>不过，这种简单的提交历史会带来两个后果：安全性和可跟踪性。如果你违反了Rebase黄金法则，重写项目历史可能会给你的协作工作流带来灾难性的影响。此外，rebase不会有合并提交中附带的信息——你看不到feature分支中并入了上游的哪些更改。</p>
+<h1 id="rebase黄金法则"><a href="#rebase黄金法则" class="headerlink" title="rebase黄金法则"></a>rebase黄金法则</h1><p>当你理解rebase是什么的时候，最重要的就是什么时候不能用rebase。git rebase的黄金法则便是，绝不要在公共的分支上使用它。</p>
+<h1 id="rebase冲突解决"><a href="#rebase冲突解决" class="headerlink" title="rebase冲突解决"></a>rebase冲突解决</h1><p>假设有两个分支，master与bugFix：</p>
+<p>master分支的README.md文件内容如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">史培培</span><br></pre></td></tr></table></figure>
+
+<p>bugFix分支的README.md文件内容如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">码上论剑</span><br><span class="line"></span><br><span class="line">欢迎关注我的公众号</span><br><span class="line"></span><br><span class="line">http:<span class="comment">//hellomypastor.net</span></span><br></pre></td></tr></table></figure>
+
+<p>在bugFix分支执行如下命令：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git pull --rebase</span><br></pre></td></tr></table></figure>
+
+<p>发现冲突：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</span><br><span class="line">史培培</span><br><span class="line">=======</span><br><span class="line">码上论剑</span><br><span class="line"></span><br><span class="line">欢迎关注我的公众号</span><br><span class="line"></span><br><span class="line">http:<span class="comment">//hellomypastor.net</span></span><br><span class="line">&gt;&gt;&gt;&gt;&gt;&gt;&gt; init</span><br></pre></td></tr></table></figure>
+
+<p>解决冲突之后，执行：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git add README.md</span><br><span class="line">git rebase --<span class="keyword">continue</span></span><br></pre></td></tr></table></figure>
+
+<p>这样就解决冲突了，是不是很简单？</p>
+<h1 id="建议"><a href="#建议" class="headerlink" title="建议"></a>建议</h1><p>用pull –rebase，而不用pull（默认merge），这样的话在pull的时候就自行在本地解决两路冲突，而不是merge的时候麻烦的多路merge，这才是git的正确使用方式。</p>
+<blockquote>
+<p>相信大家对git的基础已经基本掌握，不妨在自己的git环境中动手试一试，下篇将讲述《Git分支管理策略》，主要介绍git分支的管理相关内容，敬请期待～</p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Git/" rel="tag"># Git</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/03/07/%E5%A6%82%E4%BD%95%E5%85%8B%E6%9C%8D%E8%A7%A3%E5%86%B3Git%E5%86%B2%E7%AA%81%E7%9A%84%E6%81%90%E6%83%A7%E7%97%87%EF%BC%9F%EF%BC%88Git%E5%9F%BA%E7%A1%80%E7%AF%87-%E4%B8%8A%EF%BC%89/" rel="prev" title="如何克服解决Git冲突的恐惧症？（Git基础篇--上）">
+                  <i class="fa fa-angle-left"></i> 如何克服解决Git冲突的恐惧症？（Git基础篇--上）
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/03/13/%E5%A6%82%E4%BD%95%E5%85%8B%E6%9C%8D%E8%A7%A3%E5%86%B3Git%E5%86%B2%E7%AA%81%E7%9A%84%E6%81%90%E6%83%A7%E7%97%87%EF%BC%9F%EF%BC%88Git%E5%88%86%E6%94%AF%E7%AD%96%E7%95%A5%EF%BC%89/" rel="next" title="如何克服解决Git冲突的恐惧症？（Git分支策略）">
+                  如何克服解决Git冲突的恐惧症？（Git分支策略） <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2015 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">安辰</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">43k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:36</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"server_url":null,"security":true,"enable":true,"app_id":"7vnqelnmehb5id738td3d541e3ap3wq9q29n9t6khpw10r03","app_key":"6hbvt6y29jytyow09w1y1gbl3725wlpedl5o565wuglteym7"}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+
+</body>
+</html>

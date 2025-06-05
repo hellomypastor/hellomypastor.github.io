@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.jpg">
+  <link rel="mask-icon" href="/images/logo.jpg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"anchen.me","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.22.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="上期我们分析了Java8中的引用，本期我们将分析Java8中的另一个重要的新特性：流Stream。本文**图片**转载自并发编程网">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java8新特性（Stream）">
+<meta property="og:url" content="http://anchen.me/2017/12/28/java8-stream/index.html">
+<meta property="og:site_name" content="安辰">
+<meta property="og:description" content="上期我们分析了Java8中的引用，本期我们将分析Java8中的另一个重要的新特性：流Stream。本文**图片**转载自并发编程网">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://img03.taobaocdn.com/imgextra/i3/90219132/T2OxXnXPlXXXXXXXXX_!!90219132.jpg">
+<meta property="og:image" content="http://img04.taobaocdn.com/imgextra/i4/90219132/T2K0lnXPRXXXXXXXXX_!!90219132.jpg">
+<meta property="og:image" content="http://img02.taobaocdn.com/imgextra/i2/90219132/T2QAXlXJBaXXXXXXXX_!!90219132.jpg">
+<meta property="og:image" content="http://img04.taobaocdn.com/imgextra/i4/90219132/T24A8mXUJXXXXXXXXX_!!90219132.jpg">
+<meta property="og:image" content="http://img03.taobaocdn.com/imgextra/i3/90219132/T2PQJnXOJXXXXXXXXX_!!90219132.jpg">
+<meta property="og:image" content="http://img01.taobaocdn.com/imgextra/i1/90219132/T2mBXnXQhXXXXXXXXX_!!90219132.jpg">
+<meta property="og:image" content="http://img03.taobaocdn.com/imgextra/i3/90219132/T2DrFmXHtaXXXXXXXX_!!90219132.jpg">
+<meta property="article:published_time" content="2017-12-28T22:38:44.000Z">
+<meta property="article:modified_time" content="2025-06-05T16:04:12.422Z">
+<meta property="article:author" content="安辰">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="Java8新特性">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://img03.taobaocdn.com/imgextra/i3/90219132/T2OxXnXPlXXXXXXXXX_!!90219132.jpg">
+
+
+<link rel="canonical" href="http://anchen.me/2017/12/28/java8-stream/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://anchen.me/2017/12/28/java8-stream/","path":"2017/12/28/java8-stream/","title":"Java8新特性（Stream）"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Java8新特性（Stream） | 安辰</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">安辰</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">stay hungry stay foolish</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-commonweal"><a href="/404.html" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="安辰"
+      src="/images/logo.jpg">
+  <p class="site-author-name" itemprop="name">安辰</p>
+  <div class="site-description" itemprop="description">stay hungry stay foolish</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">55</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://anchen.me/running_page" title="https:&#x2F;&#x2F;anchen.me&#x2F;running_page">我的运动</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="http://www.jianshu.com/u/f66899a37408" title="http:&#x2F;&#x2F;www.jianshu.com&#x2F;u&#x2F;f66899a37408" rel="noopener" target="_blank">我的简书</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://juejin.im/user/587467c2128fe100583131af/posts" title="https:&#x2F;&#x2F;juejin.im&#x2F;user&#x2F;587467c2128fe100583131af&#x2F;posts" rel="noopener" target="_blank">我的掘金</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://oceanjack.github.io/" title="https:&#x2F;&#x2F;oceanjack.github.io&#x2F;" rel="noopener" target="_blank">OceanJack</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://anchen.me/2017/12/28/java8-stream/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/logo.jpg">
+      <meta itemprop="name" content="安辰">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="安辰">
+      <meta itemprop="description" content="stay hungry stay foolish">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Java8新特性（Stream） | 安辰">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java8新特性（Stream）
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2017-12-28 22:38:44" itemprop="dateCreated datePublished" datetime="2017-12-28T22:38:44+00:00">2017-12-28</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-06-05 16:04:12" itemprop="dateModified" datetime="2025-06-05T16:04:12+00:00">2025-06-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2017/12/28/java8-stream/" class="post-meta-item leancloud_visitors" data-flag-title="Java8新特性（Stream）" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>955</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>3 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><blockquote>
+<p>上期我们分析了Java8中的引用，本期我们将分析Java8中的另一个重要的新特性：流Stream。<br>本文**<code>图片</code>**转载自<a href="http://ifeve.com/stream/">并发编程网</a></p>
+</blockquote>
+<span id="more"></span>
+<p>##Stream是什么？<br>在Java8源代码中，是这么定义Stream的：</p>
+<blockquote>
+<p>A sequence of elements supporting sequential and parallel aggregate operations.</p>
+</blockquote>
+<p>简单翻译就是流是支持顺序和并行的汇聚操作的一组元素。</p>
+<p>从这个定义上来说，<code>Stream</code>可以说是一个高级版本的<code>Iterator</code>，Iterator只能一个一个遍历元素从而对元素进行操作，但是Stream可以执行非常复杂的查找、过滤和映射数据等操作，并且中间操作可以一直迭代。</p>
+<p><strong>Collections是存储元素，Stream是计算。</strong></p>
+<p>Stream可以理解为一个管道（<code>Pipeline</code>），数据从管道的一边进入，经过中间各种处理，然后从管道的另一边出来新的数据。</p>
+<p>几个注意点：</p>
+<ul>
+<li><ol>
+<li>Stream自己不会存储元素。</li>
+</ol>
+</li>
+<li><ol start="2">
+<li>Stream不会改变原对象。相反，他们会返回一个持有结果的新Stream。</li>
+</ol>
+</li>
+<li><ol start="3">
+<li>Stream操作是延迟执行。这意味着他们会等到需要结果的时候才执行。</li>
+</ol>
+</li>
+</ul>
+<p>##Stream的pipeline</p>
+<ul>
+<li>创建Stream</li>
+<li>中间操作：一个中间操作链，对数据源数据进行处理，但是是延迟执行的</li>
+<li>终止操作：执行中间操作链，并产生结果，正如上面注意点3</li>
+</ul>
+<p>##创建Stream<br>####1、java.util.Collection内置了获取流的方法，分别为串行流与并行流</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">default</span> Stream&lt;E&gt; <span class="title function_">stream</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> StreamSupport.stream(spliterator(), <span class="literal">false</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">default</span> Stream&lt;E&gt; <span class="title function_">parallelStream</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> StreamSupport.stream(spliterator(), <span class="literal">true</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>####2、java.util.Arrays内置了获取流的方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; Stream&lt;T&gt; <span class="title function_">stream</span><span class="params">(T[] array)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> stream(array, <span class="number">0</span>, array.length);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>####3、java.util.stream.Stream内置了创建流的方法，分别为通过对象创建流和通过函数创建流</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span>&lt;T&gt; Stream&lt;T&gt; <span class="title function_">of</span><span class="params">(T t)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> StreamSupport.stream(<span class="keyword">new</span> <span class="title class_">Streams</span>.StreamBuilderImpl&lt;&gt;(t), <span class="literal">false</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span>&lt;T&gt; Stream&lt;T&gt; <span class="title function_">of</span><span class="params">(T... values)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> Arrays.stream(values);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span>&lt;T&gt; Stream&lt;T&gt; <span class="title function_">iterate</span><span class="params">(<span class="keyword">final</span> T seed, <span class="keyword">final</span> UnaryOperator&lt;T&gt; f)</span> &#123;</span><br><span class="line">    Objects.requireNonNull(f);</span><br><span class="line">    <span class="keyword">final</span> Iterator&lt;T&gt; iterator = <span class="keyword">new</span> <span class="title class_">Iterator</span>&lt;T&gt;() &#123;</span><br><span class="line">        <span class="meta">@SuppressWarnings(&quot;unchecked&quot;)</span></span><br><span class="line">        <span class="type">T</span> <span class="variable">t</span> <span class="operator">=</span> (T) Streams.NONE;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">hasNext</span><span class="params">()</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="keyword">public</span> T <span class="title function_">next</span><span class="params">()</span> &#123;</span><br><span class="line">            <span class="type">return</span> <span class="variable">t</span> <span class="operator">=</span> (t == Streams.NONE) ? seed : f.apply(t);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">return</span> StreamSupport.stream(Spliterators.spliteratorUnknownSize(</span><br><span class="line">                iterator,</span><br><span class="line">                Spliterator.ORDERED | Spliterator.IMMUTABLE), <span class="literal">false</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span>&lt;T&gt; Stream&lt;T&gt; <span class="title function_">generate</span><span class="params">(Supplier&lt;T&gt; s)</span> &#123;</span><br><span class="line">    Objects.requireNonNull(s);</span><br><span class="line">    <span class="keyword">return</span> StreamSupport.stream(</span><br><span class="line">                <span class="keyword">new</span> <span class="title class_">StreamSpliterators</span>.InfiniteSupplyingSpliterator.OfRef&lt;&gt;(Long.MAX_VALUE, s), <span class="literal">false</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>##中间操作（java.util.stream.Stream）<br>####1、截断与切片</p>
+<ul>
+<li>filter：过滤</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Stream&lt;T&gt; <span class="title function_">filter</span><span class="params">(Predicate&lt;? <span class="built_in">super</span> T&gt; predicate)</span>;</span><br></pre></td></tr></table></figure>
+<p><img src="http://img03.taobaocdn.com/imgextra/i3/90219132/T2OxXnXPlXXXXXXXXX_!!90219132.jpg" alt="filter"></p>
+<ul>
+<li>distinct：去除重复元素（通过equals和hashCode）</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Stream&lt;T&gt; <span class="title function_">distinct</span><span class="params">()</span>;</span><br></pre></td></tr></table></figure>
+<p><img src="http://img04.taobaocdn.com/imgextra/i4/90219132/T2K0lnXPRXXXXXXXXX_!!90219132.jpg" alt="distinct"></p>
+<ul>
+<li>limit：限制数量</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Stream&lt;T&gt; <span class="title function_">limit</span><span class="params">(<span class="type">long</span> maxSize)</span>;</span><br></pre></td></tr></table></figure>
+<p><img src="http://img02.taobaocdn.com/imgextra/i2/90219132/T2QAXlXJBaXXXXXXXX_!!90219132.jpg" alt="limit"></p>
+<ul>
+<li>skip：跳过</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Stream&lt;T&gt; <span class="title function_">skip</span><span class="params">(<span class="type">long</span> n)</span>;</span><br></pre></td></tr></table></figure>
+<p><img src="http://img04.taobaocdn.com/imgextra/i4/90219132/T24A8mXUJXXXXXXXXX_!!90219132.jpg" alt="skip"></p>
+<p>是不是有点类似SQL语句呢？</p>
+<p>####2、映射</p>
+<ul>
+<li>map</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;R&gt; Stream&lt;R&gt; <span class="title function_">map</span><span class="params">(Function&lt;? <span class="built_in">super</span> T, ? extends R&gt; mapper)</span>;</span><br></pre></td></tr></table></figure>
+<p><img src="http://img03.taobaocdn.com/imgextra/i3/90219132/T2PQJnXOJXXXXXXXXX_!!90219132.jpg" alt="map"></p>
+<ul>
+<li><p>mapToInt</p>
+</li>
+<li><p>mapToLong</p>
+</li>
+<li><p>mapToDouble</p>
+</li>
+<li><p>flatMap</p>
+</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;R&gt; Stream&lt;R&gt; <span class="title function_">flatMap</span><span class="params">(Function&lt;? <span class="built_in">super</span> T, ? extends Stream&lt;? extends R&gt;&gt; mapper)</span>;</span><br></pre></td></tr></table></figure>
+<p><img src="http://img01.taobaocdn.com/imgextra/i1/90219132/T2mBXnXQhXXXXXXXXX_!!90219132.jpg" alt="flatMap"></p>
+<ul>
+<li>flatMapToInt</li>
+<li>flatMapToLong</li>
+<li>flatMapToDouble</li>
+</ul>
+<p>####3、排序</p>
+<ul>
+<li>sorted</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Stream&lt;T&gt; <span class="title function_">sorted</span><span class="params">()</span>;</span><br><span class="line">Stream&lt;T&gt; <span class="title function_">sorted</span><span class="params">(Comparator&lt;? <span class="built_in">super</span> T&gt; comparator)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>####4、包装</p>
+<ul>
+<li>peek</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Stream&lt;T&gt; <span class="title function_">peek</span><span class="params">(Consumer&lt;? <span class="built_in">super</span> T&gt; action)</span>;</span><br></pre></td></tr></table></figure>
+<p><img src="http://img03.taobaocdn.com/imgextra/i3/90219132/T2DrFmXHtaXXXXXXXX_!!90219132.jpg" alt="peek"></p>
+<p>##终止操作<br>####查找与匹配</p>
+<ul>
+<li>allMatch：检查是否匹配所有元素</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">boolean</span> <span class="title function_">allMatch</span><span class="params">(Predicate&lt;? <span class="built_in">super</span> T&gt; predicate)</span>;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>anyMatch：检查是否至少匹配一个元素</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">boolean</span> <span class="title function_">anyMatch</span><span class="params">(Predicate&lt;? <span class="built_in">super</span> T&gt; predicate)</span>;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>noneMatch：检查是否没有匹配所有元素</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">boolean</span> <span class="title function_">noneMatch</span><span class="params">(Predicate&lt;? <span class="built_in">super</span> T&gt; predicate)</span>;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>findFirst：返回第一个元素</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Optional&lt;T&gt; <span class="title function_">findFirst</span><span class="params">()</span>;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>findAny：返回当前流中的任意元素</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Optional&lt;T&gt; <span class="title function_">findAny</span><span class="params">()</span>;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>count：返回流中元素总数</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">long</span> <span class="title function_">count</span><span class="params">()</span>;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>max：返回流中最大值</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Optional&lt;T&gt; <span class="title function_">max</span><span class="params">(Comparator&lt;? <span class="built_in">super</span> T&gt; comparator)</span>;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>min：返回流中最小值</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Optional&lt;T&gt; <span class="title function_">min</span><span class="params">(Comparator&lt;? <span class="built_in">super</span> T&gt; comparator)</span>;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>forEach：内部迭代</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> <span class="title function_">forEach</span><span class="params">(Consumer&lt;? <span class="built_in">super</span> T&gt; action)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>####规约</p>
+<ul>
+<li>reduce</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">T <span class="title function_">reduce</span><span class="params">(T identity, BinaryOperator&lt;T&gt; accumulator)</span>;</span><br><span class="line"></span><br><span class="line">Optional&lt;T&gt; <span class="title function_">reduce</span><span class="params">(BinaryOperator&lt;T&gt; accumulator)</span>;</span><br><span class="line"></span><br><span class="line">&lt;U&gt; U <span class="title function_">reduce</span><span class="params">(U identity,</span></span><br><span class="line"><span class="params">                 BiFunction&lt;U, ? <span class="built_in">super</span> T, U&gt; accumulator,</span></span><br><span class="line"><span class="params">                 BinaryOperator&lt;U&gt; combiner)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>####收集</p>
+<ul>
+<li>collect</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;R, A&gt; R <span class="title function_">collect</span><span class="params">(Collector&lt;? <span class="built_in">super</span> T, A, R&gt; collector)</span>;</span><br><span class="line"></span><br><span class="line">&lt;R&gt; R <span class="title function_">collect</span><span class="params">(Supplier&lt;R&gt; supplier,</span></span><br><span class="line"><span class="params">                  BiConsumer&lt;R, ? <span class="built_in">super</span> T&gt; accumulator,</span></span><br><span class="line"><span class="params">                  BiConsumer&lt;R, R&gt; combiner)</span>;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>Collectors静态方法</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">List&lt;T&gt; <span class="title function_">toList</span><span class="params">()</span></span><br><span class="line">Set&lt;T&gt; <span class="title function_">toSet</span><span class="params">()</span></span><br><span class="line">Collection&lt;T&gt; toCollection</span><br><span class="line">Long counting</span><br><span class="line">Integer summingInt</span><br><span class="line">Double averagingInt</span><br><span class="line">IntSummaryStatistics summarizingInt</span><br><span class="line">String joining</span><br><span class="line">Optional&lt;T&gt; maxBy</span><br><span class="line">Optional&lt;T&gt; minBy</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Stream是不是很方便呢？<br>下期我们将测试下Stream中串行流与并行流的性能</p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Java/" rel="tag"># Java</a>
+              <a href="/tags/Java8%E6%96%B0%E7%89%B9%E6%80%A7/" rel="tag"># Java8新特性</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2017/12/25/java8-reference/" rel="prev" title="Java8新特性（引用）">
+                  <i class="fa fa-angle-left"></i> Java8新特性（引用）
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2017/12/30/java8-stream-performance/" rel="next" title="Java8新特性（流性能）">
+                  Java8新特性（流性能） <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2015 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">安辰</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">43k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:36</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"server_url":null,"security":true,"enable":true,"app_id":"7vnqelnmehb5id738td3d541e3ap3wq9q29n9t6khpw10r03","app_key":"6hbvt6y29jytyow09w1y1gbl3725wlpedl5o565wuglteym7"}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+
+</body>
+</html>

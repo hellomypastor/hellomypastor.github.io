@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.jpg">
+  <link rel="mask-icon" href="/images/logo.jpg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"anchen.me","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.22.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Git高级话题">
+<meta property="og:type" content="article">
+<meta property="og:title" content="如何克服解决Git冲突的恐惧症？（Git高级话题）">
+<meta property="og:url" content="http://anchen.me/2018/03/20/%E5%A6%82%E4%BD%95%E5%85%8B%E6%9C%8D%E8%A7%A3%E5%86%B3Git%E5%86%B2%E7%AA%81%E7%9A%84%E6%81%90%E6%83%A7%E7%97%87%EF%BC%9F%EF%BC%88Git%E9%AB%98%E7%BA%A7%E8%AF%9D%E9%A2%98%EF%BC%89/index.html">
+<meta property="og:site_name" content="安辰">
+<meta property="og:description" content="Git高级话题">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/3/20/16243be85bfa1d62?w=880&h=419&f=png&s=26832">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/3/20/16243c2acbce1666?w=273&h=669&f=png&s=24669">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/3/20/16243ca0a2420e26?w=532&h=555&f=png&s=23445">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/3/20/16243cb3f790e8f5?w=673&h=555&f=png&s=27729">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/3/20/16243cf4b1a4eabc?w=264&h=517&f=png&s=18476">
+<meta property="og:image" content="https://user-gold-cdn.xitu.io/2018/3/20/16243e68de653a4f?w=636&h=517&f=png&s=34988">
+<meta property="article:published_time" content="2018-03-20T07:55:41.000Z">
+<meta property="article:modified_time" content="2025-06-05T16:04:12.454Z">
+<meta property="article:author" content="安辰">
+<meta property="article:tag" content="Git">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://user-gold-cdn.xitu.io/2018/3/20/16243be85bfa1d62?w=880&h=419&f=png&s=26832">
+
+
+<link rel="canonical" href="http://anchen.me/2018/03/20/%E5%A6%82%E4%BD%95%E5%85%8B%E6%9C%8D%E8%A7%A3%E5%86%B3Git%E5%86%B2%E7%AA%81%E7%9A%84%E6%81%90%E6%83%A7%E7%97%87%EF%BC%9F%EF%BC%88Git%E9%AB%98%E7%BA%A7%E8%AF%9D%E9%A2%98%EF%BC%89/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://anchen.me/2018/03/20/%E5%A6%82%E4%BD%95%E5%85%8B%E6%9C%8D%E8%A7%A3%E5%86%B3Git%E5%86%B2%E7%AA%81%E7%9A%84%E6%81%90%E6%83%A7%E7%97%87%EF%BC%9F%EF%BC%88Git%E9%AB%98%E7%BA%A7%E8%AF%9D%E9%A2%98%EF%BC%89/","path":"2018/03/20/如何克服解决Git冲突的恐惧症？（Git高级话题）/","title":"如何克服解决Git冲突的恐惧症？（Git高级话题）"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>如何克服解决Git冲突的恐惧症？（Git高级话题） | 安辰</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">安辰</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">stay hungry stay foolish</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-commonweal"><a href="/404.html" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A4%9A%E5%88%86%E6%94%AFrebase"><span class="nav-number">1.</span> <span class="nav-text">多分支rebase</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%A4%E4%B8%AA%E7%88%B6%E8%8A%82%E7%82%B9"><span class="nav-number">2.</span> <span class="nav-text">两个父节点</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BA%A0%E7%BC%A0%E4%B8%8D%E6%B8%85%E7%9A%84%E5%88%86%E6%94%AF"><span class="nav-number">3.</span> <span class="nav-text">纠缠不清的分支</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="安辰"
+      src="/images/logo.jpg">
+  <p class="site-author-name" itemprop="name">安辰</p>
+  <div class="site-description" itemprop="description">stay hungry stay foolish</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">55</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://anchen.me/running_page" title="https:&#x2F;&#x2F;anchen.me&#x2F;running_page">我的运动</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="http://www.jianshu.com/u/f66899a37408" title="http:&#x2F;&#x2F;www.jianshu.com&#x2F;u&#x2F;f66899a37408" rel="noopener" target="_blank">我的简书</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://juejin.im/user/587467c2128fe100583131af/posts" title="https:&#x2F;&#x2F;juejin.im&#x2F;user&#x2F;587467c2128fe100583131af&#x2F;posts" rel="noopener" target="_blank">我的掘金</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://oceanjack.github.io/" title="https:&#x2F;&#x2F;oceanjack.github.io&#x2F;" rel="noopener" target="_blank">OceanJack</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://anchen.me/2018/03/20/%E5%A6%82%E4%BD%95%E5%85%8B%E6%9C%8D%E8%A7%A3%E5%86%B3Git%E5%86%B2%E7%AA%81%E7%9A%84%E6%81%90%E6%83%A7%E7%97%87%EF%BC%9F%EF%BC%88Git%E9%AB%98%E7%BA%A7%E8%AF%9D%E9%A2%98%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/logo.jpg">
+      <meta itemprop="name" content="安辰">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="安辰">
+      <meta itemprop="description" content="stay hungry stay foolish">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="如何克服解决Git冲突的恐惧症？（Git高级话题） | 安辰">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          如何克服解决Git冲突的恐惧症？（Git高级话题）
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-03-20 07:55:41" itemprop="dateCreated datePublished" datetime="2018-03-20T07:55:41+00:00">2018-03-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-06-05 16:04:12" itemprop="dateModified" datetime="2025-06-05T16:04:12+00:00">2025-06-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Git/" itemprop="url" rel="index"><span itemprop="name">Git</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2018/03/20/%E5%A6%82%E4%BD%95%E5%85%8B%E6%9C%8D%E8%A7%A3%E5%86%B3Git%E5%86%B2%E7%AA%81%E7%9A%84%E6%81%90%E6%83%A7%E7%97%87%EF%BC%9F%EF%BC%88Git%E9%AB%98%E7%BA%A7%E8%AF%9D%E9%A2%98%EF%BC%89/" class="post-meta-item leancloud_visitors" data-flag-title="如何克服解决Git冲突的恐惧症？（Git高级话题）" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>397</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>Git高级话题</p>
+<span id="more"></span>
+
+<h1 id="多分支rebase"><a href="#多分支rebase" class="headerlink" title="多分支rebase"></a>多分支rebase</h1><p>多分支的情况下，我们往往希望得到有序的提交历史，看下面的例子：</p>
+<p><img src="https://user-gold-cdn.xitu.io/2018/3/20/16243be85bfa1d62?w=880&h=419&f=png&s=26832"></p>
+<p>执行如下步骤进行多分支rebase：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">git rebase master bugFix</span><br><span class="line">git rebase bugFix side</span><br><span class="line">git rebase side another</span><br><span class="line">git rebase another master</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://user-gold-cdn.xitu.io/2018/3/20/16243c2acbce1666?w=273&h=669&f=png&s=24669"></p>
+<h1 id="两个父节点"><a href="#两个父节点" class="headerlink" title="两个父节点"></a>两个父节点</h1><p>操作符<code>^</code>与<code>~</code>符一样，后面也可以跟一个数字。</p>
+<p>但是该操作符后面的数字与~后面的不同，并不是用来指定向上返回几代，而是指定合并提交记录的某个父提交。还记得前面提到过的一个合并提交有两个父提交吧，所以遇到这样的节点时该选择哪条路径就不是很清晰了。</p>
+<p>Git默认选择合并提交的“第一个”父提交，在操作符^后跟一个数字可以改变这一默认行为。</p>
+<p>废话不多说，举个例子：</p>
+<p><img src="https://user-gold-cdn.xitu.io/2018/3/20/16243ca0a2420e26?w=532&h=555&f=png&s=23445"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//链式操作</span></span><br><span class="line">git branch bugWork master~^<span class="number">2</span>~</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://user-gold-cdn.xitu.io/2018/3/20/16243cb3f790e8f5?w=673&h=555&f=png&s=27729"></p>
+<h1 id="纠缠不清的分支"><a href="#纠缠不清的分支" class="headerlink" title="纠缠不清的分支"></a>纠缠不清的分支</h1><p><img src="https://user-gold-cdn.xitu.io/2018/3/20/16243cf4b1a4eabc?w=264&h=517&f=png&s=18476"></p>
+<p>如上图，现在我们的master分支是比one、two和three要多几个提交。出于某种原因，我们需要把master分支上最近的几次提交做不同的调整后，分别添加到各个的分支上。</p>
+<p>one需要重新排序并删除C5，two仅需要重排排序，而three只需要提交一次。</p>
+<p>执行如下命令：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">git checkout one</span><br><span class="line">git cherry-pick C4 C3 C2</span><br><span class="line">git checkout two</span><br><span class="line">git cherry-pick C5 C4 C3 C2</span><br><span class="line">git branch -f three C2</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://user-gold-cdn.xitu.io/2018/3/20/16243e68de653a4f?w=636&h=517&f=png&s=34988"></p>
+<blockquote>
+<p>相信大家对Git高级话题已经基本掌握，不妨在自己的git环境中动手试一试吧～</p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Git/" rel="tag"># Git</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/03/19/%E5%A6%82%E4%BD%95%E5%85%8B%E6%9C%8D%E8%A7%A3%E5%86%B3Git%E5%86%B2%E7%AA%81%E7%9A%84%E6%81%90%E6%83%A7%E7%97%87%EF%BC%9F%EF%BC%88Git%E6%9D%82%E9%A1%B9%EF%BC%89/" rel="prev" title="如何克服解决Git冲突的恐惧症？（Git杂项）">
+                  <i class="fa fa-angle-left"></i> 如何克服解决Git冲突的恐惧症？（Git杂项）
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/10/16/jdk-collection/" rel="next" title="JDK集合源码剖析（集合框架）">
+                  JDK集合源码剖析（集合框架） <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2015 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">安辰</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">43k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:36</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"server_url":null,"security":true,"enable":true,"app_id":"7vnqelnmehb5id738td3d541e3ap3wq9q29n9t6khpw10r03","app_key":"6hbvt6y29jytyow09w1y1gbl3725wlpedl5o565wuglteym7"}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.jpg">
+  <link rel="mask-icon" href="/images/logo.jpg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"anchen.me","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.22.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Java学习路线">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java学习路线">
+<meta property="og:url" content="http://anchen.me/2015/10/31/Java%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/index.html">
+<meta property="og:site_name" content="安辰">
+<meta property="og:description" content="Java学习路线">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2015-10-31T13:40:06.000Z">
+<meta property="article:modified_time" content="2025-06-05T16:04:12.421Z">
+<meta property="article:author" content="安辰">
+<meta property="article:tag" content="Java">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://anchen.me/2015/10/31/Java%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://anchen.me/2015/10/31/Java%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/","path":"2015/10/31/Java学习路线/","title":"Java学习路线"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Java学习路线 | 安辰</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">安辰</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">stay hungry stay foolish</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-commonweal"><a href="/404.html" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%83%8C%E6%99%AF"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#J2SE"><span class="nav-number">2.</span> <span class="nav-text">J2SE</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#J2EE"><span class="nav-number">3.</span> <span class="nav-text">J2EE</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#J2ME"><span class="nav-number">4.</span> <span class="nav-text">J2ME</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="安辰"
+      src="/images/logo.jpg">
+  <p class="site-author-name" itemprop="name">安辰</p>
+  <div class="site-description" itemprop="description">stay hungry stay foolish</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">55</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://anchen.me/running_page" title="https:&#x2F;&#x2F;anchen.me&#x2F;running_page">我的运动</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="http://www.jianshu.com/u/f66899a37408" title="http:&#x2F;&#x2F;www.jianshu.com&#x2F;u&#x2F;f66899a37408" rel="noopener" target="_blank">我的简书</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://juejin.im/user/587467c2128fe100583131af/posts" title="https:&#x2F;&#x2F;juejin.im&#x2F;user&#x2F;587467c2128fe100583131af&#x2F;posts" rel="noopener" target="_blank">我的掘金</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://oceanjack.github.io/" title="https:&#x2F;&#x2F;oceanjack.github.io&#x2F;" rel="noopener" target="_blank">OceanJack</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://anchen.me/2015/10/31/Java%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/logo.jpg">
+      <meta itemprop="name" content="安辰">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="安辰">
+      <meta itemprop="description" content="stay hungry stay foolish">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Java学习路线 | 安辰">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java学习路线
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2015-10-31 13:40:06" itemprop="dateCreated datePublished" datetime="2015-10-31T13:40:06+00:00">2015-10-31</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-06-05 16:04:12" itemprop="dateModified" datetime="2025-06-05T16:04:12+00:00">2025-06-05</time>
+    </span>
+
+  
+    <span id="/2015/10/31/Java%E5%AD%A6%E4%B9%A0%E8%B7%AF%E7%BA%BF/" class="post-meta-item leancloud_visitors" data-flag-title="Java学习路线" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>Java学习路线</p>
+<span id="more"></span>
+<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>怎么学习Java，这是很多新手经常遇到的问题，现在我简单描述下一个Java初学者到就业要学到的一些东西：<br>首先要明白Java体系设计到得三个方面：<code>J2SE</code>,<code>J2EE</code>,<code>J2ME（KJAVA）</code>。<br>J2SE，Java 2 Platform Standard Edition，我们经常说到的JDK，就主要指的这个，它是三者的基础，属于桌面级应用开发，这部分如果学得好很容易拓展J2EE和J2ME。<br>J2EE，Java 2 Platform，Enterprise Edition，就是所谓的企业级Java，适合企业的大型应用开发。<br>J2ME，The Micro Edition of the Java 2 Platform。主要用于嵌入式Java，如手机，PDA等等。</p>
+<h2 id="J2SE"><a href="#J2SE" class="headerlink" title="J2SE"></a>J2SE</h2><p>新手最初学习的时候先要从J2SE开始学起，所包含的内容主要分为：面向对象概念的理解、Java基本语法的学习，Java桌面图形界面应用程序的开发，掌握常用的Java API等（关键是要学会怎样查阅）。 </p>
+<ul>
+<li>重点：Java基本语法（循环结构，数据类型，数组，运算符等）、Swing，awt，事件机制、文件输入输出流处理等</li>
+<li>难点：面向对象思想的理解（接口、类等）、线程、socket网络编程等</li>
+</ul>
+<h2 id="J2EE"><a href="#J2EE" class="headerlink" title="J2EE"></a>J2EE</h2><p>在学习了J2SE之后，你可以尝试着慢慢过渡到J2EE，当然，学习J2EE海需要很多非JAVA技术的支撑，比如数据库技术，网页编程技术等等，待会我会详细介绍这两方面的内容。J2EE有三个必学的框架，如果你说你学了J2EE，但又不会这三个框架的话，那会让人笑掉大牙，这三个框架分别是Struts、Spring和Hibernate，虽然这三个框架应用很广，但不代表这三个框架就代表了J2EE，J2EE还有很多其他的东西，比如EJB，作为一款重量级（此重量级不是指重量级选手那个意思，此重量级非彼重量级）框架，虽然这个应用慢慢的再被其他框架所取代，但EJB3.0的出现也给它带回一些生机，作为一个分布式应用的框架，也是大家要去学习和了解的知识。<br>当然，刚才说到J2EE包含的范围很广，即使我把我所了解的所有技术说出来，也并不能代表J2EE，这是一个很深很广的学问，需要大家以后再工作的时候慢慢去发现了。我所了解的还包括： </p>
+<ul>
+<li>JDBC:Java数据库连接对象，基础中的基础，Hibernate也只是对它的封装而已 </li>
+<li>JNDI: Java 命名与目录接口，J2EE重要规范之一 </li>
+<li>EJBS: 上面已经提到过了 </li>
+<li>RMI: 提供远程调用方法的支持，主要用于程序分布式开发 </li>
+<li>JMS: Java消息服务，中间件技术 </li>
+<li>JAVA IDL: 提供J2EE平台与CORBA交互能力和互联能力的技术 </li>
+<li>JTS: 组件事务监视器 </li>
+<li>JTA: 事务划分的一个技术 </li>
+<li>JAVAMAIL: Java中的邮件技术 </li>
+<li>JAF: Java启动框架,没研究过 </li>
+<li>Log4j，一款日志处理的框架应用 </li>
+<li>Junit：单元测试的好帮手 </li>
+<li>freemarker、velocity：两款不错的模板引擎 </li>
+<li>与Flash的交互Flex：目前很多的SNS应用就是使用到了这个技术 </li>
+<li>Web services:想知道我们论坛天气预报的效果是怎么做的吗？请关注这个技术 </li>
+<li>SOA:面向服务架构，未来技术发展的趋势之一<br>……<br>不过前面介绍到得这些都不是J2EE的基础,是属于框架应用级别的.要真正把上面说到的知识掌握好,还是的学习J2EE最核心的东西:JDBC、JSP、servlet和JavaBean,后面三个也是学习SSH的基础(Struts&#x2F;Spring&#x2F;Hibernate的简称).鉴于J2EE的内容太过复杂,建议大家最初只学习: JSP, servlet和JavaBean，等这个基础掌握好再把SSH学习了，再对其他J2EE技术有个大致的了解就可以出去找工作了。当然，找工作的前提除了把Java学习好，还会有一些其他的技术也是必须要掌握的。</li>
+</ul>
+<p>-_- 我很简单,Java却要求我学这么多复杂的东西。除了这些技术的东西，在这阶段，大家更多的是会接触到比如设计模式的东西，比如工厂模式、桥梁模式、单例模式等等，还要学习建模思想（比如UML建模等等）和软件生命周期等等。这些是升华大家编程思想的手段和途径。</p>
+<h2 id="J2ME"><a href="#J2ME" class="headerlink" title="J2ME"></a>J2ME</h2><p>如果你在学习了以上技术还不过瘾，可以再学习手机程序的开发，就我个人看来，开发手机程序技术其实蛮简单的，难点在于优化，比如怎么让你写的程序尽量的节约手机资源，“代码诚可贵，手机价更高“，所以不得不比PC机多考虑很多成本和实用性问题。J2ME的学习的话，切忌不要单纯的再模拟器上测试，一定要找真机测试，真机和模拟器的效果之间差别是很大的。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Java/" rel="tag"># Java</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2015/05/11/Flask-SAE%E6%90%AD%E5%BB%BA%E5%BE%AE%E4%BF%A1%E5%90%8E%E5%8F%B0%E5%88%9D%E6%8E%A2/" rel="prev" title="Flask+SAE搭建微信后台初探">
+                  <i class="fa fa-angle-left"></i> Flask+SAE搭建微信后台初探
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2015/11/03/%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7%E5%8F%91%E7%BA%A2%E5%8C%85%E5%AE%9E%E7%8E%B0/" rel="next" title="微信公众号发红包实现">
+                  微信公众号发红包实现 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2015 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">安辰</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">43k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:36</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"server_url":null,"security":true,"enable":true,"app_id":"7vnqelnmehb5id738td3d541e3ap3wq9q29n9t6khpw10r03","app_key":"6hbvt6y29jytyow09w1y1gbl3725wlpedl5o565wuglteym7"}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+
+</body>
+</html>

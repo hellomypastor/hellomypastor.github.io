@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.jpg">
+  <link rel="mask-icon" href="/images/logo.jpg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"anchen.me","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.22.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="利用Restlet流式读取远端文件时，如果没有手动将inputstream关闭，那么InputRepresentation会自动将inputstream关闭吗？">
+<meta property="og:type" content="article">
+<meta property="og:title" content="BUG：Restlet流式读取远端文件内容时inputstream未关闭">
+<meta property="og:url" content="http://anchen.me/2017/08/01/BUG%EF%BC%9ARestlet%E6%B5%81%E5%BC%8F%E8%AF%BB%E5%8F%96%E8%BF%9C%E7%AB%AF%E6%96%87%E4%BB%B6%E5%86%85%E5%AE%B9%E6%97%B6inputstream%E6%9C%AA%E5%85%B3%E9%97%AD/index.html">
+<meta property="og:site_name" content="安辰">
+<meta property="og:description" content="利用Restlet流式读取远端文件时，如果没有手动将inputstream关闭，那么InputRepresentation会自动将inputstream关闭吗？">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-08-01T00:25:10.000Z">
+<meta property="article:modified_time" content="2025-06-05T16:04:12.421Z">
+<meta property="article:author" content="安辰">
+<meta property="article:tag" content="Java">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://anchen.me/2017/08/01/BUG%EF%BC%9ARestlet%E6%B5%81%E5%BC%8F%E8%AF%BB%E5%8F%96%E8%BF%9C%E7%AB%AF%E6%96%87%E4%BB%B6%E5%86%85%E5%AE%B9%E6%97%B6inputstream%E6%9C%AA%E5%85%B3%E9%97%AD/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://anchen.me/2017/08/01/BUG%EF%BC%9ARestlet%E6%B5%81%E5%BC%8F%E8%AF%BB%E5%8F%96%E8%BF%9C%E7%AB%AF%E6%96%87%E4%BB%B6%E5%86%85%E5%AE%B9%E6%97%B6inputstream%E6%9C%AA%E5%85%B3%E9%97%AD/","path":"2017/08/01/BUG：Restlet流式读取远端文件内容时inputstream未关闭/","title":"BUG：Restlet流式读取远端文件内容时inputstream未关闭"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>BUG：Restlet流式读取远端文件内容时inputstream未关闭 | 安辰</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">安辰</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">stay hungry stay foolish</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-commonweal"><a href="/404.html" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="安辰"
+      src="/images/logo.jpg">
+  <p class="site-author-name" itemprop="name">安辰</p>
+  <div class="site-description" itemprop="description">stay hungry stay foolish</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">55</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://anchen.me/running_page" title="https:&#x2F;&#x2F;anchen.me&#x2F;running_page">我的运动</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="http://www.jianshu.com/u/f66899a37408" title="http:&#x2F;&#x2F;www.jianshu.com&#x2F;u&#x2F;f66899a37408" rel="noopener" target="_blank">我的简书</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://juejin.im/user/587467c2128fe100583131af/posts" title="https:&#x2F;&#x2F;juejin.im&#x2F;user&#x2F;587467c2128fe100583131af&#x2F;posts" rel="noopener" target="_blank">我的掘金</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://oceanjack.github.io/" title="https:&#x2F;&#x2F;oceanjack.github.io&#x2F;" rel="noopener" target="_blank">OceanJack</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://anchen.me/2017/08/01/BUG%EF%BC%9ARestlet%E6%B5%81%E5%BC%8F%E8%AF%BB%E5%8F%96%E8%BF%9C%E7%AB%AF%E6%96%87%E4%BB%B6%E5%86%85%E5%AE%B9%E6%97%B6inputstream%E6%9C%AA%E5%85%B3%E9%97%AD/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/logo.jpg">
+      <meta itemprop="name" content="安辰">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="安辰">
+      <meta itemprop="description" content="stay hungry stay foolish">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="BUG：Restlet流式读取远端文件内容时inputstream未关闭 | 安辰">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          BUG：Restlet流式读取远端文件内容时inputstream未关闭
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2017-08-01 00:25:10" itemprop="dateCreated datePublished" datetime="2017-08-01T00:25:10+00:00">2017-08-01</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-06-05 16:04:12" itemprop="dateModified" datetime="2025-06-05T16:04:12+00:00">2025-06-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%96%91%E9%9A%BE%E6%9D%82%E7%97%87/" itemprop="url" rel="index"><span itemprop="name">疑难杂症</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2017/08/01/BUG%EF%BC%9ARestlet%E6%B5%81%E5%BC%8F%E8%AF%BB%E5%8F%96%E8%BF%9C%E7%AB%AF%E6%96%87%E4%BB%B6%E5%86%85%E5%AE%B9%E6%97%B6inputstream%E6%9C%AA%E5%85%B3%E9%97%AD/" class="post-meta-item leancloud_visitors" data-flag-title="BUG：Restlet流式读取远端文件内容时inputstream未关闭" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.2k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>5 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>利用Restlet流式读取远端文件时，如果没有手动将inputstream关闭，那么InputRepresentation会自动将inputstream关闭吗？</p>
+<span id="more"></span>
+<p>Restlet 服务端接收rest请求后，读取文件，将文件转为流，代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">XXResource</span> <span class="keyword">extends</span> <span class="title class_">ServerResource</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="meta">@Get</span></span><br><span class="line">    <span class="keyword">public</span> InputRepresentation <span class="title function_">readFile</span><span class="params">()</span> <span class="keyword">throws</span> FileNotFoundException</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="type">File</span> <span class="variable">file</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">File</span>(<span class="string">&quot;/root/test.txt&quot;</span> );</span><br><span class="line">        <span class="type">InputStream</span> <span class="variable">inputStream</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">FileInputStream</span>(file);</span><br><span class="line">        <span class="type">InputRepresentation</span> <span class="variable">inputRepresentation</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">InputRepresentation</span>(</span><br><span class="line">                inputStream);</span><br><span class="line">        <span class="keyword">return</span> inputRepresentation;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们都知道，将文件转为流，在使用结束后需要将流关闭，否则IO资源就会被一直占着，其他方法没法使用，造成资源浪费<br>进一步考虑，如果此处不需要关闭流，那么在InputRePresentation中应该会把流释放，那么有没有释放呢，我们看InputRepresentation源码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">release</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span>(<span class="built_in">this</span>.stream != <span class="literal">null</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">try</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="built_in">this</span>.stream.close();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IOException var2) </span><br><span class="line">        &#123;</span><br><span class="line">            Context.getCurrentLogger().log(Level.WARNING, <span class="string">&quot;Error while releasing the representation.&quot;</span>, var2);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">this</span>.stream = <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">super</span>.release();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到，此方法为public公用方法，没有地方调用，难道需要手动调用InputRePresentation的release()方法？<br>看了下StackOverFlow上这个<a href="https://stackoverflow.com/questions/22658056/restlet-not-closing-inputrepresentation-streams">问答</a>，说的是这个确实是个问题，更新了新版本之后还是没有看到在哪儿调用release()方法，结果回答的人又让手动调用release()方法，这。。</p>
+<p>看了下这篇<a href="http://restlet-discuss.1400322.n2.nabble.com/PROBLEM-WITH-org-restlet-representation-InputRepresentation-IN-1-2-M2-td3055389.html">讨论</a>，明天换个新版本试试～</p>
+<p>##continue<br>今天下载了restlet2.3.9的源码（Maven工程）：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">repositories</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">repository</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">id</span>&gt;</span>maven-restlet<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>Public online Restlet repository<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">url</span>&gt;</span>http://maven.restlet.org<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">repository</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">repositories</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependencies</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.restlet.jee<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>org.restlet<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.3.9<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependencies</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>通过从InputRePresentation逐层往父类查找，在RepresentationInfo中找到release()方法的解释：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Releases the representation and all associated objects like streams,</span></span><br><span class="line"><span class="comment"> * channels or files which are used to produce its content, transient or</span></span><br><span class="line"><span class="comment"> * not. This method must be systematically called when the representation is</span></span><br><span class="line"><span class="comment"> * no longer intended to be used. The framework automatically calls back</span></span><br><span class="line"><span class="comment"> * this method via its connectors on the server-side when sending responses</span></span><br><span class="line"><span class="comment"> * with an entity and on the client-side when sending a request with an</span></span><br><span class="line"><span class="comment"> * entity. By default, it calls the &#123;<span class="doctag">@link</span> #setAvailable(boolean)&#125; method</span></span><br><span class="line"><span class="comment"> * with &quot;false&quot; as a value.&lt;br&gt;</span></span><br><span class="line"><span class="comment"> * &lt;br&gt;</span></span><br><span class="line"><span class="comment"> * Note that for transient socket-bound representations, calling this method</span></span><br><span class="line"><span class="comment"> * after consuming the whole content shouldn&#x27;t prevent the reuse of</span></span><br><span class="line"><span class="comment"> * underlying socket via persistent connections for example. However, if the</span></span><br><span class="line"><span class="comment"> * content hasn&#x27;t been read, or has been partially read, the impact should</span></span><br><span class="line"><span class="comment"> * be to discard the remaining content and to close the underlying</span></span><br><span class="line"><span class="comment"> * connections.&lt;br&gt;</span></span><br><span class="line"><span class="comment"> * &lt;br&gt;</span></span><br><span class="line"><span class="comment"> * Therefore, if you are not interested in the content, or in the remaining</span></span><br><span class="line"><span class="comment"> * content, you should first call the &#123;<span class="doctag">@link</span> #exhaust()&#125; method or if this</span></span><br><span class="line"><span class="comment"> * could be too costly, you should instead explicitly abort the parent</span></span><br><span class="line"><span class="comment"> * request and the underlying connections using the &#123;<span class="doctag">@link</span> Request#abort()&#125;</span></span><br><span class="line"><span class="comment"> * method or a shortcut one like</span></span><br><span class="line"><span class="comment"> * &#123;<span class="doctag">@link</span> org.restlet.resource.ServerResource#abort()&#125; or</span></span><br><span class="line"><span class="comment"> * &#123;<span class="doctag">@link</span> Response#abort()&#125;.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"> <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">release</span><span class="params">()</span> &#123;</span><br><span class="line">    setAvailable(<span class="literal">false</span>);</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>查看此方法被引用的地方，其中最重要的一处为ServerCall类的sendResponse方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Sends the response back to the client. Commits the status, headers and</span></span><br><span class="line"><span class="comment"> * optional entity and send them over the network. The default</span></span><br><span class="line"><span class="comment"> * implementation only writes the response entity on the response stream or</span></span><br><span class="line"><span class="comment"> * channel. Subclasses will probably also copy the response headers and</span></span><br><span class="line"><span class="comment"> * status.</span></span><br><span class="line"><span class="comment"> * </span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> response</span></span><br><span class="line"><span class="comment"> *            The high-level response.</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@throws</span> IOException</span></span><br><span class="line"><span class="comment"> *             if the Response could not be written to the network.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"> <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">sendResponse</span><span class="params">(Response response)</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">    <span class="keyword">if</span> (response != <span class="literal">null</span>) &#123;</span><br><span class="line">        <span class="comment">// Get the connector service to callback</span></span><br><span class="line">        <span class="type">Representation</span> <span class="variable">responseEntity</span> <span class="operator">=</span> response.getEntity();</span><br><span class="line">        <span class="type">ConnectorService</span> <span class="variable">connectorService</span> <span class="operator">=</span> ConnectorHelper</span><br><span class="line">                    .getConnectorService();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (connectorService != <span class="literal">null</span>) &#123;</span><br><span class="line">            connectorService.beforeSend(responseEntity);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">OutputStream</span> <span class="variable">responseEntityStream</span> <span class="operator">=</span> <span class="literal">null</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            writeResponseHead(response);</span><br><span class="line">            <span class="keyword">if</span> (responseEntity != <span class="literal">null</span>) &#123;</span><br><span class="line">                responseEntityStream = getResponseEntityStream();</span><br><span class="line">                writeResponseBody(responseEntity, responseEntityStream);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (responseEntityStream != <span class="literal">null</span>) &#123;</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    responseEntityStream.flush();</span><br><span class="line">                    responseEntityStream.close();</span><br><span class="line">                &#125; <span class="keyword">catch</span> (IOException ioe) &#123;</span><br><span class="line">                    <span class="comment">// The stream was probably already closed by the</span></span><br><span class="line">                    <span class="comment">// connector. Probably OK, low message priority.</span></span><br><span class="line">                    getLogger().log(Level.FINE,</span><br><span class="line">                                        <span class="string">&quot;Exception while flushing and closing the entity stream.&quot;</span>,</span><br><span class="line">                                        ioe);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (responseEntity != <span class="literal">null</span>) &#123;</span><br><span class="line">                responseEntity.release();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (connectorService != <span class="literal">null</span>) &#123;</span><br><span class="line">                connectorService.afterSend(responseEntity);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<p>##拨开云雾见天日 守得云开见月明<br>通过分析，在服务端返回消息给客户端时，会将Representation进行release()，那么InputStream也会释放～</p>
+<p>进一步联想：无论是struts／spring或者其他框架，其实都是基于servlet，那么servlet中的流是如何关闭的呢？</p>
+<p>有人说：在Servlet中，因为filter的关系，很多时候需要把response里面的内容拿出来，进行过滤，比如编码上的问题，如果你在自己的response里面getWriter().close()掉，其他的filter会出现异常。Servlet最后会帮你关闭的，放心。如果自己用PrintWriter的话，还是得关闭。</p>
+<p>有人说：servlet生命周期，用户可以在doGet或doPost中自己关闭输出流；也可以在destory中关闭释放；如果还没有做操作，destory，后会释放servlet实例，自然释放了servlet占用的所有资源。</p>
+<p>其实，一个filter、servlet只有一个实例来处理所有请求，<code>最基础的知识</code>,<code>servlet实例中压根没有request、response</code>，destory想释放估计心有余而力不足，也不要指望在destory里关闭response，他压根不是干这个用的</p>
+<p>查看tomcat的源码可以发现，resoponse如果没有关闭，tomcat会自动关闭，org.apache.catalina.core.ApplicationDispatcher.doForward(ServletRequest request, ServletResponse response)方法，最后一段代码是：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Close anyway</span></span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="type">PrintWriter</span> <span class="variable">writer</span> <span class="operator">=</span> response.getWriter();</span><br><span class="line">    writer.close();</span><br><span class="line">&#125; <span class="keyword">catch</span> (IllegalStateException e) &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="type">ServletOutputStream</span> <span class="variable">stream</span> <span class="operator">=</span> response.getOutputStream();</span><br><span class="line">        stream.close();</span><br><span class="line">    &#125; <span class="keyword">catch</span> (IllegalStateException f) &#123;</span><br><span class="line">        <span class="comment">// Ignore</span></span><br><span class="line">    &#125; <span class="keyword">catch</span> (IOException f) &#123;</span><br><span class="line">        <span class="comment">// Ignore</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125; <span class="keyword">catch</span> (IOException e) &#123;</span><br><span class="line">    <span class="comment">// Ignore</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以清楚看到不管你有没有关闭，tomcat都重新关闭了一次</p>
+<p>所以说，javax.servlet是一种标准，是给人实现的。</p>
+<p>response应该是由Connector类实现的。对外是(javax.servlet.response) response 把方法限定在javax.servlet.response范围。</p>
+<p>所以你想要看实现。<br>我是看的是tomcat4.1.2(深入剖析tomcat这本书是用这个的。)<br>org.apache.catalina.connector.http.HttpProcessor  response.finishResponse();</p>
+<p>好了，就到此为止了，通过此次分析颇有感触，要真正弄懂底层原理才能更好的运用自如！</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Java/" rel="tag"># Java</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2017/07/31/BUG%EF%BC%9A%E6%97%A0%E6%B3%95%E7%A1%AE%E5%AE%9AT%E7%9A%84%E7%B1%BB%E5%9E%8B%E5%8F%82%E6%95%B0/" rel="prev" title="BUG：无法确定T的类型参数">
+                  <i class="fa fa-angle-left"></i> BUG：无法确定T的类型参数
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2017/08/03/Mac-OS%E5%AE%89%E8%A3%85%E8%BD%AF%E4%BB%B6%E6%97%B6%E6%8F%90%E7%A4%BA-%E2%80%9C%E5%AE%89%E8%A3%85%E2%80%9D%E5%B7%B2%E6%8D%9F%E5%9D%8F%EF%BC%8C%E6%89%93%E4%B8%8D%E5%BC%80-%E4%BD%A0%E5%BA%94%E8%AF%A5%E6%8E%A8%E5%87%BA%E7%A3%81%E7%9B%98%E6%98%A0%E5%83%8F%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/" rel="next" title="Mac OS安装软件时提示 “安装”已损坏，打不开 你应该推出磁盘映像的解决方法">
+                  Mac OS安装软件时提示 “安装”已损坏，打不开 你应该推出磁盘映像的解决方法 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2015 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">安辰</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">43k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:36</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"server_url":null,"security":true,"enable":true,"app_id":"7vnqelnmehb5id738td3d541e3ap3wq9q29n9t6khpw10r03","app_key":"6hbvt6y29jytyow09w1y1gbl3725wlpedl5o565wuglteym7"}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+
+</body>
+</html>

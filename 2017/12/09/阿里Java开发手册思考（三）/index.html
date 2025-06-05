@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.jpg">
+  <link rel="mask-icon" href="/images/logo.jpg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"anchen.me","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.22.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="上期我们分享了Java中if&#x2F;else复杂逻辑的处理 本期我们将分享Java中日志的处理（上）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="阿里Java开发手册思考（三）">
+<meta property="og:url" content="http://anchen.me/2017/12/09/%E9%98%BF%E9%87%8CJava%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C%E6%80%9D%E8%80%83%EF%BC%88%E4%B8%89%EF%BC%89/index.html">
+<meta property="og:site_name" content="安辰">
+<meta property="og:description" content="上期我们分享了Java中if&#x2F;else复杂逻辑的处理 本期我们将分享Java中日志的处理（上）">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6851748-1f6febd8ef94bc0b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/6851748-6c4d2a7f090aeafe.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="article:published_time" content="2017-12-09T09:04:00.000Z">
+<meta property="article:modified_time" content="2025-06-05T16:04:12.458Z">
+<meta property="article:author" content="安辰">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="阿里Java开发手册">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/6851748-1f6febd8ef94bc0b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+<link rel="canonical" href="http://anchen.me/2017/12/09/%E9%98%BF%E9%87%8CJava%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C%E6%80%9D%E8%80%83%EF%BC%88%E4%B8%89%EF%BC%89/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://anchen.me/2017/12/09/%E9%98%BF%E9%87%8CJava%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C%E6%80%9D%E8%80%83%EF%BC%88%E4%B8%89%EF%BC%89/","path":"2017/12/09/阿里Java开发手册思考（三）/","title":"阿里Java开发手册思考（三）"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>阿里Java开发手册思考（三） | 安辰</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">安辰</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">stay hungry stay foolish</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-commonweal"><a href="/404.html" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="安辰"
+      src="/images/logo.jpg">
+  <p class="site-author-name" itemprop="name">安辰</p>
+  <div class="site-description" itemprop="description">stay hungry stay foolish</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">55</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://anchen.me/running_page" title="https:&#x2F;&#x2F;anchen.me&#x2F;running_page">我的运动</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="http://www.jianshu.com/u/f66899a37408" title="http:&#x2F;&#x2F;www.jianshu.com&#x2F;u&#x2F;f66899a37408" rel="noopener" target="_blank">我的简书</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://juejin.im/user/587467c2128fe100583131af/posts" title="https:&#x2F;&#x2F;juejin.im&#x2F;user&#x2F;587467c2128fe100583131af&#x2F;posts" rel="noopener" target="_blank">我的掘金</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://oceanjack.github.io/" title="https:&#x2F;&#x2F;oceanjack.github.io&#x2F;" rel="noopener" target="_blank">OceanJack</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://anchen.me/2017/12/09/%E9%98%BF%E9%87%8CJava%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C%E6%80%9D%E8%80%83%EF%BC%88%E4%B8%89%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/logo.jpg">
+      <meta itemprop="name" content="安辰">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="安辰">
+      <meta itemprop="description" content="stay hungry stay foolish">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="阿里Java开发手册思考（三） | 安辰">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          阿里Java开发手册思考（三）
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2017-12-09 09:04:00" itemprop="dateCreated datePublished" datetime="2017-12-09T09:04:00+00:00">2017-12-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-06-05 16:04:12" itemprop="dateModified" datetime="2025-06-05T16:04:12+00:00">2025-06-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2017/12/09/%E9%98%BF%E9%87%8CJava%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C%E6%80%9D%E8%80%83%EF%BC%88%E4%B8%89%EF%BC%89/" class="post-meta-item leancloud_visitors" data-flag-title="阿里Java开发手册思考（三）" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>2k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>7 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><blockquote>
+<p>上期我们分享了Java中if&#x2F;else复杂逻辑的处理</p>
+<p>本期我们将分享Java中日志的处理（上）</p>
+</blockquote>
+<span id="more"></span>
+<blockquote>
+<p>想必大家都用过日志，虽然日志看起来可有可无，但是等到出问题的时候，日志就派上了大用场，所以说日志打得好不好，规范不规范，直接影响了解决生产环境故障的效率，日志打的不好，有可能影响环境的性能，也有可能影响排查问题的难易程度，有可能排查问题的时间比写代码的时间还有多。</p>
+<p>那么我们就来分析下阿里Java开发手册–日志规约第一条：<br>【强制】应用中不可直接使用日志系统(Log4j、Logback)中的 API，而应依赖使用日志框架 SLF4J 中的 API，使用门面模式的日志框架，有利于维护和各个类的日志处理方式统一。</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.slf4j.Logger; </span><br><span class="line"><span class="keyword">import</span> org.slf4j.LoggerFactory; </span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">Logger</span> <span class="variable">logger</span> <span class="operator">=</span> LoggerFactory.getLogger(Abc.class);</span><br></pre></td></tr></table></figure>
+
+<p>##日志框架<br>Java中的日志框架分如下几种：</p>
+<ul>
+<li><p><code>Log4j</code> Apache Log4j是一个基于Java的日志记录工具。它是由Ceki Gülcü首创的，现在则是Apache软件基金会的一个项目。</p>
+</li>
+<li><p><code>Log4j 2</code> Apache Log4j 2是apache开发的一款Log4j的升级产品。</p>
+</li>
+<li><p><code>Commons Logging</code> Apache基金会所属的项目，是一套Java日志接口，之前叫Jakarta Commons Logging，后更名为Commons Logging。</p>
+</li>
+<li><p><code>Slf4j</code> 类似于Commons Logging，是一套简易Java日志门面，本身并无日志的实现。（Simple Logging Facade for Java，缩写Slf4j）。</p>
+</li>
+<li><p><code>Logback</code> 一套日志组件的实现(slf4j阵营)。</p>
+</li>
+<li><p><code>Jul</code> (Java Util Logging),自Java1.4以来的官方日志实现。</p>
+</li>
+</ul>
+<p>##使用示例</p>
+<ul>
+<li><strong>Jul</strong></li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.util.logging.Logger;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">Logger</span> <span class="variable">logger</span> <span class="operator">=</span> Logger.getLogger(<span class="string">&quot;name&quot;</span>);</span><br><span class="line">...</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">...</span><br><span class="line">&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">    logger.error(<span class="string">&quot;.....error&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(logger.isDebugEnabled()) &#123;</span><br><span class="line">    logger.debug(<span class="string">&quot;.....&quot;</span> + name);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>Log4j</strong></li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.apache.log4j.Logger;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">Logger</span> <span class="variable">logger</span> <span class="operator">=</span> Logger.getLogger(Abc.class.getNeme());</span><br><span class="line">...</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">...</span><br><span class="line">&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">    logger.error(<span class="string">&quot;.....error&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(logger.isDebugEnabled()) &#123;</span><br><span class="line">    logger.debug(<span class="string">&quot;.....&quot;</span> + name);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>Commons Logging</strong></li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.apache.commons.logging.Log;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.logging.LogFactory;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">Log</span> <span class="variable">logger</span> <span class="operator">=</span> LogFactory.getLogger(Abc.class);</span><br><span class="line">...</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">...</span><br><span class="line">&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">    logger.error(<span class="string">&quot;.....error&quot;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(logger.isDebugEnabled()) &#123;</span><br><span class="line">    logger.debug(<span class="string">&quot;.....&quot;</span> + name);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>Slf4j</strong></li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.slf4j.Logger;</span><br><span class="line"><span class="keyword">import</span> org.slf4j.LoggerFactory;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="type">Logger</span> <span class="variable">logger</span> <span class="operator">=</span> LoggerFactory.getLogger(Abc.class);</span><br><span class="line">...</span><br><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">...</span><br><span class="line">&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">    logger.error(<span class="string">&quot;.....error &#123;&#125;&quot;</span>, e.getMessage(), e);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">logger.debug(<span class="string">&quot;.....&#123;&#125;&quot;</span>, name);</span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>Jul</strong><ul>
+<li>不支持占位符</li>
+<li>具体日志实现</li>
+</ul>
+</li>
+<li><strong>Log4j</strong><ul>
+<li>不支持占位符</li>
+<li>具体日志实现</li>
+</ul>
+</li>
+<li><strong>Logback</strong><ul>
+<li>不支持占位符</li>
+<li>具体日志实现</li>
+</ul>
+</li>
+<li><strong>Commons Logging</strong><ul>
+<li>不支持占位符</li>
+<li>日志门面</li>
+</ul>
+</li>
+<li><strong>Slf4j</strong><ul>
+<li>支持占位符</li>
+<li>日志门面</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>Slf4j中有一个很重要的特性：<code>占位符</code>，{}可以拼接任意<code>字符串</code>，相比如其他框架的优点即不需要用<code>+</code>来拼接字符串，也就不会创建新的字符串对象，所以像log4j中需要加<code>isDebugEnabled()</code>的判断就是这个道理，在slf4j中就不需要加判断。</p>
+</blockquote>
+<p>##门面模式<br>门面(Facade)模式，又称外观模式，对外隐藏了系统的复杂性，并向客户端提供了可以访问的接口，门面模式的好处是将客户端和子系统松耦合，方便子系统的扩展和维护。</p>
+<p>正是门面模式这样的特点，使用Slf4j门面，不管日志组件使用的是log4j还是logback等等，对于调用者而言并不关心使用的是什么日志组件，而且对于日志组件的更换或者升级，调用的地方也不要做任何修改。</p>
+<p>##源码分析</p>
+<p>此处应有代（zhang）码（sheng）：</p>
+<blockquote>
+<p>首先使用静态工厂来获取Logger对象，传入的class，最终会转化为name，每个类的日志处理可能不同，所以根据传入类的名字来判断类的实现方式</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> Logger <span class="title function_">getLogger</span><span class="params">(Class clazz)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> getLogger(clazz.getName());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> Logger <span class="title function_">getLogger</span><span class="params">(String name)</span> &#123;</span><br><span class="line">    <span class="type">ILoggerFactory</span> <span class="variable">iLoggerFactory</span> <span class="operator">=</span> getILoggerFactory();</span><br><span class="line">    <span class="keyword">return</span> iLoggerFactory.getLogger(name);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>真正核心的在getILoggerFactory()中，首先判断初始化的状态<code>INITIALIZATION_STATE</code>，如果没有初始化<code>UNINITIALIZED</code>，那么会更改状态为正在初始化<code>ONGOING_INITIALIZATION</code>，并执行初始化<code>performInitialization()</code>，初始化完成之后，判断初始化的状态，如果初始化成功<code>SUCCESSFUL_INITIALIZATION</code>，那么会通过<code>StaticLoggerBinder</code>获取日志工厂<code>getLoggerFactory()</code>，这里又涉及到了<code>单例模式</code>。</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> ILoggerFactory <span class="title function_">getILoggerFactory</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (INITIALIZATION_STATE == UNINITIALIZED) &#123;</span><br><span class="line">        INITIALIZATION_STATE = ONGOING_INITIALIZATION;</span><br><span class="line">        performInitialization();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">switch</span> (INITIALIZATION_STATE) &#123;</span><br><span class="line">        <span class="keyword">case</span> SUCCESSFUL_INITIALIZATION:</span><br><span class="line">            <span class="keyword">return</span> StaticLoggerBinder.getSingleton().getLoggerFactory();</span><br><span class="line">        <span class="keyword">case</span> NOP_FALLBACK_INITIALIZATION:</span><br><span class="line">            <span class="keyword">return</span> NOP_FALLBACK_FACTORY;</span><br><span class="line">        <span class="keyword">case</span> FAILED_INITIALIZATION:</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalStateException</span>(<span class="string">&quot;org.slf4j.LoggerFactory could not be successfully initialized. See also http://www.slf4j.org/codes.html#unsuccessfulInit&quot;</span>);</span><br><span class="line">        <span class="keyword">case</span> ONGOING_INITIALIZATION:</span><br><span class="line">            <span class="keyword">return</span> TEMP_FACTORY;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalStateException</span>(<span class="string">&quot;Unreachable code&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>接着我们分析<code>performInitialization</code>是如何初始化的，首先是执行<code>bind()</code>方法，然后判断如果状态为初始化成功<code>SUCCESSFUL_INITIALIZATION</code>，执行版本检查，主要是检查jdk版本与slf4j的版本，看是否匹配。</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title function_">performInitialization</span><span class="params">()</span> &#123;</span><br><span class="line">    bind();</span><br><span class="line">    <span class="keyword">if</span> (INITIALIZATION_STATE == <span class="number">3</span>) &#123;</span><br><span class="line">        versionSanityCheck();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>bind()方法，首先获取实现日志的加载路径，检查路径是否合法，然后初始化StaticLoggerBinder的对象，寻找合适的实现方式使用。</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title function_">bind</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="type">Set</span> <span class="variable">staticLoggerBinderPathSet</span> <span class="operator">=</span> findPossibleStaticLoggerBinderPathSet();</span><br><span class="line">        reportMultipleBindingAmbiguity(staticLoggerBinderPathSet);</span><br><span class="line"></span><br><span class="line">        StaticLoggerBinder.getSingleton();</span><br><span class="line">        INITIALIZATION_STATE = SUCCESSFUL_INITIALIZATION;</span><br><span class="line">        reportActualBinding(staticLoggerBinderPathSet);</span><br><span class="line">        emitSubstituteLoggerWarning();</span><br><span class="line">    &#125; <span class="keyword">catch</span> (NoClassDefFoundError ncde) &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">msg</span> <span class="operator">=</span> ncde.getMessage();</span><br><span class="line">        <span class="keyword">if</span> (messageContainsOrgSlf4jImplStaticLoggerBinder(msg)) &#123;</span><br><span class="line">            INITIALIZATION_STATE = NOP_FALLBACK_INITIALIZATION;</span><br><span class="line">            Util.report(<span class="string">&quot;Failed to load class \&quot;org.slf4j.impl.StaticLoggerBinder\&quot;.&quot;</span>);</span><br><span class="line">            Util.report(<span class="string">&quot;Defaulting to no-operation (NOP) logger implementation&quot;</span>);</span><br><span class="line">            Util.report(<span class="string">&quot;See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.&quot;</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            failedBinding(ncde);</span><br><span class="line">            <span class="keyword">throw</span> ncde;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (NoSuchMethodError nsme) &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">msg</span> <span class="operator">=</span> nsme.getMessage();</span><br><span class="line">        <span class="keyword">if</span> ((msg != <span class="literal">null</span>) &amp;&amp; (msg.indexOf(<span class="string">&quot;org.slf4j.impl.StaticLoggerBinder.getSingleton()&quot;</span>) != -<span class="number">1</span>)) &#123;</span><br><span class="line">            INITIALIZATION_STATE = FAILED_INITIALIZATION;</span><br><span class="line">            Util.report(<span class="string">&quot;slf4j-api 1.6.x (or later) is incompatible with this binding.&quot;</span>);</span><br><span class="line">            Util.report(<span class="string">&quot;Your binding is version 1.5.5 or earlier.&quot;</span>);</span><br><span class="line">            Util.report(<span class="string">&quot;Upgrade your binding to version 1.6.x.&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">throw</span> nsme;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        failedBinding(e);</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IllegalStateException</span>(<span class="string">&quot;Unexpected initialization failure&quot;</span>, e);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>可以看出，bind()方法中最重要的方法就是寻找实现方式<code>findPossibleStaticLoggerBinderPathSet</code>，具体方法实现如下：</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> Set <span class="title function_">findPossibleStaticLoggerBinderPathSet</span><span class="params">()</span> &#123;</span><br><span class="line">    <span class="type">Set</span> <span class="variable">staticLoggerBinderPathSet</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">LinkedHashSet</span>();</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="type">ClassLoader</span> <span class="variable">loggerFactoryClassLoader</span> <span class="operator">=</span> LoggerFactory.class.getClassLoader();</span><br><span class="line">        Enumeration paths;</span><br><span class="line">        Enumeration paths;</span><br><span class="line">        <span class="keyword">if</span> (loggerFactoryClassLoader == <span class="literal">null</span>) &#123;</span><br><span class="line">            paths = ClassLoader.getSystemResources(STATIC_LOGGER_BINDER_PATH);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            paths = loggerFactoryClassLoader.getResources(STATIC_LOGGER_BINDER_PATH);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> (paths.hasMoreElements()) &#123;</span><br><span class="line">            <span class="type">URL</span> <span class="variable">path</span> <span class="operator">=</span> (URL)paths.nextElement();</span><br><span class="line">            staticLoggerBinderPathSet.add(path);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">catch</span> (IOException ioe) &#123;</span><br><span class="line">        Util.report(<span class="string">&quot;Error getting resources from path&quot;</span>, ioe);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> staticLoggerBinderPathSet;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><strong>注意！！前方高能！！</strong></p>
+</blockquote>
+<blockquote>
+<p>Slf4j的绝妙之处就在于此，类加载器加载类，也就是说寻找StaticLoggerBinder.class文件，然后只要实现了这个类的日志组件，都可以作为一种实现，如果有多个实现，那么谁先加载就使用谁，这个地方涉及<code>JVM的类加载机制</code></p>
+</blockquote>
+<p>##桥接</p>
+<ul>
+<li><strong>Slf4j与其他日志组件的桥接（Bridge）</strong></li>
+</ul>
+<ul>
+<li><strong>slf4j-log4j12-1.7.13.jar</strong><ul>
+<li>log4j1.2版本的桥接器</li>
+</ul>
+</li>
+<li><strong>slf4j-jdk14-1.7.13.jar</strong><ul>
+<li>java.util.logging的桥接器</li>
+</ul>
+</li>
+<li><strong>slf4j-nop-1.7.13.jar</strong><ul>
+<li>NOP桥接器</li>
+</ul>
+</li>
+<li><strong>slf4j-simple-1.7.13.jar</strong><ul>
+<li>一个简单实现的桥接器</li>
+</ul>
+</li>
+<li><strong>slf4j-jcl-1.7.13.jar</strong><ul>
+<li>Jakarta Commons Logging 的桥接器. 这个桥接器将SLF4j所有日志委派给JCL</li>
+</ul>
+</li>
+<li><strong>logback-classic-1.0.13.jar(requires logback-core-1.0.13.jar)</strong><ul>
+<li>slf4j的原生实现，logback直接实现了slf4j的接口，因此使用slf4j与logback的结合使用也意味更小的内存与计算开销</li>
+</ul>
+</li>
+</ul>
+<p><a href="https://www.slf4j.org/manual.html">Slf4j Manual</a>中有一张图清晰的展示了接入方式，如下：</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/6851748-1f6febd8ef94bc0b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="桥接"></p>
+<ul>
+<li><strong>Bridging legacy APIs（桥接遗留的api）</strong></li>
+</ul>
+<blockquote>
+<ul>
+<li><strong>log4j-over-slf4j-version.jar</strong><ul>
+<li>将log4j重定向到slf4j</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<ul>
+<li><strong>jcl-over-slf4j-version.jar</strong><ul>
+<li>将commos logging里的Simple Logger重定向到slf4j</li>
+</ul>
+</li>
+<li><strong>jul-to-slf4j-version.jar</strong><ul>
+<li>将Java Util Logging重定向到slf4j</li>
+</ul>
+</li>
+</ul>
+<p><img src="http://upload-images.jianshu.io/upload_images/6851748-6c4d2a7f090aeafe.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="桥接遗留api"></p>
+<ul>
+<li><strong>桥接注意事项</strong></li>
+</ul>
+<blockquote>
+<p>在使用slf4j桥接时要注意避免形成死循环，在项目依赖的jar包中不要存在以下情况</p>
+</blockquote>
+<blockquote>
+<ul>
+<li><strong>log4j-over-slf4j.jar和slf4j-log4j12.jar同时存在</strong></li>
+</ul>
+</blockquote>
+<ul>
+<li>从名字上就能看出，前者重定向给后者，后者又委派给前者，会形成死循环</li>
+<li><strong>jul-to-slf4j.jar和slf4j-jdk14.jar同时存在</strong><ul>
+<li>从名字上就能看出，前者重定向给后者，后者又委派给前者，会形成死循环</li>
+</ul>
+</li>
+</ul>
+<p>##总结</p>
+<ul>
+<li><p>为了更好的了解Slf4j，你需要了解：</p>
+<ul>
+<li><strong>JVM类加载机制</strong></li>
+<li><strong>设计模式：门面模式、桥接模式</strong></li>
+</ul>
+</li>
+<li><p>简单总结Slf4j的原理：</p>
+<ul>
+<li>通过工厂类，提供一个的接口，用户可以通过这个门面，直接使用API实现日志的记录。</li>
+<li>而具体实现由Slf4j来寻找加载，寻找的过程，就是通过类加载加载<strong>org&#x2F;slf4j&#x2F;impl&#x2F;StaticLoggerBinder.class</strong>的文件，只要实现了这个文件的日志实现系统，都可以作为一种实现方式。</li>
+<li>如果找到很多种方式，那么就寻找一种默认的方式。</li>
+<li>这就是日志接口的工作方式，<strong>简单高效</strong>，关键是<strong>完全解耦</strong>，不需要日志实现部分提供任何的修改配置，只需要符合接口的标准就可以加载进来，<strong>有利于维护和各个类的日志处理方式统一</strong>。</li>
+</ul>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Java/" rel="tag"># Java</a>
+              <a href="/tags/%E9%98%BF%E9%87%8CJava%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C/" rel="tag"># 阿里Java开发手册</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2017/12/06/%E9%98%BF%E9%87%8CJava%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C%E6%80%9D%E8%80%83%EF%BC%88%E4%BA%8C%EF%BC%89/" rel="prev" title="阿里Java开发手册思考（二）">
+                  <i class="fa fa-angle-left"></i> 阿里Java开发手册思考（二）
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2017/12/11/%E9%98%BF%E9%87%8CJava%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C%E6%80%9D%E8%80%83%EF%BC%88%E5%9B%9B%EF%BC%89/" rel="next" title="阿里Java开发手册思考（四）">
+                  阿里Java开发手册思考（四） <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2015 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">安辰</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">43k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:36</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"server_url":null,"security":true,"enable":true,"app_id":"7vnqelnmehb5id738td3d541e3ap3wq9q29n9t6khpw10r03","app_key":"6hbvt6y29jytyow09w1y1gbl3725wlpedl5o565wuglteym7"}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+
+</body>
+</html>

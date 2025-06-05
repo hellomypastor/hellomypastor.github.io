@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/logo.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/logo.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/logo.jpg">
+  <link rel="mask-icon" href="/images/logo.jpg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha256-dABdfBfUoC8vJUBOwGVdm8L9qlMWaHTIfXt+7GnZCIo=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"anchen.me","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.22.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"copycode":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="最近从 Oracle Jdk8 切换到 OpenJdk 10 后，遇到了一个诡异的问题，通过 Debug 排查后发现原来是 Stream.peek() 方法在搞鬼，特此记录下，以防后续使用 Java 9及以上 版本时再次犯同样的错误。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Stream.peek() method in Java 8 vs Java 9">
+<meta property="og:url" content="http://anchen.me/2018/10/17/stream-peek-method-in-java-8-vs-java-9/index.html">
+<meta property="og:site_name" content="安辰">
+<meta property="og:description" content="最近从 Oracle Jdk8 切换到 OpenJdk 10 后，遇到了一个诡异的问题，通过 Debug 排查后发现原来是 Stream.peek() 方法在搞鬼，特此记录下，以防后续使用 Java 9及以上 版本时再次犯同样的错误。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://anchen.me/2018/10/17/stream-peek-method-in-java-8-vs-java-9/stream-peek.png">
+<meta property="article:published_time" content="2018-10-17T20:42:16.000Z">
+<meta property="article:modified_time" content="2025-06-05T16:04:12.423Z">
+<meta property="article:author" content="安辰">
+<meta property="article:tag" content="Java">
+<meta property="article:tag" content="Java9新特性">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://anchen.me/2018/10/17/stream-peek-method-in-java-8-vs-java-9/stream-peek.png">
+
+
+<link rel="canonical" href="http://anchen.me/2018/10/17/stream-peek-method-in-java-8-vs-java-9/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"http://anchen.me/2018/10/17/stream-peek-method-in-java-8-vs-java-9/","path":"2018/10/17/stream-peek-method-in-java-8-vs-java-9/","title":"Stream.peek() method in Java 8 vs Java 9"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Stream.peek() method in Java 8 vs Java 9 | 安辰</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">安辰</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">stay hungry stay foolish</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li><li class="menu-item menu-item-commonweal"><a href="/404.html" rel="section"><i class="fa fa-heartbeat fa-fw"></i>公益 404</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Stream-peek-%E6%96%B9%E6%B3%95%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.</span> <span class="nav-text">Stream.peek() 方法介绍</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Java-9-%E4%B8%AD-Stream-peek-%E4%B8%8D%E6%89%A7%E8%A1%8C%E7%9A%84%E5%8E%9F%E5%9B%A0"><span class="nav-number">2.</span> <span class="nav-text">Java 9 中 Stream.peek() 不执行的原因</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="安辰"
+      src="/images/logo.jpg">
+  <p class="site-author-name" itemprop="name">安辰</p>
+  <div class="site-description" itemprop="description">stay hungry stay foolish</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">55</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="sidebar-inner sidebar-blogroll">
+      <div class="links-of-blogroll animated">
+        <div class="links-of-blogroll-title"><i class="fa fa-globe fa-fw"></i>
+          链接
+        </div>
+        <ul class="links-of-blogroll-list">
+            <li class="links-of-blogroll-item">
+              <a href="https://anchen.me/running_page" title="https:&#x2F;&#x2F;anchen.me&#x2F;running_page">我的运动</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="http://www.jianshu.com/u/f66899a37408" title="http:&#x2F;&#x2F;www.jianshu.com&#x2F;u&#x2F;f66899a37408" rel="noopener" target="_blank">我的简书</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://juejin.im/user/587467c2128fe100583131af/posts" title="https:&#x2F;&#x2F;juejin.im&#x2F;user&#x2F;587467c2128fe100583131af&#x2F;posts" rel="noopener" target="_blank">我的掘金</a>
+            </li>
+            <li class="links-of-blogroll-item">
+              <a href="https://oceanjack.github.io/" title="https:&#x2F;&#x2F;oceanjack.github.io&#x2F;" rel="noopener" target="_blank">OceanJack</a>
+            </li>
+        </ul>
+      </div>
+    </div>
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://anchen.me/2018/10/17/stream-peek-method-in-java-8-vs-java-9/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/logo.jpg">
+      <meta itemprop="name" content="安辰">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="安辰">
+      <meta itemprop="description" content="stay hungry stay foolish">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Stream.peek() method in Java 8 vs Java 9 | 安辰">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Stream.peek() method in Java 8 vs Java 9
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2018-10-17 20:42:16" itemprop="dateCreated datePublished" datetime="2018-10-17T20:42:16+00:00">2018-10-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-06-05 16:04:12" itemprop="dateModified" datetime="2025-06-05T16:04:12+00:00">2025-06-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+        </span>
+    </span>
+
+  
+    <span id="/2018/10/17/stream-peek-method-in-java-8-vs-java-9/" class="post-meta-item leancloud_visitors" data-flag-title="Stream.peek() method in Java 8 vs Java 9" title="阅读次数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span class="leancloud-visitors-count"></span>
+    </span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>620</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>2 分钟</span>
+    </span>
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>最近从 <code>Oracle Jdk8</code> 切换到 <code>OpenJdk 10</code> 后，遇到了一个诡异的问题，通过 Debug 排查后发现原来是 <code>Stream.peek()</code> 方法在搞鬼，特此记录下，以防后续使用 <code>Java 9及以上</code> 版本时再次犯同样的错误。</p>
+<span id="more"></span>
+
+<p>示例代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">    List&lt;String&gt; list = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;() &#123;&#123;</span><br><span class="line">        add(<span class="string">&quot;a&quot;</span>);</span><br><span class="line">        add(<span class="string">&quot;b&quot;</span>);</span><br><span class="line">        add(<span class="string">&quot;c&quot;</span>);</span><br><span class="line">    &#125;&#125;;</span><br><span class="line"></span><br><span class="line">    list.stream().peek(System.out::println).count();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>在 <code>Java 8</code> 中，输出应如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a</span><br><span class="line">b</span><br><span class="line">c</span><br></pre></td></tr></table></figure>
+
+<p>切换到 <code>Java 9</code> 后，没有任何输出!!!</p>
+<p>突然有点怀疑人生的感觉-_-#</p>
+<p>于是就去 <code>StackOverFlow</code> （如果你不知道的话，赶紧去访问看看～）问答网站上搜索，发现也有人出现一样的问题：<a href="https://stackoverflow.com/questions/48221783/stream-peek-method-in-java-8-vs-java-9">Stream.peek() method in Java 8 vs Java 9</a></p>
+<p>针对以上问题，分析如下：</p>
+<h4 id="Stream-peek-方法介绍"><a href="#Stream-peek-方法介绍" class="headerlink" title="Stream.peek() 方法介绍"></a>Stream.peek() 方法介绍</h4><p>生成一个包含原 <code>Stream</code> 的所有元素的新 Stream，同时会提供一个消费函数（ <code>Consumer</code> 实例），新 Stream 每个元素被消费的时候都会执行给定的消费函数；</p>
+<p>代码定义如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Stream&lt;T&gt; <span class="title function_">peek</span><span class="params">(Consumer&lt;? <span class="built_in">super</span> T&gt; action)</span>;</span><br></pre></td></tr></table></figure>
+
+<p>示意图如下：</p>
+<p><img src="/2018/10/17/stream-peek-method-in-java-8-vs-java-9/stream-peek.png"></p>
+<h4 id="Java-9-中-Stream-peek-不执行的原因"><a href="#Java-9-中-Stream-peek-不执行的原因" class="headerlink" title="Java 9 中 Stream.peek() 不执行的原因"></a>Java 9 中 Stream.peek() 不执行的原因</h4><p><code>Javadoc</code> 关于 <code>Stream</code> 说明如下：</p>
+<blockquote>
+<p>A stream implementation is permitted significant latitude in optimizing the computation of the result. For example, <code>a stream implementation is free to elide operations (or entire stages) from a stream pipeline -- and therefore elide invocation of behavioral parameters -- if it can prove that it would not affect the result of the computation</code>. This means that <code>side-effects of behavioral parameters may not always be executed</code> and should not be relied upon, unless otherwise specified (such as by the terminal operations forEach and forEachOrdered). (For a specific example of such an optimization, see the API note documented on the count() operation. For more detail, see the side-effects section of the stream package documentation.)</p>
+</blockquote>
+<p><code>Javadoc</code> 关于 <code>count()</code> 说明如下：</p>
+<blockquote>
+<p>API Note:<br><br><code>An implementation may choose to not execute the stream pipeline (either sequentially or in parallel) if it is capable of computing the count directly from the stream source</code>. In such cases no source elements will be traversed and <code>no intermediate operations will be evaluated</code>. Behavioral parameters with side-effects, which are strongly discouraged except for harmless cases such as debugging, may be affected. </p>
+</blockquote>
+<p>从 <code>Javadoc</code> 中可以知道，当 <code>List</code> 的元素个数没有变化时，没必要执行 <code>map</code> 和 <code>peek</code> 方法，而且<code>终止操作</code>为 <code>count()</code>，元素个数没有变化时，也没必要执行 <code>map</code> 和 <code>peek</code> 方法，除非使用能影响元素个数的一些方法，如 <code>filter</code> 和 <code>distinct</code>，所以在 <code>Java 9</code> 中使用 <code>Stream.peek()</code> 与 <code>Stream.map()</code> 方法要注意使用场景，否则方法是不会执行的。</p>
+<p><code>Javadoc</code> 中还有一段说明，<code>peek()</code> 方法主要用于 <code>debug</code>：</p>
+<blockquote>
+<p>API Note <br>This method exists mainly to <code>support debugging</code>, where you want to see the elements as they flow past a certain point in a pipeline.</p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Java/" rel="tag"># Java</a>
+              <a href="/tags/Java9%E6%96%B0%E7%89%B9%E6%80%A7/" rel="tag"># Java9新特性</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/10/16/jdk-collection/" rel="prev" title="JDK集合源码剖析（集合框架）">
+                  <i class="fa fa-angle-left"></i> JDK集合源码剖析（集合框架）
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2025/03/14/%E4%BD%BF%E7%94%A8GithubActions%E6%90%AD%E5%BB%BA%E5%85%8D%E8%B4%B9%E4%B8%AA%E4%BA%BA%E8%BF%90%E5%8A%A8%E4%B8%BB%E9%A1%B5/" rel="next" title="使用 GithubActions 打造免费个人运动主页">
+                  使用 GithubActions 打造免费个人运动主页 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2015 – 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">安辰</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">43k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">2:36</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/sidebar.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+  <script class="next-config" data-name="leancloud_visitors" type="application/json">{"server_url":null,"security":true,"enable":true,"app_id":"7vnqelnmehb5id738td3d541e3ap3wq9q29n9t6khpw10r03","app_key":"6hbvt6y29jytyow09w1y1gbl3725wlpedl5o565wuglteym7"}</script>
+  <script src="/js/third-party/statistics/lean-analytics.js"></script>
+
+
+
+</body>
+</html>
